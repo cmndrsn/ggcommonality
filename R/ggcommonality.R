@@ -87,6 +87,8 @@ ggcommonality <- function(yhat_model) {
                             xmax = x_max)
                         ) +
      ggplot2::geom_hline(yintercept = 0)+
+     ggplot2::theme(axis.text.x = ggplot2::element_blank(),
+                    axis.ticks.x = ggplot2::element_blank())+
      ggplot2::labs(x = "Commonality Partition",
           y = "Explained Variance",
           fill = "Variable")

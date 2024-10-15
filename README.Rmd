@@ -23,6 +23,11 @@ from commonality analyses. The function outputs a bar plots with unique and
 common effects for each commonality partition. The function is scalable and takes
 formula notation for input. This package is very fresh, so its functionality is quite limited.
 
+Partitions are plotted sequentially in alphabetical order, starting with unique effects
+and are built iteratively with joint effects at higher orders on top. This means
+there are redundancies between partitions, and the plot can be deceptive if you
+don't take the total explained variance into account.
+
 ## Installation
 
 You can install the development version of ggcommonality from [GitHub](https://github.com/) with:
@@ -55,3 +60,13 @@ We can compare the bar plot output to the unique and common effects from the mod
 ```{r commonality, warning=FALSE}
 knitr::kable(yhat_model$Commonality_Data$CC)
 ```
+
+To get the x and y coordinates passed to `ggplot2::geom_rect()` when making the plot,
+you can use the following line of code, which returns a list with (1) the data frame used to create the barplot for positive commonalities (from xmin, xmax, ymin, and ymax coordinates);
+(2) the data frame used to create the black outline for the positive effects; (3) the data frame used to create the barplot for negative commonalities; and (4) the data frame used to create the black outline for the negative effects.
+
+```{r}
+get_commonality_barplot_df(yhat_model) 
+```
+
+A future version of the package will include the possibility to add the total explained variance as an additional bar. I would also like to incorporate bootstrapped confidence intervals.
