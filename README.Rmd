@@ -1,5 +1,9 @@
 ---
 output: github_document
+bibliography: references.bib
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -16,21 +20,33 @@ knitr::opts_chunk$set(
 # ggcommonality
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
-The goal of ggcommonality is to produce bar plots of unique and joint effects 
-from commonality analyses. The function outputs a bar plots with unique and 
-common effects for each commonality partition. The function is scalable and takes
-formula notation for input. This package is very fresh, so its functionality is quite limited.
+The goal of ggcommonality is to produce bar plots of unique and joint
+effects from commonality analyses. The function outputs a bar plots with
+unique and common effects for each commonality partition.
 
-Partitions are plotted sequentially in alphabetical order, starting with unique effects
-and are built iteratively with joint effects at higher orders on top. This means
-there are redundancies between partitions, and the plot can be deceptive if you
-don't take the total explained variance into account.
+The function is scalable to multiple variables (at the expense of
+interpretability) and takes formula notation for input, calling on the
+`yhat` package [@nimon2023r].
+
+This function builds bar plots in the style of those appearing in my
+lab's work applying commonality analysis to the compositions of Bach and
+Chopin [@anderson2022exploring].
+
+This package is very new, so its functionality is quite limited.
+
+Partitions are plotted sequentially in alphabetical order, starting with
+unique effects and are built iteratively with joint effects at higher
+orders on top. This means there are redundancies between partitions, and
+the plot can be deceptive if you don't take the total explained variance
+into account.
 
 ## Installation
 
-You can install the development version of ggcommonality from [GitHub](https://github.com/) with:
+You can install the development version of ggcommonality from
+[GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("pak")
@@ -43,6 +59,7 @@ This is a basic example which shows you how to solve a common problem:
 
 ```{r example, warning=FALSE}
 library(ggcommonality)
+library(ggplot2)
 # import data
 data(mtcars)
 # fit model with yhat
@@ -52,21 +69,62 @@ yhat_model <- yhat::regr(
     data = mtcars
     )
   )
-ggcommonality(yhat_model) +
-  ggplot2::theme_bw()
+
+p <- ggcommonality(yhat_model) +
+  theme_bw()
+
+print(p)
 ```
-We can compare the bar plot output to the unique and common effects from the model:
+The plot is customizable and can be used with ggprotos.
+
+```{r}
+p + coord_flip()
+```
+```{r}
+p + scale_fill_manual(values = c("#7fc97f",
+                                          "#beaed4",
+                                          "#fdc086",
+                                          "#ffff99")
+                              ) +
+  theme_classic() +
+  geom_hline(yintercept = 0.7652,
+                      linetype = "dashed",
+                      color = "grey50") + # adding total explained variance
+  annotate(geom="text", x=5, y=.79, label="Total variance explained",
+              color="grey50")
+
+```
+
+
+We can compare the bar plot output to the unique and common effects from
+the model:
 
 ```{r commonality, warning=FALSE}
 knitr::kable(yhat_model$Commonality_Data$CC)
 ```
 
-To get the x and y coordinates passed to `ggplot2::geom_rect()` when making the plot,
-you can use the following line of code, which returns a list with (1) the data frame used to create the barplot for positive commonalities (from xmin, xmax, ymin, and ymax coordinates);
-(2) the data frame used to create the black outline for the positive effects; (3) the data frame used to create the barplot for negative commonalities; and (4) the data frame used to create the black outline for the negative effects.
+To get the x and y coordinates passed to `geom_rect()` when
+making the plot, you can use the following line of code, which returns a
+list with (1) the data frame used to create the barplot for positive
+commonalities (from xmin, xmax, ymin, and ymax coordinates); (2) the
+data frame used to create the black outline for the positive effects;
+(3) the data frame used to create the barplot for negative
+commonalities; and (4) the data frame used to create the black outline
+for the negative effects.
 
 ```{r}
-df_ggcommonality(yhat_model) 
+df_commonality <- df_ggcommonality(yhat_model) 
+
+## Make output shorter
+lapply(df_commonality,
+       head)
+
 ```
 
-A future version of the package will include the possibility to add the total explained variance as an additional bar. I would also like to incorporate bootstrapped confidence intervals.
+### Future Updates
+
+In future versions I will focus on (1) Soon: adding a bar for the total
+explained variance. (2) Soonish: Making generic version of ggcommonality
+which does not depend on yhat. (3) Later: Adding option to overplot
+confidence interval of partition effects (as in Anderson & Schutz,
+2022).
