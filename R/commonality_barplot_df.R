@@ -11,7 +11,6 @@
 get_commonality_barplot_df <- function(yhat_model) {
 
   n_pairs <- length(rownames(yhat_model$Commonality_Data$CCTotalbyVar))
-  print(n_pairs)
 
   df_yhat_positive <- .helper_format_yhat_commonality(yhat_model, "positive")
   df_yhat_negative <- .helper_format_yhat_commonality(yhat_model, "negative")
