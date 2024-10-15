@@ -66,7 +66,7 @@ you can use the following line of code, which returns a list with (1) the data f
 (2) the data frame used to create the black outline for the positive effects; (3) the data frame used to create the barplot for negative commonalities; and (4) the data frame used to create the black outline for the negative effects.
 
 ```{r}
-get_commonality_barplot_df(yhat_model) 
+df_ggcommonality(yhat_model) 
 ```
 
 A future version of the package will include the possibility to add the total explained variance as an additional bar. I would also like to incorporate bootstrapped confidence intervals.

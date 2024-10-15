@@ -7,8 +7,17 @@
 #' Contained are data.frames for drawing barplot [1] effects and [2] outlines.
 #' @import yhat
 #' @export
-#'
-get_commonality_barplot_df <- function(yhat_model) {
+#' @examples
+#' data(mtcars)
+#' yhat_model_cars <- yhat::regr(
+#' lm(
+#'   formula = mpg ~ cyl + disp + vs,
+#'   data = mtcars
+#'   )
+#' )
+#' df_ggcommonality(yhat_model_cars)
+
+df_ggcommonality <- function(yhat_model) {
 
   n_pairs <- length(rownames(yhat_model$Commonality_Data$CCTotalbyVar))
 

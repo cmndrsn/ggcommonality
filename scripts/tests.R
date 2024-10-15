@@ -10,7 +10,7 @@ yhat_model <- yhat::regr(
 )
 
 
-ggcommonality::get_commonality_barplot_df(yhat_model)
+ggcommonality::df_ggcommonality(yhat_model)
 
 
 

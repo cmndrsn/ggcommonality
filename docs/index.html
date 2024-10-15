@@ -58,6 +58,325 @@
 <div class="section level1">
 <div class="page-header"><h1 id="ggcommonality">ggcommonality<a class="anchor" aria-label="anchor" href="#ggcommonality"></a>
 </h1></div>
+<!-- badges: start -->
+<!-- badges: end -->
+<p>The goal of ggcommonality is to produce bar plots of unique and joint effects from commonality analyses. The function outputs a bar plots with unique and common effects for each commonality partition. The function is scalable and takes formula notation for input. This package is very fresh, so its functionality is quite limited.</p>
+<p>Partitions are plotted sequentially in alphabetical order, starting with unique effects and are built iteratively with joint effects at higher orders on top. This means there are redundancies between partitions, and the plot can be deceptive if you don’t take the total explained variance into account.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install the development version of ggcommonality from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"cmndrsn/ggcommonality"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
+<p>This is a basic example which shows you how to solve a common problem:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">ggcommonality</span><span class="op">)</span></span>
+<span><span class="co"># import data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span>
+<span><span class="co"># fit model with yhat</span></span>
+<span><span class="va">yhat_model</span> <span class="op">&lt;-</span> <span class="fu">yhat</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/yhat/man/regr.html" class="external-link">regr</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span></span>
+<span>    formula <span class="op">=</span> <span class="va">mpg</span> <span class="op">~</span> <span class="va">cyl</span> <span class="op">+</span> <span class="va">disp</span> <span class="op">+</span> <span class="va">vs</span> <span class="op">+</span> <span class="va">drat</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">mtcars</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="fu"><a href="reference/ggcommonality.html">ggcommonality</a></span><span class="op">(</span><span class="va">yhat_model</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-example-1.png" width="100%"> We can compare the bar plot output to the unique and common effects from the model:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">yhat_model</span><span class="op">$</span><span class="va">Commonality_Data</span><span class="op">$</span><span class="va">CC</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left"></th>
+<th align="right">Coefficient</th>
+<th align="right">% Total</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Unique to cyl</td>
+<td align="right">0.0235</td>
+<td align="right">3.07</td>
+</tr>
+<tr class="even">
+<td align="left">Unique to disp</td>
+<td align="right">0.0248</td>
+<td align="right">3.24</td>
+</tr>
+<tr class="odd">
+<td align="left">Unique to vs</td>
+<td align="right">0.0001</td>
+<td align="right">0.01</td>
+</tr>
+<tr class="even">
+<td align="left">Unique to drat</td>
+<td align="right">0.0047</td>
+<td align="right">0.61</td>
+</tr>
+<tr class="odd">
+<td align="left">Common to cyl, and disp</td>
+<td align="right">0.0884</td>
+<td align="right">11.55</td>
+</tr>
+<tr class="even">
+<td align="left">Common to cyl, and vs</td>
+<td align="right">0.0106</td>
+<td align="right">1.39</td>
+</tr>
+<tr class="odd">
+<td align="left">Common to disp, and vs</td>
+<td align="right">0.0000</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="even">
+<td align="left">Common to cyl, and drat</td>
+<td align="right">0.0110</td>
+<td align="right">1.43</td>
+</tr>
+<tr class="odd">
+<td align="left">Common to disp, and drat</td>
+<td align="right">0.0074</td>
+<td align="right">0.97</td>
+</tr>
+<tr class="even">
+<td align="left">Common to vs, and drat</td>
+<td align="right">0.0009</td>
+<td align="right">0.11</td>
+</tr>
+<tr class="odd">
+<td align="left">Common to cyl, disp, and vs</td>
+<td align="right">0.1538</td>
+<td align="right">20.09</td>
+</tr>
+<tr class="even">
+<td align="left">Common to cyl, disp, and drat</td>
+<td align="right">0.1645</td>
+<td align="right">21.50</td>
+</tr>
+<tr class="odd">
+<td align="left">Common to cyl, vs, and drat</td>
+<td align="right">-0.0038</td>
+<td align="right">-0.50</td>
+</tr>
+<tr class="even">
+<td align="left">Common to disp, vs, and drat</td>
+<td align="right">0.0011</td>
+<td align="right">0.15</td>
+</tr>
+<tr class="odd">
+<td align="left">Common to cyl, disp, vs, and drat</td>
+<td align="right">0.2783</td>
+<td align="right">36.37</td>
+</tr>
+<tr class="even">
+<td align="left">Total</td>
+<td align="right">0.7652</td>
+<td align="right">100.00</td>
+</tr>
+</tbody>
+</table>
+<p>To get the x and y coordinates passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">ggplot2::geom_rect()</a></code> when making the plot, you can use the following line of code, which returns a list with (1) the data frame used to create the barplot for positive commonalities (from xmin, xmax, ymin, and ymax coordinates); (2) the data frame used to create the black outline for the positive effects; (3) the data frame used to create the barplot for negative commonalities; and (4) the data frame used to create the black outline for the negative effects.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/get_commonality_barplot_df.html">get_commonality_barplot_df</a></span><span class="op">(</span><span class="va">yhat_model</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt;                   names   vals total category plot_order n_cues cue value</span></span>
+<span><span class="co">#&gt; 5                   cyl 0.0235  3.07      cyl          1      1   1   cyl</span></span>
+<span><span class="co">#&gt; 1              cyl,  vs 0.0106  1.39      cyl          2      2   1   cyl</span></span>
+<span><span class="co">#&gt; 2              cyl,  vs 0.0106  1.39      cyl          2      2   2    vs</span></span>
+<span><span class="co">#&gt; 3            cyl,  drat 0.0110  1.43      cyl          3      2   1   cyl</span></span>
+<span><span class="co">#&gt; 4            cyl,  drat 0.0110  1.43      cyl          3      2   2  drat</span></span>
+<span><span class="co">#&gt; 6            cyl,  disp 0.0884 11.55      cyl          4      2   1   cyl</span></span>
+<span><span class="co">#&gt; 7            cyl,  disp 0.0884 11.55      cyl          4      2   2  disp</span></span>
+<span><span class="co">#&gt; 8        cyl, disp,  vs 0.1538 20.09      cyl          5      3   1   cyl</span></span>
+<span><span class="co">#&gt; 9        cyl, disp,  vs 0.1538 20.09      cyl          5      3   2  disp</span></span>
+<span><span class="co">#&gt; 10       cyl, disp,  vs 0.1538 20.09      cyl          5      3   3    vs</span></span>
+<span><span class="co">#&gt; 11     cyl, disp,  drat 0.1645 21.50      cyl          6      3   1   cyl</span></span>
+<span><span class="co">#&gt; 12     cyl, disp,  drat 0.1645 21.50      cyl          6      3   2  disp</span></span>
+<span><span class="co">#&gt; 13     cyl, disp,  drat 0.1645 21.50      cyl          6      3   3  drat</span></span>
+<span><span class="co">#&gt; 14 cyl, disp, vs,  drat 0.2783 36.37      cyl          7      4   1   cyl</span></span>
+<span><span class="co">#&gt; 15 cyl, disp, vs,  drat 0.2783 36.37      cyl          7      4   2  disp</span></span>
+<span><span class="co">#&gt; 16 cyl, disp, vs,  drat 0.2783 36.37      cyl          7      4   3    vs</span></span>
+<span><span class="co">#&gt; 17 cyl, disp, vs,  drat 0.2783 36.37      cyl          7      4   4  drat</span></span>
+<span><span class="co">#&gt; 23                 disp 0.0248  3.24     disp          1      1   1  disp</span></span>
+<span><span class="co">#&gt; 24           cyl,  disp 0.0884 11.55     disp          2      2   1   cyl</span></span>
+<span><span class="co">#&gt; 25           cyl,  disp 0.0884 11.55     disp          2      2   2  disp</span></span>
+<span><span class="co">#&gt; 21          disp,  drat 0.0074  0.97     disp          3      2   1  disp</span></span>
+<span><span class="co">#&gt; 22          disp,  drat 0.0074  0.97     disp          3      2   2  drat</span></span>
+<span><span class="co">#&gt; 26       cyl, disp,  vs 0.1538 20.09     disp          4      3   1   cyl</span></span>
+<span><span class="co">#&gt; 27       cyl, disp,  vs 0.1538 20.09     disp          4      3   2  disp</span></span>
+<span><span class="co">#&gt; 28       cyl, disp,  vs 0.1538 20.09     disp          4      3   3    vs</span></span>
+<span><span class="co">#&gt; 18      disp, vs,  drat 0.0011  0.15     disp          5      3   1  disp</span></span>
+<span><span class="co">#&gt; 19      disp, vs,  drat 0.0011  0.15     disp          5      3   2    vs</span></span>
+<span><span class="co">#&gt; 20      disp, vs,  drat 0.0011  0.15     disp          5      3   3  drat</span></span>
+<span><span class="co">#&gt; 29     cyl, disp,  drat 0.1645 21.50     disp          6      3   1   cyl</span></span>
+<span><span class="co">#&gt; 30     cyl, disp,  drat 0.1645 21.50     disp          6      3   2  disp</span></span>
+<span><span class="co">#&gt; 31     cyl, disp,  drat 0.1645 21.50     disp          6      3   3  drat</span></span>
+<span><span class="co">#&gt; 32 cyl, disp, vs,  drat 0.2783 36.37     disp          7      4   1   cyl</span></span>
+<span><span class="co">#&gt; 33 cyl, disp, vs,  drat 0.2783 36.37     disp          7      4   2  disp</span></span>
+<span><span class="co">#&gt; 34 cyl, disp, vs,  drat 0.2783 36.37     disp          7      4   3    vs</span></span>
+<span><span class="co">#&gt; 35 cyl, disp, vs,  drat 0.2783 36.37     disp          7      4   4  drat</span></span>
+<span><span class="co">#&gt; 56                 drat 0.0047  0.61     drat          1      1   1  drat</span></span>
+<span><span class="co">#&gt; 51            vs,  drat 0.0009  0.11     drat          2      2   1    vs</span></span>
+<span><span class="co">#&gt; 52            vs,  drat 0.0009  0.11     drat          2      2   2  drat</span></span>
+<span><span class="co">#&gt; 59           cyl,  drat 0.0110  1.43     drat          3      2   1   cyl</span></span>
+<span><span class="co">#&gt; 60           cyl,  drat 0.0110  1.43     drat          3      2   2  drat</span></span>
+<span><span class="co">#&gt; 57          disp,  drat 0.0074  0.97     drat          4      2   1  disp</span></span>
+<span><span class="co">#&gt; 58          disp,  drat 0.0074  0.97     drat          4      2   2  drat</span></span>
+<span><span class="co">#&gt; 53      disp, vs,  drat 0.0011  0.15     drat          5      3   1  disp</span></span>
+<span><span class="co">#&gt; 54      disp, vs,  drat 0.0011  0.15     drat          5      3   2    vs</span></span>
+<span><span class="co">#&gt; 55      disp, vs,  drat 0.0011  0.15     drat          5      3   3  drat</span></span>
+<span><span class="co">#&gt; 61     cyl, disp,  drat 0.1645 21.50     drat          6      3   1   cyl</span></span>
+<span><span class="co">#&gt; 62     cyl, disp,  drat 0.1645 21.50     drat          6      3   2  disp</span></span>
+<span><span class="co">#&gt; 63     cyl, disp,  drat 0.1645 21.50     drat          6      3   3  drat</span></span>
+<span><span class="co">#&gt; 64 cyl, disp, vs,  drat 0.2783 36.37     drat          7      4   1   cyl</span></span>
+<span><span class="co">#&gt; 65 cyl, disp, vs,  drat 0.2783 36.37     drat          7      4   2  disp</span></span>
+<span><span class="co">#&gt; 66 cyl, disp, vs,  drat 0.2783 36.37     drat          7      4   3    vs</span></span>
+<span><span class="co">#&gt; 67 cyl, disp, vs,  drat 0.2783 36.37     drat          7      4   4  drat</span></span>
+<span><span class="co">#&gt; 36                   vs 0.0001  0.01       vs          1      1   1    vs</span></span>
+<span><span class="co">#&gt; 42             cyl,  vs 0.0106  1.39       vs          2      2   1   cyl</span></span>
+<span><span class="co">#&gt; 43             cyl,  vs 0.0106  1.39       vs          2      2   2    vs</span></span>
+<span><span class="co">#&gt; 37            vs,  drat 0.0009  0.11       vs          3      2   1    vs</span></span>
+<span><span class="co">#&gt; 38            vs,  drat 0.0009  0.11       vs          3      2   2  drat</span></span>
+<span><span class="co">#&gt; 44       cyl, disp,  vs 0.1538 20.09       vs          4      3   1   cyl</span></span>
+<span><span class="co">#&gt; 45       cyl, disp,  vs 0.1538 20.09       vs          4      3   2  disp</span></span>
+<span><span class="co">#&gt; 46       cyl, disp,  vs 0.1538 20.09       vs          4      3   3    vs</span></span>
+<span><span class="co">#&gt; 39      disp, vs,  drat 0.0011  0.15       vs          5      3   1  disp</span></span>
+<span><span class="co">#&gt; 40      disp, vs,  drat 0.0011  0.15       vs          5      3   2    vs</span></span>
+<span><span class="co">#&gt; 41      disp, vs,  drat 0.0011  0.15       vs          5      3   3  drat</span></span>
+<span><span class="co">#&gt; 47 cyl, disp, vs,  drat 0.2783 36.37       vs          6      4   1   cyl</span></span>
+<span><span class="co">#&gt; 48 cyl, disp, vs,  drat 0.2783 36.37       vs          6      4   2  disp</span></span>
+<span><span class="co">#&gt; 49 cyl, disp, vs,  drat 0.2783 36.37       vs          6      4   3    vs</span></span>
+<span><span class="co">#&gt; 50 cyl, disp, vs,  drat 0.2783 36.37       vs          6      4   4  drat</span></span>
+<span><span class="co">#&gt;       x_min    x_max category_numeric  y_min  y_max</span></span>
+<span><span class="co">#&gt; 5  2.500000 3.500000                1 0.0000 0.0235</span></span>
+<span><span class="co">#&gt; 1  2.500000 3.000000                1 0.0235 0.0341</span></span>
+<span><span class="co">#&gt; 2  3.000000 3.500000                1 0.0235 0.0341</span></span>
+<span><span class="co">#&gt; 3  2.500000 3.000000                1 0.0341 0.0451</span></span>
+<span><span class="co">#&gt; 4  3.000000 3.500000                1 0.0341 0.0451</span></span>
+<span><span class="co">#&gt; 6  2.500000 3.000000                1 0.0451 0.1335</span></span>
+<span><span class="co">#&gt; 7  3.000000 3.500000                1 0.0451 0.1335</span></span>
+<span><span class="co">#&gt; 8  2.500000 2.833333                1 0.1335 0.2873</span></span>
+<span><span class="co">#&gt; 9  2.833333 3.166667                1 0.1335 0.2873</span></span>
+<span><span class="co">#&gt; 10 3.166667 3.500000                1 0.1335 0.2873</span></span>
+<span><span class="co">#&gt; 11 2.500000 2.833333                1 0.2873 0.4518</span></span>
+<span><span class="co">#&gt; 12 2.833333 3.166667                1 0.2873 0.4518</span></span>
+<span><span class="co">#&gt; 13 3.166667 3.500000                1 0.2873 0.4518</span></span>
+<span><span class="co">#&gt; 14 2.500000 2.750000                1 0.4518 0.7301</span></span>
+<span><span class="co">#&gt; 15 2.750000 3.000000                1 0.4518 0.7301</span></span>
+<span><span class="co">#&gt; 16 3.000000 3.250000                1 0.4518 0.7301</span></span>
+<span><span class="co">#&gt; 17 3.250000 3.500000                1 0.4518 0.7301</span></span>
+<span><span class="co">#&gt; 23 4.000000 5.000000                2 0.0000 0.0248</span></span>
+<span><span class="co">#&gt; 24 4.000000 4.500000                2 0.0248 0.1132</span></span>
+<span><span class="co">#&gt; 25 4.500000 5.000000                2 0.0248 0.1132</span></span>
+<span><span class="co">#&gt; 21 4.000000 4.500000                2 0.1132 0.1206</span></span>
+<span><span class="co">#&gt; 22 4.500000 5.000000                2 0.1132 0.1206</span></span>
+<span><span class="co">#&gt; 26 4.000000 4.333333                2 0.1206 0.2744</span></span>
+<span><span class="co">#&gt; 27 4.333333 4.666667                2 0.1206 0.2744</span></span>
+<span><span class="co">#&gt; 28 4.666667 5.000000                2 0.1206 0.2744</span></span>
+<span><span class="co">#&gt; 18 4.000000 4.333333                2 0.2744 0.2755</span></span>
+<span><span class="co">#&gt; 19 4.333333 4.666667                2 0.2744 0.2755</span></span>
+<span><span class="co">#&gt; 20 4.666667 5.000000                2 0.2744 0.2755</span></span>
+<span><span class="co">#&gt; 29 4.000000 4.333333                2 0.2755 0.4400</span></span>
+<span><span class="co">#&gt; 30 4.333333 4.666667                2 0.2755 0.4400</span></span>
+<span><span class="co">#&gt; 31 4.666667 5.000000                2 0.2755 0.4400</span></span>
+<span><span class="co">#&gt; 32 4.000000 4.250000                2 0.4400 0.7183</span></span>
+<span><span class="co">#&gt; 33 4.250000 4.500000                2 0.4400 0.7183</span></span>
+<span><span class="co">#&gt; 34 4.500000 4.750000                2 0.4400 0.7183</span></span>
+<span><span class="co">#&gt; 35 4.750000 5.000000                2 0.4400 0.7183</span></span>
+<span><span class="co">#&gt; 56 5.500000 6.500000                3 0.0000 0.0047</span></span>
+<span><span class="co">#&gt; 51 5.500000 6.000000                3 0.0047 0.0056</span></span>
+<span><span class="co">#&gt; 52 6.000000 6.500000                3 0.0047 0.0056</span></span>
+<span><span class="co">#&gt; 59 5.500000 6.000000                3 0.0056 0.0166</span></span>
+<span><span class="co">#&gt; 60 6.000000 6.500000                3 0.0056 0.0166</span></span>
+<span><span class="co">#&gt; 57 5.500000 6.000000                3 0.0166 0.0240</span></span>
+<span><span class="co">#&gt; 58 6.000000 6.500000                3 0.0166 0.0240</span></span>
+<span><span class="co">#&gt; 53 5.500000 5.833333                3 0.0240 0.0251</span></span>
+<span><span class="co">#&gt; 54 5.833333 6.166667                3 0.0240 0.0251</span></span>
+<span><span class="co">#&gt; 55 6.166667 6.500000                3 0.0240 0.0251</span></span>
+<span><span class="co">#&gt; 61 5.500000 5.833333                3 0.0251 0.1896</span></span>
+<span><span class="co">#&gt; 62 5.833333 6.166667                3 0.0251 0.1896</span></span>
+<span><span class="co">#&gt; 63 6.166667 6.500000                3 0.0251 0.1896</span></span>
+<span><span class="co">#&gt; 64 5.500000 5.750000                3 0.1896 0.4679</span></span>
+<span><span class="co">#&gt; 65 5.750000 6.000000                3 0.1896 0.4679</span></span>
+<span><span class="co">#&gt; 66 6.000000 6.250000                3 0.1896 0.4679</span></span>
+<span><span class="co">#&gt; 67 6.250000 6.500000                3 0.1896 0.4679</span></span>
+<span><span class="co">#&gt; 36 7.000000 8.000000                4 0.0000 0.0001</span></span>
+<span><span class="co">#&gt; 42 7.000000 7.500000                4 0.0001 0.0107</span></span>
+<span><span class="co">#&gt; 43 7.500000 8.000000                4 0.0001 0.0107</span></span>
+<span><span class="co">#&gt; 37 7.000000 7.500000                4 0.0107 0.0116</span></span>
+<span><span class="co">#&gt; 38 7.500000 8.000000                4 0.0107 0.0116</span></span>
+<span><span class="co">#&gt; 44 7.000000 7.333333                4 0.0116 0.1654</span></span>
+<span><span class="co">#&gt; 45 7.333333 7.666667                4 0.0116 0.1654</span></span>
+<span><span class="co">#&gt; 46 7.666667 8.000000                4 0.0116 0.1654</span></span>
+<span><span class="co">#&gt; 39 7.000000 7.333333                4 0.1654 0.1665</span></span>
+<span><span class="co">#&gt; 40 7.333333 7.666667                4 0.1654 0.1665</span></span>
+<span><span class="co">#&gt; 41 7.666667 8.000000                4 0.1654 0.1665</span></span>
+<span><span class="co">#&gt; 47 7.000000 7.250000                4 0.1665 0.4448</span></span>
+<span><span class="co">#&gt; 48 7.250000 7.500000                4 0.1665 0.4448</span></span>
+<span><span class="co">#&gt; 49 7.500000 7.750000                4 0.1665 0.4448</span></span>
+<span><span class="co">#&gt; 50 7.750000 8.000000                4 0.1665 0.4448</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; # A tibble: 4 × 5</span></span>
+<span><span class="co">#&gt;   category y_min y_max x_min x_max</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 cyl          0 0.730   2.5   3.5</span></span>
+<span><span class="co">#&gt; 2 disp         0 0.718   4     5  </span></span>
+<span><span class="co">#&gt; 3 drat         0 0.468   5.5   6.5</span></span>
+<span><span class="co">#&gt; 4 vs           0 0.445   7     8  </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[3]]</span></span>
+<span><span class="co">#&gt;             names    vals total category plot_order 4 n_cues cue value    x_min</span></span>
+<span><span class="co">#&gt; 4             cyl  0.0000   0.0      cyl          1        1   1   cyl 2.500000</span></span>
+<span><span class="co">#&gt; 1  cyl, vs,  drat -0.0038  -0.5      cyl          2        3   1   cyl 2.500000</span></span>
+<span><span class="co">#&gt; 2  cyl, vs,  drat -0.0038  -0.5      cyl          2        3   2    vs 2.833333</span></span>
+<span><span class="co">#&gt; 3  cyl, vs,  drat -0.0038  -0.5      cyl          2        3   3  drat 3.166667</span></span>
+<span><span class="co">#&gt; 7            disp  0.0000   0.0     disp          1        1   1  disp 4.000000</span></span>
+<span><span class="co">#&gt; 5       disp,  vs  0.0000   0.0     disp          2        2   1  disp 4.000000</span></span>
+<span><span class="co">#&gt; 6       disp,  vs  0.0000   0.0     disp          2        2   2    vs 4.500000</span></span>
+<span><span class="co">#&gt; 17           drat  0.0000   0.0     drat          1        1   1  drat 5.500000</span></span>
+<span><span class="co">#&gt; 14 cyl, vs,  drat -0.0038  -0.5     drat          2        3   1   cyl 5.500000</span></span>
+<span><span class="co">#&gt; 15 cyl, vs,  drat -0.0038  -0.5     drat          2        3   2    vs 5.833333</span></span>
+<span><span class="co">#&gt; 16 cyl, vs,  drat -0.0038  -0.5     drat          2        3   3  drat 6.166667</span></span>
+<span><span class="co">#&gt; 13             vs  0.0000   0.0       vs          1        1   1    vs 7.000000</span></span>
+<span><span class="co">#&gt; 11      disp,  vs  0.0000   0.0       vs          2        2   1  disp 7.000000</span></span>
+<span><span class="co">#&gt; 12      disp,  vs  0.0000   0.0       vs          2        2   2    vs 7.500000</span></span>
+<span><span class="co">#&gt; 8  cyl, vs,  drat -0.0038  -0.5       vs          3        3   1   cyl 7.000000</span></span>
+<span><span class="co">#&gt; 9  cyl, vs,  drat -0.0038  -0.5       vs          3        3   2    vs 7.333333</span></span>
+<span><span class="co">#&gt; 10 cyl, vs,  drat -0.0038  -0.5       vs          3        3   3  drat 7.666667</span></span>
+<span><span class="co">#&gt;       x_max category_numeric y_min   y_max</span></span>
+<span><span class="co">#&gt; 4  3.500000                1     0  0.0000</span></span>
+<span><span class="co">#&gt; 1  2.833333                1     0 -0.0038</span></span>
+<span><span class="co">#&gt; 2  3.166667                1     0 -0.0038</span></span>
+<span><span class="co">#&gt; 3  3.500000                1     0 -0.0038</span></span>
+<span><span class="co">#&gt; 7  5.000000                2     0  0.0000</span></span>
+<span><span class="co">#&gt; 5  4.500000                2     0  0.0000</span></span>
+<span><span class="co">#&gt; 6  5.000000                2     0  0.0000</span></span>
+<span><span class="co">#&gt; 17 6.500000                3     0  0.0000</span></span>
+<span><span class="co">#&gt; 14 5.833333                3     0 -0.0038</span></span>
+<span><span class="co">#&gt; 15 6.166667                3     0 -0.0038</span></span>
+<span><span class="co">#&gt; 16 6.500000                3     0 -0.0038</span></span>
+<span><span class="co">#&gt; 13 8.000000                4     0  0.0000</span></span>
+<span><span class="co">#&gt; 11 7.500000                4     0  0.0000</span></span>
+<span><span class="co">#&gt; 12 8.000000                4     0  0.0000</span></span>
+<span><span class="co">#&gt; 8  7.333333                4     0 -0.0038</span></span>
+<span><span class="co">#&gt; 9  7.666667                4     0 -0.0038</span></span>
+<span><span class="co">#&gt; 10 8.000000                4     0 -0.0038</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[4]]</span></span>
+<span><span class="co">#&gt; # A tibble: 4 × 5</span></span>
+<span><span class="co">#&gt;   category   y_min   y_max x_min x_max</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 cyl      -0.0038 -0.0038   2.5   3.5</span></span>
+<span><span class="co">#&gt; 2 disp      0       0        4     5  </span></span>
+<span><span class="co">#&gt; 3 drat     -0.0038 -0.0038   5.5   6.5</span></span>
+<span><span class="co">#&gt; 4 vs       -0.0038 -0.0038   7     8</span></span></code></pre></div>
+<p>A future version of the package will include the possibility to add the total explained variance as an additional bar. I would also like to incorporate bootstrapped confidence intervals.</p>
+</div>
 </div>
   </div>
 

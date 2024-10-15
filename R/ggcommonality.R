@@ -13,16 +13,25 @@
 #'
 #' @examples
 #' data(mtcars)
-#' yhat_model <- yhat::regr(
+#' yhat_model_cars <- yhat::regr(
 #' lm(
-#'   formula = mpg ~ cyl + disp + vs + drat + hp + wt + am + gear +carb,
+#'   formula = mpg ~ cyl + disp + vs,
 #'   data = mtcars
 #'   )
 #' )
-#' ggcommonality(yhat_model)
+#' ggcommonality(yhat_model_cars)
+#'
+#' data(trees)
+#' yhat_model_trees <- yhat::regr(
+#' lm(
+#'   formula = Height ~ Girth + Volume + Girth * Volume,
+#'   data = trees
+#'   )
+#' )
+#' ggcommonality(yhat_model_trees)
 #'
 ggcommonality <- function(yhat_model) {
-  commonality_df <- get_commonality_barplot_df(yhat_model)
+  commonality_df <- df_ggcommonality(yhat_model)
   n_pairs <- length(rownames(yhat_model$Commonality_Data$CCTotalbyVar))
 
   positive_effects <- commonality_df[[1]]

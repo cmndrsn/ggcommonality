@@ -84,7 +84,7 @@ commonalities; and (4) the data frame used to create the black outline
 for the negative effects.
 
 ``` r
-get_commonality_barplot_df(yhat_model) 
+df_ggcommonality(yhat_model) 
 #> [[1]]
 #>                   names   vals total category plot_order n_cues cue value
 #> 5                   cyl 0.0235  3.07      cyl          1      1   1   cyl
