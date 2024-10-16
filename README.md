@@ -53,8 +53,8 @@ yhat_model <- yhat::regr(
     )
   )
 
-p <- ggcommonality(yhat_model) +
-  theme_bw()
+p <- ggcommonality(yhat_model)
+  
 
 print(p)
 ```
@@ -63,7 +63,16 @@ print(p)
 customizable and can be used with ggprotos.
 
 ``` r
-p + coord_flip()
+p + 
+  coord_flip() +
+    geom_hline(yintercept = 0.7652,
+                      linetype = "dashed",
+                      color = "grey50") + # adding total explained variance
+  annotate(geom="text", x=7.8, y=.71, label="Total\nvariance\nexplained",
+              color="grey50") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
@@ -74,7 +83,6 @@ p + scale_fill_manual(values = c("#7fc97f",
                                           "#fdc086",
                                           "#ffff99")
                               ) +
-  theme_classic() +
   geom_hline(yintercept = 0.7652,
                       linetype = "dashed",
                       color = "grey50") + # adding total explained variance
