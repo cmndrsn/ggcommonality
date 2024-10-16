@@ -276,19 +276,28 @@
   if(type == "positive") {
     pivoted_cue_df_xy_outline <- pivoted_cue_df_xy |>
       dplyr::group_by(category) |>
-      dplyr::summarise(y_min = min(y_min),
-                y_max = max(y_max),
-                x_min = min(x_min),
-                x_max = max(x_max)
+      dplyr::summarise(
+        y_min = min(y_min),
+        y_max = max(y_max),
+        x_min = min(x_min),
+        x_max = max(x_max),
+        x_mid = mean(c(x_min,
+                       x_max)
+                     )
       )
 
   } else {
     pivoted_cue_df_xy_outline <- pivoted_cue_df_xy |>
       dplyr::group_by(category) |>
-      dplyr::summarise(y_min = min(y_max),
-                y_max = max(y_min),
-                x_min = min(x_min),
-                x_max = max(x_max)
+      dplyr::summarise(
+        y_min = min(y_max),
+        y_max = max(y_min),
+        x_min = min(x_min),
+        x_max = max(x_max),
+        x_mid = mean(c(x_min,
+                       x_max)
+                     )
+
       )
 
   }

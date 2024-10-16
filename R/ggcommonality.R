@@ -95,19 +95,37 @@ ggcommonality <- function(yhat_model) {
                             xmin = x_min,
                             xmax = x_max)
                         ) +
+     ggplot2::geom_linerange(data = positive_effects,
+                             alpha = 0.5,
+                             ggplot2::aes(y = y_min,
+                                          group = names,
+                                          xmin = x_min,
+                                          xmax = x_max)
+     ) +
+     ggplot2::geom_linerange(data = negative_effects,
+                             alpha = 0.5,
+                             ggplot2::aes(y = y_min,
+                                          group = names,
+                                          xmin = x_min,
+                                          xmax = x_max)
+     ) +
      ggplot2::geom_hline(yintercept = 0)+
      ggplot2::labs(x = "Commonality Partition",
-          y = "Explained Variance",
+          y = "Explained Variance\n(Unique + Common)",
           fill = "Variable")
 
      p <- p +
-       ggplot2::theme_classic()+
-       ggplot2::theme(axis.title.x=ggplot2::element_blank(),
-                      axis.text.x=ggplot2::element_blank(),
-                      axis.ticks.x=ggplot2::element_blank()
-                      )
+       # ggplot2::theme_classic()+
+       # ggplot2::theme(axis.title.x=ggplot2::element_blank(),
+       #                axis.text.x=ggplot2::element_blank(),
+       #                axis.ticks.x=ggplot2::element_blank()
+       #                ) +
+       ggplot2::scale_x_continuous(
+                         breaks = positive_outline$x_mid,
+                         labels = positive_outline$category
+       )
+
    return(p)
 
 }
-
 
