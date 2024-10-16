@@ -14,9 +14,9 @@ The function is scalable to multiple variables (at the expense of
 interpretability) and takes formula notation for input, calling on the
 `yhat` package (Nimon, Oswald, and Roberts. 2023).
 
-This function builds bar plots in the style of those appearing in my
-lab’s work applying commonality analysis to the compositions of Bach and
-Chopin (Anderson and Schutz 2022).
+This function builds bar plots in the style of those appearing in the
+[MAPLE Lab’s](https://maplelab.net) work applying commonality analysis
+to the compositions of Bach and Chopin (Anderson and Schutz 2022).
 
 This package is very new, so its functionality is quite limited.
 
@@ -59,8 +59,9 @@ p <- ggcommonality(yhat_model)
 print(p)
 ```
 
-<img src="man/figures/README-example-1.png" width="100%" /> The plot is
-customizable and can be used with ggprotos.
+<img src="man/figures/README-example-1.png" width="100%" />
+
+The plot is customizable and can be used with ggprotos.
 
 ``` r
 p + 
@@ -68,11 +69,9 @@ p +
     geom_hline(yintercept = 0.7652,
                       linetype = "dashed",
                       color = "grey50") + # adding total explained variance
-  annotate(geom="text", x=7.8, y=.71, label="Total\nvariance\nexplained",
+  annotate(geom="text", x=7.8, y=.71, label="Total\nvariance\nexplained\n(unique + joint)",
               color="grey50") +
-  theme_minimal() +
-  theme(axis.text.y = element_blank(),
-        axis.ticks.y = element_blank())
+  theme_minimal()
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
@@ -86,7 +85,7 @@ p + scale_fill_manual(values = c("#7fc97f",
   geom_hline(yintercept = 0.7652,
                       linetype = "dashed",
                       color = "grey50") + # adding total explained variance
-  annotate(geom="text", x=5, y=.79, label="Total variance explained",
+  annotate(geom="text", x=5, y=.79, label="Total variance explained\n(unique + joint)",
               color="grey50")
 ```
 
@@ -149,13 +148,13 @@ lapply(df_commonality,
 #> 6                1 0.0451 0.1335
 #> 
 #> [[2]]
-#> # A tibble: 4 × 5
-#>   category y_min y_max x_min x_max
-#>   <chr>    <dbl> <dbl> <dbl> <dbl>
-#> 1 cyl          0 0.730   2.5   3.5
-#> 2 disp         0 0.718   4     5  
-#> 3 drat         0 0.468   5.5   6.5
-#> 4 vs           0 0.445   7     8  
+#> # A tibble: 4 × 6
+#>   category y_min y_max x_min x_max x_mid
+#>   <chr>    <dbl> <dbl> <dbl> <dbl> <dbl>
+#> 1 cyl          0 0.730   2.5   3.5   3  
+#> 2 disp         0 0.718   4     5     4.5
+#> 3 drat         0 0.468   5.5   6.5   6  
+#> 4 vs           0 0.445   7     8     7.5
 #> 
 #> [[3]]
 #>            names    vals total category plot_order 4 n_cues cue value    x_min
@@ -174,13 +173,13 @@ lapply(df_commonality,
 #> 5 4.500000                2     0  0.0000
 #> 
 #> [[4]]
-#> # A tibble: 4 × 5
-#>   category   y_min   y_max x_min x_max
-#>   <chr>      <dbl>   <dbl> <dbl> <dbl>
-#> 1 cyl      -0.0038 -0.0038   2.5   3.5
-#> 2 disp      0       0        4     5  
-#> 3 drat     -0.0038 -0.0038   5.5   6.5
-#> 4 vs       -0.0038 -0.0038   7     8
+#> # A tibble: 4 × 6
+#>   category   y_min   y_max x_min x_max x_mid
+#>   <chr>      <dbl>   <dbl> <dbl> <dbl> <dbl>
+#> 1 cyl      -0.0038 -0.0038   2.5   3.5   3  
+#> 2 disp      0       0        4     5     4.5
+#> 3 drat     -0.0038 -0.0038   5.5   6.5   6  
+#> 4 vs       -0.0038 -0.0038   7     8     7.5
 ```
 
 ### Future Updates
@@ -190,6 +189,8 @@ explained variance. (2) Soonish: Making generic version of ggcommonality
 which does not depend on yhat. (3) Later: Adding option to overplot
 confidence interval of partition effects (as in Anderson & Schutz,
 2022).
+
+# References
 
 <div id="refs" class="references csl-bib-body hanging-indent"
 entry-spacing="0">

@@ -1,6 +1,5 @@
 devtools::load_all()
 
-library(ggplot2)
 
 yhat_model <- yhat::regr(
   lm(
@@ -10,9 +9,24 @@ yhat_model <- yhat::regr(
 )
 
 
-ggcommonality::df_ggcommonality(yhat_model)
+yhat_model <- yhat::regr(
+  lm(
+    formula = mpg ~ cyl + disp,
+    data = mtcars
+  )
+)
 
 
+
+ggcommonality(yhat_model)
+
+
+
+yhat_model <- yhat::regr(
+  lm(
+    formula = mpg ~ cyl + disp + vs + wt + gear,
+    data = mtcars
+  )
+)
 
 ggcommonality::ggcommonality(yhat_model)
-

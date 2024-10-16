@@ -31,9 +31,9 @@ The function is scalable to multiple variables (at the expense of
 interpretability) and takes formula notation for input, calling on the
 `yhat` package [@nimon2023r].
 
-This function builds bar plots in the style of those appearing in my
-lab's work applying commonality analysis to the compositions of Bach and
-Chopin [@anderson2022exploring].
+This function builds bar plots in the style of those appearing in the
+[MAPLE Lab's](https://maplelab.net) work applying commonality analysis
+to the compositions of Bach and Chopin [@anderson2022exploring].
 
 This package is very new, so its functionality is quite limited.
 
@@ -75,6 +75,7 @@ p <- ggcommonality(yhat_model)
 
 print(p)
 ```
+
 The plot is customizable and can be used with ggprotos.
 
 ```{r}
@@ -83,12 +84,11 @@ p +
     geom_hline(yintercept = 0.7652,
                       linetype = "dashed",
                       color = "grey50") + # adding total explained variance
-  annotate(geom="text", x=7.8, y=.71, label="Total\nvariance\nexplained",
+  annotate(geom="text", x=7.8, y=.71, label="Total\nvariance\nexplained\n(unique + joint)",
               color="grey50") +
-  theme_minimal() +
-  theme(axis.text.y = element_blank(),
-        axis.ticks.y = element_blank())
+  theme_minimal()
 ```
+
 ```{r}
 p + scale_fill_manual(values = c("#7fc97f",
                                           "#beaed4",
@@ -98,11 +98,10 @@ p + scale_fill_manual(values = c("#7fc97f",
   geom_hline(yintercept = 0.7652,
                       linetype = "dashed",
                       color = "grey50") + # adding total explained variance
-  annotate(geom="text", x=5, y=.79, label="Total variance explained",
+  annotate(geom="text", x=5, y=.79, label="Total variance explained\n(unique + joint)",
               color="grey50")
 
 ```
-
 
 We can compare the bar plot output to the unique and common effects from
 the model:
@@ -111,14 +110,13 @@ the model:
 knitr::kable(yhat_model$Commonality_Data$CC)
 ```
 
-To get the x and y coordinates passed to `geom_rect()` when
-making the plot, you can use the following line of code, which returns a
-list with (1) the data frame used to create the barplot for positive
-commonalities (from xmin, xmax, ymin, and ymax coordinates); (2) the
-data frame used to create the black outline for the positive effects;
-(3) the data frame used to create the barplot for negative
-commonalities; and (4) the data frame used to create the black outline
-for the negative effects.
+To get the x and y coordinates passed to `geom_rect()` when making the
+plot, you can use the following line of code, which returns a list with
+(1) the data frame used to create the barplot for positive commonalities
+(from xmin, xmax, ymin, and ymax coordinates); (2) the data frame used
+to create the black outline for the positive effects; (3) the data frame
+used to create the barplot for negative commonalities; and (4) the data
+frame used to create the black outline for the negative effects.
 
 ```{r}
 df_commonality <- df_ggcommonality(yhat_model) 
@@ -136,3 +134,5 @@ explained variance. (2) Soonish: Making generic version of ggcommonality
 which does not depend on yhat. (3) Later: Adding option to overplot
 confidence interval of partition effects (as in Anderson & Schutz,
 2022).
+
+# References
