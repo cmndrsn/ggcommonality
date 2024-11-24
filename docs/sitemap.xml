@@ -6,6 +6,8 @@
 <url><loc>/LICENSE.html</loc></url>
 <url><loc>/reference/ci_ggcommonality.html</loc></url>
 <url><loc>/reference/df_ggcommonality.html</loc></url>
+<url><loc>/reference/dot-helper_apply_function_to_random_sample.html</loc></url>
+<url><loc>/reference/dot-helper_apply_test_statistic.html</loc></url>
 <url><loc>/reference/dot-helper_define_x_coordinates.html</loc></url>
 <url><loc>/reference/dot-helper_define_y_coordinates.html</loc></url>
 <url><loc>/reference/dot-helper_draw_barplot_outline.html</loc></url>
@@ -19,5 +21,6 @@
 <url><loc>/reference/ggcommonality.html</loc></url>
 <url><loc>/reference/ggcommonality_ci.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/run_structured_bootstrap.html</loc></url>
 </urlset>
 

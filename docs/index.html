@@ -61,6 +61,7 @@
 </h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
+<p>Note: this is the development branch, so the functionality is appropriately buggy. However, the code here is more efficient than what’s currently on the main branch.</p>
 <p>The goal of ggcommonality is to produce bar plots of unique and joint effects from commonality analyses. The function outputs a bar plots with unique and common effects for each commonality partition.</p>
 <p>The function is scalable to multiple variables (at the expense of interpretability) and takes formula notation for input, calling on the <code>yhat</code> package (Nimon, Oswald, and Roberts. 2023).</p>
 <p>This function builds bar plots in the style of those appearing in the <a href="https://maplelab.net" class="external-link">MAPLE Lab’s</a> work applying commonality analysis to the compositions of Bach and Chopin (Anderson and Schutz 2022).</p>
@@ -71,8 +72,7 @@
 </h2>
 <p>You can install the development version of ggcommonality from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"cmndrsn/ggcommonality"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"cmndrsn/ggcommonality"</span>, ref <span class="op">=</span> <span class="st">"development"</span>, force <span class="op">=</span> <span class="cn">TRUE</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
