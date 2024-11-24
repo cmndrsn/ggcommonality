@@ -1,6 +1,7 @@
 #' Define XY coordinates for drawing commonality bar plots
 #'
-#' @param yhat_model Data.frame output of yhat::regr() function.
+#' @param formula Formula passed to regression model
+#' @param data data argument matching formula
 #'
 #' @return List of lists.
 #' Lists for positive and negative commonalities.
@@ -17,7 +18,12 @@
 #' )
 #' df_ggcommonality(yhat_model_cars)
 
-df_ggcommonality <- function(yhat_model) {
+df_ggcommonality <- function(formula,
+                             data) {
+
+  lm_out <- lm(formula = formula,
+               data = data)
+  yhat_model <- yhat::regr(lm_out)
 
   n_pairs <- length(rownames(yhat_model$Commonality_Data$CCTotalbyVar))
 

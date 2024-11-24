@@ -3,7 +3,8 @@
 #' This function takes a commonality model output from yhat and generates
 #' a bar plot based on the unique and common variance shared between variables.
 #'
-#' @param yhat_model List. Model output of yhat::reg() applied to lm() object.
+#' @param formula Formula passed to regression model
+#' @param data data argument matching formula
 #'
 #' @return ggplot object. Unique and common effects presented as a bar plot.
 #' Variance attributable to two variables appears in partition for both.
@@ -13,25 +14,19 @@
 #'
 #' @examples
 #' data(mtcars)
-#' yhat_model_cars <- yhat::regr(
-#' lm(
-#'   formula = mpg ~ cyl + disp + vs,
-#'   data = mtcars
-#'   )
-#' )
-#' ggcommonality(yhat_model_cars)
+#' ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars)
 #'
 #' data(trees)
-#' yhat_model_trees <- yhat::regr(
-#' lm(
-#'   formula = Height ~ Girth + Volume + Girth * Volume,
-#'   data = trees
-#'   )
-#' )
-#' ggcommonality(yhat_model_trees)
+#' ggcommonality(formula = Height ~ Girth + Volume + Girth * Volume,
+#' data = trees)
 #'
-ggcommonality <- function(yhat_model) {
-  commonality_df <- df_ggcommonality(yhat_model)
+ggcommonality <- function(formula,
+                          data) {
+  commonality_df <- df_ggcommonality(formula,
+                                     data)
+  lm_out <- lm(formula = formula, data = data)
+  yhat_model <- yhat::regr(lm_out)
+
   n_pairs <- length(rownames(yhat_model$Commonality_Data$CCTotalbyVar))
 
   positive_effects <- commonality_df[[1]]
@@ -126,6 +121,72 @@ ggcommonality <- function(yhat_model) {
        )
 
    return(p)
-
 }
+
+
+
+
+
+#' Generate percentile-based bootstrap 95% confidence intervals for ggcommonality
+#'
+#' @param formula Formula for linear regression model
+#' @param data  Data frame matching formula argument
+#' @param ... Additional parameters passed to [helper_calc_ci()]
+#' @return ggproto instance
+#' @export
+#'
+#' @examples
+#' ggcommonality(formula = mpg ~ cyl + disp + vs,
+#' data = mtcars) +
+#' ggcommonality_ci(formula = mpg ~ cyl + disp + vs,
+#' data = mtcars,
+#' sample_column = gear)
+
+ggcommonality_ci <- function(formula,
+                          data,
+                          ...) {
+  commonality_df <- df_ggcommonality(formula,
+                                     data)
+  lm_out <- lm(formula = formula, data = data)
+  yhat_model <- yhat::regr(lm_out)
+
+  n_pairs <- length(rownames(yhat_model$Commonality_Data$CCTotalbyVar))
+
+  positive_effects <- commonality_df[[1]]
+  positive_outline <- commonality_df[[2]]
+  negative_effects <- commonality_df[[3]]
+  negative_outline <- commonality_df[[4]]
+
+    tryCatch(
+      {
+        df_ci <- helper_calc_ci(
+          formula = formula,
+          data = data,
+          ...
+        )
+      },
+      error=function(e) {
+        message('An Error Occurred')
+        print(e)
+      }
+    )
+    positive_outline <- merge(positive_outline, df_ci)
+
+
+    p <-
+      ggplot2::geom_errorbar(data = positive_outline,
+                             width = 0.5,
+                             color = "grey50",
+                             ggplot2::aes(x = x_mid,
+                                          ymin = lower,
+                                          ymax = upper)
+      )
+
+
+  return(p)
+}
+
+
+
+
 
