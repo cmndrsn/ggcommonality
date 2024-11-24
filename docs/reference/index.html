@@ -42,6 +42,10 @@
           <p class="section-desc"></p>
         </th>
       </tr></tbody><tbody><tr><td>
+          <p><code><a href="ci_ggcommonality.html">ci_ggcommonality</a></code> </p>
+        </td>
+        <td><p>Generate percentile-based bootstrap 95<!-- % confidence intervals for ggcommonality} --> ci_ggcommonality(formula, data, ...) formulaFormula for linear regression model dataData frame matching formula argument ...Additional parameters passed to helper_calc_ci() ggproto instance This function uses structured bootstrapping to create a 95<!-- % confidence interval. --> Calls yhat::regr() to generate commonality coefficients for data resampled with replacement. Then it sums unique and joint effects for each commonality partition and generates a 95<!-- % confidence interval. --> By setting ci_sign to "positive" or "negative", you can generate an errorbar for positive and negative commonalities, respectively. ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars) + ci_ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars, sample_column = gear)</p></td>
+      </tr><tr><td>
           <p><code><a href="df_ggcommonality.html">df_ggcommonality()</a></code> </p>
         </td>
         <td><p>Define XY coordinates for drawing commonality bar plots</p></td>
@@ -85,10 +89,6 @@
           <p><code><a href="ggcommonality.html">ggcommonality()</a></code> </p>
         </td>
         <td><p>Plot Commonality Partitions as a Bar Plot in ggplot</p></td>
-      </tr><tr><td>
-          <p><code><a href="ggcommonality_ci.html">ggcommonality_ci</a></code> </p>
-        </td>
-        <td><p>Generate percentile-based bootstrap 95<!-- % confidence intervals for ggcommonality} --> ggcommonality_ci(formula, data, ...) formulaFormula for linear regression model dataData frame matching formula argument ...Additional parameters passed to [helper_calc_ci()] ggproto instance Generate percentile-based bootstrap 95<!-- % confidence intervals for ggcommonality --> ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars) + ggcommonality_ci(formula = mpg ~ cyl + disp + vs, data = mtcars, sample_column = gear)</p></td>
       </tr></tbody></table></div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

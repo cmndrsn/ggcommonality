@@ -10,8 +10,6 @@
 #' Variance attributable to two variables appears in partition for both.
 #' @import ggplot2
 #' @import yhat
-#' @export
-#'
 #' @examples
 #' data(mtcars)
 #' ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars)
@@ -19,6 +17,7 @@
 #' data(trees)
 #' ggcommonality(formula = Height ~ Girth + Volume + Girth * Volume,
 #' data = trees)
+#' @export
 #'
 ggcommonality <- function(formula,
                           data) {
@@ -122,11 +121,14 @@ ggcommonality <- function(formula,
 
    return(p)
 }
+
 #------------------------------------------------------------------------------#
-#' Generate percentile-based bootstrap 95% confidence intervals for ggcommonality
 #'
-#' This function uses structured bootstrapping to create a 95% confidence interval.
-#' Specifically, it calls yhat::regr() to generate commonality coefficients for
+#' Percentile-based Bootstrap Confidence Intervals for ggcommonality.
+#'
+#' Uses structured bootstrapping to create a 95% confidence interval.
+#'
+#' Calls yhat::regr() to generate commonality coefficients for
 #' data resampled with replacement. Then it sums unique and joint effects for each
 #' commonality partition and generates a 95% confidence interval.
 #' By setting ci_sign to "positive" or "negative", you can generate an errorbar
@@ -135,15 +137,17 @@ ggcommonality <- function(formula,
 #' @param formula Formula for linear regression model
 #' @param data  Data frame matching formula argument
 #' @param ... Additional parameters passed to helper_calc_ci()
+#' @import pbapply
 #' @return ggproto instance
-#' @export
+#'
 #' @examples
-#' ggcommonality(formula = mpg ~ cyl + disp + vs,
-#' data = mtcars) +
-#' ci_ggcommonality(formula = mpg ~ cyl + disp + vs,
-#' data = mtcars,
-#' sample_column = gear)
-
+#'  ggcommonality(formula = mpg ~ cyl + disp + vs,
+#'                data = mtcars) +
+#'    ci_ggcommonality(formula = mpg ~ cyl + disp + vs,
+#'                     data = mtcars,
+#'                     sample_column = "gear")
+#' @export
+#'
 ci_ggcommonality <- function(formula,
                           data,
                           ...) {
@@ -160,11 +164,13 @@ ci_ggcommonality <- function(formula,
   negative_outline <- commonality_df[[4]]
 
 
-  df_ci <- helper_calc_ci(
+  df_ci <- suppressWarnings(
+    helper_calc_ci(
     formula = formula,
     data = data,
     ...
     )
+  )
 
     positive_outline <- merge(positive_outline, df_ci)
 

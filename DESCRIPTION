@@ -15,4 +15,5 @@ Imports:
     yhat,
     stringr,
     tibble,
-    tidyr
+    tidyr,
+    pbapply

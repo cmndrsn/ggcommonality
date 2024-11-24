@@ -21,6 +21,12 @@ Data.frame. Resampled data.
 \description{
 Resample Data with Replacement by ID Column
 }
+\examples{
+.helper_resample_df(mtcars,
+sample_column = 'gear',
+samples = 30,
+replace = TRUE)
+}
 \author{
 Cameron Anderson
 }

@@ -26,5 +26,4 @@ ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars)
 data(trees)
 ggcommonality(formula = Height ~ Girth + Volume + Girth * Volume,
 data = trees)
-
 }
