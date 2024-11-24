@@ -11,10 +11,12 @@
 <url><loc>/reference/dot-helper_duplicate_inner_values.html</loc></url>
 <url><loc>/reference/dot-helper_format_yhat_commonality.html</loc></url>
 <url><loc>/reference/dot-helper_pivot_cues_longer.html</loc></url>
+<url><loc>/reference/dot-helper_resample_df.html</loc></url>
 <url><loc>/reference/dot-helper_seq_from_1_to_2_by.html</loc></url>
 <url><loc>/reference/dot-helper_split_partition_effects.html</loc></url>
 <url><loc>/reference/get_commonality_barplot_df.html</loc></url>
 <url><loc>/reference/ggcommonality.html</loc></url>
+<url><loc>/reference/ggcommonality_ci.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
 </urlset>
 

@@ -83,15 +83,8 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="co"># import data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span>
-<span><span class="co"># fit model with yhat</span></span>
-<span><span class="va">yhat_model</span> <span class="op">&lt;-</span> <span class="fu">yhat</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/yhat/man/regr.html" class="external-link">regr</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span></span>
-<span>    formula <span class="op">=</span> <span class="va">mpg</span> <span class="op">~</span> <span class="va">cyl</span> <span class="op">+</span> <span class="va">disp</span> <span class="op">+</span> <span class="va">vs</span> <span class="op">+</span> <span class="va">drat</span>,</span>
-<span>    data <span class="op">=</span> <span class="va">mtcars</span></span>
-<span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
-<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ggcommonality.html">ggcommonality</a></span><span class="op">(</span><span class="va">yhat_model</span><span class="op">)</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ggcommonality.html">ggcommonality</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">mpg</span> <span class="op">~</span> <span class="va">cyl</span> <span class="op">+</span> <span class="va">disp</span> <span class="op">+</span> <span class="va">vs</span> <span class="op">+</span> <span class="va">drat</span>,</span>
+<span>                   data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
 <span>  </span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
@@ -121,7 +114,13 @@
 <p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%"></p>
 <p>We can compare the bar plot output to the unique and common effects from the model:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">yhat_model</span><span class="op">$</span><span class="va">Commonality_Data</span><span class="op">$</span><span class="va">CC</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">yhat_model</span> <span class="op">&lt;-</span> <span class="fu">yhat</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/yhat/man/regr.html" class="external-link">regr</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span></span>
+<span>    formula <span class="op">=</span> <span class="va">mpg</span> <span class="op">~</span> <span class="va">cyl</span> <span class="op">+</span> <span class="va">disp</span> <span class="op">+</span> <span class="va">vs</span> <span class="op">+</span> <span class="va">drat</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">mtcars</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">yhat_model</span><span class="op">$</span><span class="va">Commonality_Data</span><span class="op">$</span><span class="va">CC</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left"></th>
@@ -213,7 +212,9 @@
 </table>
 <p>To get the x and y coordinates passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_rect()</a></code> when making the plot, you can use the following line of code, which returns a list with (1) the data frame used to create the barplot for positive commonalities (from xmin, xmax, ymin, and ymax coordinates); (2) the data frame used to create the black outline for the positive effects; (3) the data frame used to create the barplot for negative commonalities; and (4) the data frame used to create the black outline for the negative effects.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df_commonality</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/df_ggcommonality.html">df_ggcommonality</a></span><span class="op">(</span><span class="va">yhat_model</span><span class="op">)</span> </span>
+<code class="sourceCode R"><span><span class="va">df_commonality</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/df_ggcommonality.html">df_ggcommonality</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">mpg</span> <span class="op">~</span> <span class="va">cyl</span> <span class="op">+</span> <span class="va">disp</span> <span class="op">+</span> <span class="va">vs</span> <span class="op">+</span> <span class="va">drat</span>,</span>
+<span>                   data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in yhat::regr(lm_out): NAs introduced by coercion</span></span>
 <span></span>
 <span><span class="co">## Make output shorter</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">df_commonality</span>,</span>
@@ -267,6 +268,22 @@
 <span><span class="co">#&gt; 2 disp      0       0        4     5     4.5</span></span>
 <span><span class="co">#&gt; 3 drat     -0.0038 -0.0038   5.5   6.5   6  </span></span>
 <span><span class="co">#&gt; 4 vs       -0.0038 -0.0038   7     8     7.5</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="adding-confidence-intervals">Adding confidence intervals<a class="anchor" aria-label="anchor" href="#adding-confidence-intervals"></a>
+</h2>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">+</span></span>
+<span>  <span class="fu">ci_ggcommonality</span><span class="op">(</span>formula <span class="op">=</span> <span class="va">mpg</span> <span class="op">~</span> <span class="va">cyl</span> <span class="op">+</span> <span class="va">disp</span> <span class="op">+</span> <span class="va">vs</span> <span class="op">+</span> <span class="va">drat</span>,</span>
+<span>                   data <span class="op">=</span> <span class="va">mtcars</span>,</span>
+<span>                   sample_column <span class="op">=</span> <span class="st">"gear"</span>,</span>
+<span>                   replications <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">ci_ggcommonality</span><span class="op">(</span>formula <span class="op">=</span> <span class="va">mpg</span> <span class="op">~</span> <span class="va">cyl</span> <span class="op">+</span> <span class="va">disp</span> <span class="op">+</span> <span class="va">vs</span> <span class="op">+</span> <span class="va">drat</span>,</span>
+<span>                   data <span class="op">=</span> <span class="va">mtcars</span>,</span>
+<span>                   sample_column <span class="op">=</span> <span class="st">"gear"</span>,</span>
+<span>                   replications <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>                   ci_sign <span class="op">=</span> <span class="st">"negative"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
 <div class="section level3">
 <h3 id="future-updates">Future Updates<a class="anchor" aria-label="anchor" href="#future-updates"></a>
 </h3>

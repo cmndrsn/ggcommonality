@@ -122,27 +122,29 @@ ggcommonality <- function(formula,
 
    return(p)
 }
-
-
-
-
-
+#------------------------------------------------------------------------------#
 #' Generate percentile-based bootstrap 95% confidence intervals for ggcommonality
+#'
+#' This function uses structured bootstrapping to create a 95% confidence interval.
+#' Specifically, it calls yhat::regr() to generate commonality coefficients for
+#' data resampled with replacement. Then it sums unique and joint effects for each
+#' commonality partition and generates a 95% confidence interval.
+#' By setting ci_sign to "positive" or "negative", you can generate an errorbar
+#' for positive and negative commonalities, respectively.
 #'
 #' @param formula Formula for linear regression model
 #' @param data  Data frame matching formula argument
-#' @param ... Additional parameters passed to [helper_calc_ci()]
+#' @param ... Additional parameters passed to helper_calc_ci()
 #' @return ggproto instance
 #' @export
-#'
 #' @examples
 #' ggcommonality(formula = mpg ~ cyl + disp + vs,
 #' data = mtcars) +
-#' ggcommonality_ci(formula = mpg ~ cyl + disp + vs,
+#' ci_ggcommonality(formula = mpg ~ cyl + disp + vs,
 #' data = mtcars,
 #' sample_column = gear)
 
-ggcommonality_ci <- function(formula,
+ci_ggcommonality <- function(formula,
                           data,
                           ...) {
   commonality_df <- df_ggcommonality(formula,
@@ -157,19 +159,13 @@ ggcommonality_ci <- function(formula,
   negative_effects <- commonality_df[[3]]
   negative_outline <- commonality_df[[4]]
 
-    tryCatch(
-      {
-        df_ci <- helper_calc_ci(
-          formula = formula,
-          data = data,
-          ...
-        )
-      },
-      error=function(e) {
-        message('An Error Occurred')
-        print(e)
-      }
+
+  df_ci <- helper_calc_ci(
+    formula = formula,
+    data = data,
+    ...
     )
+
     positive_outline <- merge(positive_outline, df_ci)
 
 

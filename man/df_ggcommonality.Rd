@@ -4,10 +4,12 @@
 \alias{df_ggcommonality}
 \title{Define XY coordinates for drawing commonality bar plots}
 \usage{
-df_ggcommonality(yhat_model)
+df_ggcommonality(formula, data)
 }
 \arguments{
-\item{yhat_model}{Data.frame output of yhat::regr() function.}
+\item{formula}{Formula passed to regression model}
+
+\item{data}{data argument matching formula}
 }
 \value{
 List of lists.
@@ -19,11 +21,5 @@ Define XY coordinates for drawing commonality bar plots
 }
 \examples{
 data(mtcars)
-yhat_model_cars <- yhat::regr(
-lm(
-  formula = mpg ~ cyl + disp + vs,
-  data = mtcars
-  )
-)
-df_ggcommonality(yhat_model_cars)
+df_ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars)
 }

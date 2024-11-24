@@ -10,13 +10,7 @@
 #' @export
 #' @examples
 #' data(mtcars)
-#' yhat_model_cars <- yhat::regr(
-#' lm(
-#'   formula = mpg ~ cyl + disp + vs,
-#'   data = mtcars
-#'   )
-#' )
-#' df_ggcommonality(yhat_model_cars)
+#' df_ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars)
 
 df_ggcommonality <- function(formula,
                              data) {

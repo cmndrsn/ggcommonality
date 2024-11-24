@@ -46,15 +46,19 @@ a bar plot based on the unique and common variance shared between variables.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ggcommonality</span><span class="op">(</span><span class="va">yhat_model</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ggcommonality</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
 
 
-<dl><dt id="arg-yhat-model">yhat_model<a class="anchor" aria-label="anchor" href="#arg-yhat-model"></a></dt>
-<dd><p>List. Model output of yhat::reg() applied to lm() object.</p></dd>
+<dl><dt id="arg-formula">formula<a class="anchor" aria-label="anchor" href="#arg-formula"></a></dt>
+<dd><p>Formula passed to regression model</p></dd>
+
+
+<dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
+<dd><p>data argument matching formula</p></dd>
 
 </dl></div>
     <div id="value">
@@ -66,24 +70,14 @@ Variance attributable to two variables appears in partition for both.</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">yhat_model_cars</span> <span class="op">&lt;-</span> <span class="fu">yhat</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/yhat/man/regr.html" class="external-link">regr</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  formula <span class="op">=</span> <span class="va">mpg</span> <span class="op">~</span> <span class="va">cyl</span> <span class="op">+</span> <span class="va">disp</span> <span class="op">+</span> <span class="va">vs</span>,</span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">mtcars</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggcommonality</span><span class="op">(</span>formula <span class="op">=</span> <span class="va">mpg</span> <span class="op">~</span> <span class="va">cyl</span> <span class="op">+</span> <span class="va">disp</span> <span class="op">+</span> <span class="va">vs</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NAs introduced by coercion</span>
-<span class="r-in"><span><span class="fu">ggcommonality</span><span class="op">(</span><span class="va">yhat_model_cars</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NAs introduced by coercion</span>
 <span class="r-plt img"><img src="ggcommonality-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">trees</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">yhat_model_trees</span> <span class="op">&lt;-</span> <span class="fu">yhat</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/yhat/man/regr.html" class="external-link">regr</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  formula <span class="op">=</span> <span class="va">Height</span> <span class="op">~</span> <span class="va">Girth</span> <span class="op">+</span> <span class="va">Volume</span> <span class="op">+</span> <span class="va">Girth</span> <span class="op">*</span> <span class="va">Volume</span>,</span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">trees</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">ggcommonality</span><span class="op">(</span><span class="va">yhat_model_trees</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggcommonality</span><span class="op">(</span>formula <span class="op">=</span> <span class="va">Height</span> <span class="op">~</span> <span class="va">Girth</span> <span class="op">+</span> <span class="va">Volume</span> <span class="op">+</span> <span class="va">Girth</span> <span class="op">*</span> <span class="va">Volume</span>,</span></span>
+<span class="r-in"><span>data <span class="op">=</span> <span class="va">trees</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggcommonality-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

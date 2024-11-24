@@ -6,13 +6,8 @@
 #' @param replace Boolean. Sample with replacement?
 #' @return Data.frame. Resampled data.
 #' @import pbapply
-#' @export
 #' @author Cameron Anderson
-#' @examples
-#' .helper_resample_df(subset(df_emosample, expID == 101),
-#' sample_column = 'participant',
-#' samples = 30,
-#' replace = TRUE)
+#' @export
 .helper_resample_df <- function(dat,
                         sample_column,
                         samples = 30,
@@ -42,6 +37,11 @@
 
   return(resampled_df)
 }
+#' @examples
+#' .helper_resample_df(mtcars,
+#' sample_column = 'gear',
+#' samples = 30,
+#' replace = TRUE)
 #------------------------------------------------------------------------------#
 #' Generic Function for Test Statistic
 #'
@@ -50,20 +50,19 @@
 #' @return Output of test function. See details for corresponding help page.
 #' @import pbapply
 #' @export
-#'
-#' @examples
-#' .helper_apply_test_statistic(fnc = lm,
-#' data = subset(df_emosample, expID == 101),
-#' formula = arousal ~ arPerf + pitchHeight + mode)
 .helper_apply_test_statistic <- function(fnc, ...) {
   fnc(...)
 }
+#' @examples
+#' .helper_apply_test_statistic(fnc = lm,
+#' data = mtcars,
+#' formula = mpg ~ cyl)
 #------------------------------------------------------------------------------#
 
 #' Apply User-Specified Test Statistic to Resampled Data
 #'
 #' Uses ellipsis argument to apply a user-specified function to resampled data.
-#'
+#' @author Cameron Anderson
 #' @param dat Data.frame. Data to resample.
 #' @param sample_column String. ID column containing values to be sampled with replacement.
 #' @param samples Numeric. Number of samples in return data.frame.
@@ -72,14 +71,6 @@
 #' @param ... Parameters passed to fnc argument.
 #' @return Return from function passed to fnc
 #' @export
-#' @author Cameron Anderson
-#' @examples
-#' .helper_apply_function_to_random_sample(dat = subset(df_emosample, expID == 101),
-#' sample_column = 'participant',
-#' samples = 30,
-#' fnc = lm,
-#' replace = TRUE,
-#' formula = valence ~ arousal)
 .helper_apply_function_to_random_sample <- function(dat,
                                       sample_column,
                                       samples = 30,
@@ -95,9 +86,17 @@
                    )
 
 }
+#' @examples
+#' .helper_apply_function_to_random_sample(dat = mtcars,
+#' sample_column = 'gear',
+#' samples = 30,
+#' fnc = lm,
+#' replace = TRUE,
+#' formula = mpg ~ cyl)
 #------------------------------------------------------------------------------#
-
 #' Bootstrap Data Using User-Specified Function
+#'
+#' Perform a structured bootstrap with a user-specified function
 #'
 #' @param dat Data.frame. Data to resample.
 #' @param sample_column String. ID column containing values to be sampled with replacement.
@@ -113,13 +112,13 @@
 #' @author Cameron Anderson
 #' @examples
 #' # Example 1: Bootstrapping linear regression
-#' run_structured_bootstrap(dat = df_emosample,
-#' sample_column = 'participant',
+#' run_structured_bootstrap(dat = mtcars,
+#' sample_column = 'gear',
 #' samples = 30,
 #' replications = 100,
 #' fnc = lm,
 #' replace = TRUE,
-#' formula = arousal ~ arPerf + rms)
+#' formula = mpg ~ cyl)
 #'
 #' # Example 2: User-created function
 #' # load in external library (for example)
@@ -129,13 +128,13 @@
 #' yhat::regr(lm(...))
 #' }
 #' # perform bootstrap
-#' run_structured_bootstrap(dat = df_emosample,
-#' sample_column = 'participant',
+#' run_structured_bootstrap(dat = mtcars,
+#' sample_column = 'gear',
 #' samples = 30,
 #' replications = 100,
 #' fnc = commonality_analysis,
 #' replace = TRUE,
-#' formula = arousal ~ arPerf + rms)
+#' formula = mpg ~ cyl)
 run_structured_bootstrap <- function(dat,
                            sample_column,
                            samples = 30,

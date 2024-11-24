@@ -45,15 +45,8 @@ library(ggcommonality)
 library(ggplot2)
 # import data
 data(mtcars)
-# fit model with yhat
-yhat_model <- yhat::regr(
-  lm(
-    formula = mpg ~ cyl + disp + vs + drat,
-    data = mtcars
-    )
-  )
-
-p <- ggcommonality(yhat_model)
+p <- ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
+                   data = mtcars)
   
 
 print(p)
@@ -95,6 +88,12 @@ We can compare the bar plot output to the unique and common effects from
 the model:
 
 ``` r
+yhat_model <- yhat::regr(
+  lm(
+    formula = mpg ~ cyl + disp + vs + drat,
+    data = mtcars
+  )
+)
 knitr::kable(yhat_model$Commonality_Data$CC)
 ```
 
@@ -126,7 +125,9 @@ used to create the barplot for negative commonalities; and (4) the data
 frame used to create the black outline for the negative effects.
 
 ``` r
-df_commonality <- df_ggcommonality(yhat_model) 
+df_commonality <- df_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
+                   data = mtcars)
+#> Warning in yhat::regr(lm_out): NAs introduced by coercion
 
 ## Make output shorter
 lapply(df_commonality,
@@ -181,6 +182,23 @@ lapply(df_commonality,
 #> 3 drat     -0.0038 -0.0038   5.5   6.5   6  
 #> 4 vs       -0.0038 -0.0038   7     8     7.5
 ```
+
+## Adding confidence intervals
+
+``` r
+p +
+  ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
+                   data = mtcars,
+                   sample_column = "gear",
+                   replications = 100) +
+    ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
+                   data = mtcars,
+                   sample_column = "gear",
+                   replications = 100,
+                   ci_sign = "negative")
+```
+
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
 
 ### Future Updates
 
