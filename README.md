@@ -33,7 +33,7 @@ You can install the development version of ggcommonality from
 
 ``` r
 # install.packages("pak")
-devtools::install_github("cmndrsn/ggcommonality", ref = "development", force = TRUE)
+devtools::install_github("cmndrsn/ggcommonality", ref = "development", force = TRUE, build_vignettes = TRUE)
 ```
 
 ## Example
