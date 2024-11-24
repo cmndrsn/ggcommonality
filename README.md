@@ -6,6 +6,8 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
+Note: this is the development branch, so the functionality is appropriately buggy. However, the code here is more efficient than what's currently on the main branch.
+
 The goal of ggcommonality is to produce bar plots of unique and joint
 effects from commonality analyses. The function outputs a bar plots with
 unique and common effects for each commonality partition.
@@ -32,8 +34,7 @@ You can install the development version of ggcommonality from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
-pak::pak("cmndrsn/ggcommonality")
+devtools::install_github("cmndrsn/ggcommonality", ref = "development", force = TRUE, build_vignettes = TRUE)
 ```
 
 ## Example
