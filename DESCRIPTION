@@ -16,4 +16,5 @@ Imports:
     stringr,
     tibble,
     tidyr,
-    pbapply
+    pbapply,
+    mosaic

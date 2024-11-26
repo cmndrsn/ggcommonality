@@ -12,7 +12,8 @@
 #' @import yhat
 #' @examples
 #' data(mtcars)
-#' ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars)
+#' ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars) |>
+#'   suppressWarnings()
 #'
 #' data(trees)
 #' ggcommonality(formula = Height ~ Girth + Volume + Girth * Volume,
@@ -136,7 +137,14 @@ ggcommonality <- function(formula,
 #'
 #' @param formula Formula for linear regression model
 #' @param data  Data frame matching formula argument
-#' @param ... Additional parameters passed to helper_calc_ci()
+#' @param sample_column Character. Name of column for resampling participants.
+#' @param n_replications Numeric. Number of replications to use in bootstrap.
+#' @param ci_sign If "+", genereates confidence intervals using only positive coefficients
+#' If "-", generates confidence intervals using only negative coefficients.
+#' Otherwise, generates confidence interval using both positive and negative.
+#' @param ci_lower Numeric. Value for lower bound of confidence interval.
+#' @param ci_upper Numeric. Value for upper bound of confidence interval
+#' @param ... Additional parameters passed to ggplot2::geom_errorbar
 #' @import pbapply
 #' @return ggproto instance
 #'
@@ -145,11 +153,19 @@ ggcommonality <- function(formula,
 #'                data = mtcars) +
 #'    ci_ggcommonality(formula = mpg ~ cyl + disp + vs,
 #'                     data = mtcars,
-#'                     sample_column = "gear")
+#'                     sample_column = "gear",
+#'                     n_replications = 100,
+#'                     ci_sign = "+") |> suppressWarnings()
 #' @export
 #'
-ci_ggcommonality <- function(formula,
+ci_ggcommonality <- function(
+                          formula,
                           data,
+                          sample_column,
+                          n_replications,
+                          ci_sign = "+",
+                          ci_lower = 0.025,
+                          ci_upper = 0.975,
                           ...) {
   commonality_df <- df_ggcommonality(formula,
                                      data)
@@ -164,24 +180,27 @@ ci_ggcommonality <- function(formula,
   negative_outline <- commonality_df[[4]]
 
 
-  df_ci <- suppressWarnings(
-    helper_calc_ci(
+  df_ci <-
+    .helper_make_ci(
     formula = formula,
     data = data,
-    ...
+    sample_column = sample_column,
+    ci_sign = ci_sign,
+    ci_lower = ci_lower,
+    ci_upper = ci_upper,
+    n_replications = n_replications
     )
-  )
+
 
     positive_outline <- merge(positive_outline, df_ci)
 
 
     p <-
       ggplot2::geom_errorbar(data = positive_outline,
-                             width = 0.5,
-                             color = "grey50",
-                             ggplot2::aes(x = x_mid,
+                             mapping = ggplot2::aes(x = x_mid,
                                           ymin = lower,
-                                          ymax = upper)
+                                          ymax = upper),
+                             ...
       )
 
 

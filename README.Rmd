@@ -55,7 +55,7 @@ pak::pak("cmndrsn/ggcommonality")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+The function produces a barplot of a commonality analysis from a formula and data set.
 
 ```{r example, warning=FALSE}
 library(ggcommonality)
@@ -134,20 +134,13 @@ p +
   ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
                    data = mtcars,
                    sample_column = "gear",
-                   replications = 100) +
+                   n_replications = 100) +
     ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
                    data = mtcars,
                    sample_column = "gear",
-                   replications = 100,
-                   ci_sign = "negative")
+                   n_replications = 100,
+                   ci_sign = "-")
 ```
 
-### Future Updates
-
-In future versions I will focus on (1) Soon: adding a bar for the total
-explained variance. (2) Soonish: Making generic version of ggcommonality
-which does not depend on yhat. (3) Later: Adding option to overplot
-confidence interval of partition effects (as in Anderson & Schutz,
-2022).
 
 # References

@@ -21,5 +21,6 @@ Define XY coordinates for drawing commonality bar plots
 }
 \examples{
 data(mtcars)
-df_ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars)
+df_ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars) |>
+  suppressWarnings()
 }

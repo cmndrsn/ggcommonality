@@ -6,8 +6,6 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-Note: this is the development branch, so the functionality is appropriately buggy. However, the code here is more efficient than what's currently on the main branch.
-
 The goal of ggcommonality is to produce bar plots of unique and joint
 effects from commonality analyses. The function outputs a bar plots with
 unique and common effects for each commonality partition.
@@ -34,12 +32,14 @@ You can install the development version of ggcommonality from
 [GitHub](https://github.com/) with:
 
 ``` r
-devtools::install_github("cmndrsn/ggcommonality", ref = "development", force = TRUE, build_vignettes = TRUE)
+# install.packages("pak")
+pak::pak("cmndrsn/ggcommonality")
 ```
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+The function produces a barplot of a commonality analysis from a formula
+and data set.
 
 ``` r
 library(ggcommonality)
@@ -191,23 +191,15 @@ p +
   ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
                    data = mtcars,
                    sample_column = "gear",
-                   replications = 100) +
+                   n_replications = 100) +
     ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
                    data = mtcars,
                    sample_column = "gear",
-                   replications = 100,
-                   ci_sign = "negative")
+                   n_replications = 100,
+                   ci_sign = "-")
 ```
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
-
-### Future Updates
-
-In future versions I will focus on (1) Soon: adding a bar for the total
-explained variance. (2) Soonish: Making generic version of ggcommonality
-which does not depend on yhat. (3) Later: Adding option to overplot
-confidence interval of partition effects (as in Anderson & Schutz,
-2022).
 
 # References
 

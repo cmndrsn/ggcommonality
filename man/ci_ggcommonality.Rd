@@ -4,14 +4,35 @@
 \alias{ci_ggcommonality}
 \title{Percentile-based Bootstrap Confidence Intervals for ggcommonality.}
 \usage{
-ci_ggcommonality(formula, data, ...)
+ci_ggcommonality(
+  formula,
+  data,
+  sample_column,
+  n_replications,
+  ci_sign = "+",
+  ci_lower = 0.025,
+  ci_upper = 0.975,
+  ...
+)
 }
 \arguments{
 \item{formula}{Formula for linear regression model}
 
 \item{data}{Data frame matching formula argument}
 
-\item{...}{Additional parameters passed to helper_calc_ci()}
+\item{sample_column}{Character. Name of column for resampling participants.}
+
+\item{n_replications}{Numeric. Number of replications to use in bootstrap.}
+
+\item{ci_sign}{If "+", genereates confidence intervals using only positive coefficients
+If "-", generates confidence intervals using only negative coefficients.
+Otherwise, generates confidence interval using both positive and negative.}
+
+\item{ci_lower}{Numeric. Value for lower bound of confidence interval.}
+
+\item{ci_upper}{Numeric. Value for upper bound of confidence interval}
+
+\item{...}{Additional parameters passed to ggplot2::geom_errorbar}
 }
 \value{
 ggproto instance
@@ -31,5 +52,7 @@ for positive and negative commonalities, respectively.
                data = mtcars) +
    ci_ggcommonality(formula = mpg ~ cyl + disp + vs,
                     data = mtcars,
-                    sample_column = "gear")
+                    sample_column = "gear",
+                    n_replications = 100,
+                    ci_sign = "+") |> suppressWarnings()
 }

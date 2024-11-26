@@ -10,7 +10,8 @@
 #' @export
 #' @examples
 #' data(mtcars)
-#' df_ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars)
+#' df_ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars) |>
+#'   suppressWarnings()
 
 df_ggcommonality <- function(formula,
                              data) {

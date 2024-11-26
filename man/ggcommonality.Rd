@@ -21,7 +21,8 @@ a bar plot based on the unique and common variance shared between variables.
 }
 \examples{
 data(mtcars)
-ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars)
+ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars) |>
+  suppressWarnings()
 
 data(trees)
 ggcommonality(formula = Height ~ Girth + Volume + Girth * Volume,
