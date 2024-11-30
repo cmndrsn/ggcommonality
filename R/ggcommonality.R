@@ -5,7 +5,8 @@
 #'
 #' @param formula Formula passed to regression model
 #' @param data data argument matching formula
-#'
+#' @param by In progress. Currently allows stacking unique and common effects by partition
+#' if "partition" is the input. Otherwise it stacks unique vs joint effects.
 #' @return ggplot object. Unique and common effects presented as a bar plot.
 #' Variance attributable to two variables appears in partition for both.
 #' @import ggplot2
@@ -21,9 +22,11 @@
 #' @export
 #'
 ggcommonality <- function(formula,
-                          data) {
+                          data,
+                          by = "partition") {
   commonality_df <- df_ggcommonality(formula,
-                                     data)
+                                     data,
+                                     by = by)
   lm_out <- lm(formula = formula, data = data)
   yhat_model <- yhat::regr(lm_out)
 
@@ -108,17 +111,19 @@ ggcommonality <- function(formula,
      ggplot2::labs(x = "Commonality Partition",
           y = "Explained Variance\n(Unique + Common)",
           fill = "Variable")
-
+   if(by == "partition") {
      p <- p +
-       # ggplot2::theme_classic()+
-       # ggplot2::theme(axis.title.x=ggplot2::element_blank(),
-       #                axis.text.x=ggplot2::element_blank(),
-       #                axis.ticks.x=ggplot2::element_blank()
-       #                ) +
        ggplot2::scale_x_continuous(
-                         breaks = positive_outline$x_mid,
-                         labels = positive_outline$category
+         breaks = positive_outline$x_mid,
+         labels = positive_outline$category
        )
+   } else {
+     p <- p +
+       ggplot2::scale_x_continuous(
+         breaks = positive_outline$x_mid,
+         labels = positive_outline$type
+       )
+   }
 
    return(p)
 }
@@ -144,6 +149,8 @@ ggcommonality <- function(formula,
 #' Otherwise, generates confidence interval using both positive and negative.
 #' @param ci_lower Numeric. Value for lower bound of confidence interval.
 #' @param ci_upper Numeric. Value for upper bound of confidence interval
+#' @param by In progress. Currently allows stacking unique and common effects by partition
+#' if "partition" is the input. Otherwise it stacks unique vs joint effects.
 #' @param ... Additional parameters passed to ggplot2::geom_errorbar
 #' @import pbapply
 #' @return ggproto instance
@@ -166,9 +173,11 @@ ci_ggcommonality <- function(
                           ci_sign = "+",
                           ci_lower = 0.025,
                           ci_upper = 0.975,
+                          by = "partition",
                           ...) {
   commonality_df <- df_ggcommonality(formula,
-                                     data)
+                                     data,
+                                     by = by)
   lm_out <- lm(formula = formula, data = data)
   yhat_model <- yhat::regr(lm_out)
 
@@ -188,9 +197,9 @@ ci_ggcommonality <- function(
     ci_sign = ci_sign,
     ci_lower = ci_lower,
     ci_upper = ci_upper,
-    n_replications = n_replications
+    n_replications = n_replications,
+    by = by
     )
-
 
     positive_outline <- merge(positive_outline, df_ci)
 

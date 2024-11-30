@@ -12,6 +12,7 @@ ci_ggcommonality(
   ci_sign = "+",
   ci_lower = 0.025,
   ci_upper = 0.975,
+  by = "partition",
   ...
 )
 }
@@ -31,6 +32,9 @@ Otherwise, generates confidence interval using both positive and negative.}
 \item{ci_lower}{Numeric. Value for lower bound of confidence interval.}
 
 \item{ci_upper}{Numeric. Value for upper bound of confidence interval}
+
+\item{by}{In progress. Currently allows stacking unique and common effects by partition
+if "partition" is the input. Otherwise it stacks unique vs joint effects.}
 
 \item{...}{Additional parameters passed to ggplot2::geom_errorbar}
 }

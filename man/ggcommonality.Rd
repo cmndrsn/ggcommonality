@@ -4,12 +4,15 @@
 \alias{ggcommonality}
 \title{Plot Commonality Partitions as a Bar Plot in ggplot}
 \usage{
-ggcommonality(formula, data)
+ggcommonality(formula, data, by = "partition")
 }
 \arguments{
 \item{formula}{Formula passed to regression model}
 
 \item{data}{data argument matching formula}
+
+\item{by}{In progress. Currently allows stacking unique and common effects by partition
+if "partition" is the input. Otherwise it stacks unique vs joint effects.}
 }
 \value{
 ggplot object. Unique and common effects presented as a bar plot.

@@ -130,10 +130,13 @@
     splitter
   ) + 1
 
+  unique_common_effects$type <- "common"
+  unique_common_effects[unique_common_effects$n_cues == 1,]$type <- "unique"
+
   return(unique_common_effects)
 }
 
-#' Preprocessing Functions for Commonality Barplot
+ #' Preprocessing Functions for Commonality Barplot
 #'
 #' Pivot commonality data.frame longer.
 #'
@@ -162,11 +165,14 @@
 #' @param pivoted_cue_df Data.frame output from .helper_duplicate_inner_values
 #' @param unpivoted_cue_df Data.frame output of .helper_split_partition_effects
 #' @param x_offset Numeric. How much to offset adjacent partitions?
+#' @param by In progress. Currently allows stacking unique and common effects by partition
+#' if "partition" is the input. Otherwise it stacks unique vs joint effects.
 #'
 #' @return Data.frame object containing x coordinates for commonality.
 #'
 .helper_define_x_coordinates <- function(pivoted_cue_df,
                                          unpivoted_cue_df,
+                                         by = "partition",
                                          x_offset = 1.5) {
 
 
@@ -190,11 +196,17 @@
   cbind(pivoted_cue_df,
         coordinates) -> pivoted_cue_df
 
+  if(by == "partition") {
   pivoted_cue_df$category_numeric <- as.numeric(
     as.factor(
       pivoted_cue_df$category)
   )
-
+  } else {
+    pivoted_cue_df$category_numeric <- as.numeric(
+      as.factor(
+        pivoted_cue_df$type)
+  )
+  }
 
   pivoted_cue_df$x_min <- pivoted_cue_df$x_min + (x_offset *pivoted_cue_df$category_numeric)
 
@@ -210,10 +222,17 @@
 #' Incrementally add common effects on top of unique effects.
 #'
 #' @param pivoted_cue_df Data.frame output from .helper_define_x_coordinates
-#'
+#' @param by In progress. Currently allows stacking unique and common effects by partition
+#' if "partition" is the input. Otherwise it stacks unique vs joint effects.
 #' @return Data.frame containing x a y coordinates for drawing commonalities.
 #'
-.helper_define_y_coordinates <- function(pivoted_cue_df) {
+.helper_define_y_coordinates <- function(pivoted_cue_df, by = "partition") {
+  if(by != "partition") {
+    pivoted_cue_df$plot_order <- as.numeric(
+      as.factor(
+        pivoted_cue_df$type)
+      )
+  }
   pivoted_cue_df <- pivoted_cue_df[order(
     pivoted_cue_df$plot_order
   ),
@@ -227,11 +246,21 @@
     dplyr::select(category,
                   names,
                   n_cues,
+                  type,
                   vals) |>
     dplyr::distinct() -> commonality_effects_df
-
+  if(by != "partition") {
+    # grab distinct commonalities for no repeated values
+    commonality_effects_df <- commonality_effects_df[!duplicated(
+      commonality_effects_df["names"]),]
+     pivoted_cue_df <- pivoted_cue_df[!duplicated(
+       pivoted_cue_df[c("names", "cue")]),]
+    group_var <- commonality_effects_df$type
+  } else {
+    group_var <- commonality_effects_df$category
+  }
   commonality_effects_df$y_min <- ave(commonality_effects_df$vals,
-                                      commonality_effects_df$category,
+                                      group_var,
                                       FUN= function(x) {
                                         dplyr::lag(
                                           cumsum(
@@ -241,18 +270,17 @@
                                       }
   )
   commonality_effects_df$y_max <- ave(commonality_effects_df$vals,
-                                      commonality_effects_df$category,
+                                      group_var,
                                       FUN= function(x) {
                                         cumsum(
                                           x
                                         )
                                       }
   )
-
   commonality_effects_df$y_min[is.na(commonality_effects_df$y_min)] <- 0
   commonality_effects_df$y_max[is.na(commonality_effects_df$y_max)] <- 0
-
-
+  # repeat common effects as many times as there are cues
+  # this defines y coordinate for each rectangle
   pivoted_cue_df$y_min <- rep(commonality_effects_df$y_min,
                               times = commonality_effects_df$n_cues)
   pivoted_cue_df$y_max <- rep(commonality_effects_df$y_max,
@@ -268,14 +296,24 @@
 #'
 #' @param pivoted_cue_df_xy  Data.frame. Output of.helper_define_y_coordinates
 #' @param type Positive or negative.
+#' @param by In progress. Currently allows stacking unique and common effects by partition
+#' if "partition" is the input. Otherwise it stacks unique vs joint effects.
 #' Required for plotting positive and negative barplot effects.
 #'
 #' @return Data.frame object containing outline for commonality bar plot.
 #'
-.helper_draw_barplot_outline <- function(pivoted_cue_df_xy, type = "positive") {
+.helper_draw_barplot_outline <- function(pivoted_cue_df_xy,
+                                         type = "positive",
+                                         by = "partition") {
+  if(by == "partition") {
+    pivoted_cue_df_xy <- pivoted_cue_df_xy |>
+      dplyr::group_by(category)
+  } else {
+    pivoted_cue_df_xy <- pivoted_cue_df_xy |>
+      dplyr::group_by(type)
+  }
   if(type == "positive") {
     pivoted_cue_df_xy_outline <- pivoted_cue_df_xy |>
-      dplyr::group_by(category) |>
       dplyr::summarise(
         y_min = min(y_min),
         y_max = max(y_max),
@@ -288,7 +326,6 @@
 
   } else {
     pivoted_cue_df_xy_outline <- pivoted_cue_df_xy |>
-      dplyr::group_by(category) |>
       dplyr::summarise(
         y_min = min(y_max),
         y_max = max(y_min),

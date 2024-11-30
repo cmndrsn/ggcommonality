@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# ggcommonality
+# ggcommonality <img src="ggcommonality_sticker.png" align="right"/>
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -134,20 +134,20 @@ df_commonality <- df_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
 lapply(df_commonality,
        head)
 #> [[1]]
-#>        names   vals total category plot_order n_cues cue value x_min x_max
-#> 5        cyl 0.0235  3.07      cyl          1      1   1   cyl   2.5   3.5
-#> 1   cyl,  vs 0.0106  1.39      cyl          2      2   1   cyl   2.5   3.0
-#> 2   cyl,  vs 0.0106  1.39      cyl          2      2   2    vs   3.0   3.5
-#> 3 cyl,  drat 0.0110  1.43      cyl          3      2   1   cyl   2.5   3.0
-#> 4 cyl,  drat 0.0110  1.43      cyl          3      2   2  drat   3.0   3.5
-#> 6 cyl,  disp 0.0884 11.55      cyl          4      2   1   cyl   2.5   3.0
-#>   category_numeric  y_min  y_max
-#> 5                1 0.0000 0.0235
-#> 1                1 0.0235 0.0341
-#> 2                1 0.0235 0.0341
-#> 3                1 0.0341 0.0451
-#> 4                1 0.0341 0.0451
-#> 6                1 0.0451 0.1335
+#>        names   vals total category plot_order n_cues   type cue value x_min
+#> 5        cyl 0.0235  3.07      cyl          1      1 unique   1   cyl   2.5
+#> 1   cyl,  vs 0.0106  1.39      cyl          2      2 common   1   cyl   2.5
+#> 2   cyl,  vs 0.0106  1.39      cyl          2      2 common   2    vs   3.0
+#> 3 cyl,  drat 0.0110  1.43      cyl          3      2 common   1   cyl   2.5
+#> 4 cyl,  drat 0.0110  1.43      cyl          3      2 common   2  drat   3.0
+#> 6 cyl,  disp 0.0884 11.55      cyl          4      2 common   1   cyl   2.5
+#>   x_max category_numeric  y_min  y_max
+#> 5   3.5                1 0.0000 0.0235
+#> 1   3.0                1 0.0235 0.0341
+#> 2   3.5                1 0.0235 0.0341
+#> 3   3.0                1 0.0341 0.0451
+#> 4   3.5                1 0.0341 0.0451
+#> 6   3.0                1 0.0451 0.1335
 #> 
 #> [[2]]
 #> # A tibble: 4 × 6
@@ -159,20 +159,20 @@ lapply(df_commonality,
 #> 4 vs           0 0.445   7     8     7.5
 #> 
 #> [[3]]
-#>            names    vals total category plot_order 4 n_cues cue value    x_min
-#> 4            cyl  0.0000   0.0      cyl          1        1   1   cyl 2.500000
-#> 1 cyl, vs,  drat -0.0038  -0.5      cyl          2        3   1   cyl 2.500000
-#> 2 cyl, vs,  drat -0.0038  -0.5      cyl          2        3   2    vs 2.833333
-#> 3 cyl, vs,  drat -0.0038  -0.5      cyl          2        3   3  drat 3.166667
-#> 7           disp  0.0000   0.0     disp          1        1   1  disp 4.000000
-#> 5      disp,  vs  0.0000   0.0     disp          2        2   1  disp 4.000000
-#>      x_max category_numeric y_min   y_max
-#> 4 3.500000                1     0  0.0000
-#> 1 2.833333                1     0 -0.0038
-#> 2 3.166667                1     0 -0.0038
-#> 3 3.500000                1     0 -0.0038
-#> 7 5.000000                2     0  0.0000
-#> 5 4.500000                2     0  0.0000
+#>            names    vals total category plot_order 4 n_cues   type cue value
+#> 4            cyl  0.0000   0.0      cyl          1        1 unique   1   cyl
+#> 1 cyl, vs,  drat -0.0038  -0.5      cyl          2        3 common   1   cyl
+#> 2 cyl, vs,  drat -0.0038  -0.5      cyl          2        3 common   2    vs
+#> 3 cyl, vs,  drat -0.0038  -0.5      cyl          2        3 common   3  drat
+#> 7           disp  0.0000   0.0     disp          1        1 unique   1  disp
+#> 5      disp,  vs  0.0000   0.0     disp          2        2 common   1  disp
+#>      x_min    x_max category_numeric y_min   y_max
+#> 4 2.500000 3.500000                1     0  0.0000
+#> 1 2.500000 2.833333                1     0 -0.0038
+#> 2 2.833333 3.166667                1     0 -0.0038
+#> 3 3.166667 3.500000                1     0 -0.0038
+#> 7 4.000000 5.000000                2     0  0.0000
+#> 5 4.000000 4.500000                2     0  0.0000
 #> 
 #> [[4]]
 #> # A tibble: 4 × 6
@@ -200,6 +200,26 @@ p +
 ```
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+
+# Stack by unique vs. common effects
+
+``` r
+p2 <- ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
+                   data = mtcars,
+                   by = ".")
+
+p2 +
+  ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
+                   data = mtcars,
+                   sample_column = "gear",
+                   n_replications = 100,
+                   by = ".",
+                   colour = "grey5",
+                   width = 0.5,
+                   alpha = 0.5) 
+```
+
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
 # References
 

@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# ggcommonality
+# ggcommonality <img src="ggcommonality_sticker.png" align="right"/>
 
 <!-- badges: start -->
 
@@ -55,7 +55,8 @@ pak::pak("cmndrsn/ggcommonality")
 
 ## Example
 
-The function produces a barplot of a commonality analysis from a formula and data set.
+The function produces a barplot of a commonality analysis from a formula
+and data set.
 
 ```{r example, warning=FALSE}
 library(ggcommonality)
@@ -142,5 +143,22 @@ p +
                    ci_sign = "-")
 ```
 
+# Stack by unique vs. common effects
+
+```{r warning=FALSE, message=FALSE}
+p2 <- ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
+                   data = mtcars,
+                   by = ".")
+
+p2 +
+  ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
+                   data = mtcars,
+                   sample_column = "gear",
+                   n_replications = 100,
+                   by = ".",
+                   colour = "grey5",
+                   width = 0.5,
+                   alpha = 0.5) 
+```
 
 # References

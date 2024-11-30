@@ -2,7 +2,8 @@
 #'
 #' @param formula Formula passed to regression model
 #' @param data data argument matching formula
-#'
+#' @param by In progress. Currently allows stacking unique and common effects by partition
+#' if "partition" is the input. Otherwise it stacks unique vs joint effects.
 #' @return List of lists.
 #' Lists for positive and negative commonalities.
 #' Contained are data.frames for drawing barplot [1] effects and [2] outlines.
@@ -14,7 +15,8 @@
 #'   suppressWarnings()
 
 df_ggcommonality <- function(formula,
-                             data) {
+                             data,
+                             by = "partition") {
 
   lm_out <- lm(formula = formula,
                data = data)
@@ -38,18 +40,24 @@ df_ggcommonality <- function(formula,
  df_positive_xy <- .helper_define_x_coordinates(
    unpivoted_cue_df = df_positive_split,
    pivoted_cue_df = df_positive_pivot,
+   by = by,
    x_offset = 1.5)
  df_negative_xy <- .helper_define_x_coordinates(
    unpivoted_cue_df = df_negative_split,
    pivoted_cue_df = df_negative_pivot,
+   by = by,
    x_offset = 1.5)
 
- df_positive_xy <- .helper_define_y_coordinates(df_positive_xy)
- df_negative_xy <- .helper_define_y_coordinates(df_negative_xy)
+ df_positive_xy <- .helper_define_y_coordinates(df_positive_xy,
+                                                by = by)
+ df_negative_xy <- .helper_define_y_coordinates(df_negative_xy,
+                                                by = by)
 
- df_positive_outline <- .helper_draw_barplot_outline(df_positive_xy)
+ df_positive_outline <- .helper_draw_barplot_outline(df_positive_xy,
+                                                     by = by)
  df_negative_outline <- .helper_draw_barplot_outline(df_negative_xy,
-                                                     type = "negative")
+                                                     type = "negative",
+                                                     by = by)
  barplot_dfs <- list(df_positive_xy,
                      df_positive_outline,
                      df_negative_xy,
