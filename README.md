@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# ggcommonality <img src="ggcommonality_sticker.png" align="right"/>
+# ggcommonality <img src="ggcommonality_sticker.png" align="right" style='height: 25%; width: 25%; object-fit: contain'/>
 
 <!-- badges: start -->
 <!-- badges: end -->
