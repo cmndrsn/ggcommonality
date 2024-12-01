@@ -25,7 +25,7 @@ You can install the development version of ggcommonality from
 
 ``` r
 # install.packages("pak")
-pak::pak("cmndrsn/ggcommonality")
+devtools::install_github("cmndrsn/ggcommonality", ref = "development", force = TRUE, build_vignettes = TRUE)
 ```
 
 ## Example
