@@ -1,3 +1,2 @@
 exportPattern("^[[:alpha:]]+")
-importFrom("stats", "ave")
-importFrom("stats", "fitted", "lm", "quantile", "residuals", "terms")
+importFrom("stats", "fitted", "ave", "lm", "quantile", "residuals", "terms")
