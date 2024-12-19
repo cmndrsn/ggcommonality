@@ -17,8 +17,5 @@
 Data.frame. Drops columns that don't include terms in formula
 }
 \description{
-Drop columns unnecessary to bootstrap commonality analysis
-}
-\examples{
-.helper_simplify_df(formula = cyl ~ mpg + hp, data = mtcars, groups = "gear")
+Gets rid of columns not specified in formula
 }

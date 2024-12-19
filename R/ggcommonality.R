@@ -142,7 +142,7 @@ ggcommonality <- function(formula,
 #'
 #' @param formula Formula for linear regression model
 #' @param data  Data frame matching formula argument
-#' @param sample_column Character. Name of column for resampling participants.
+#' @param sample_column Character. Name of column for resampling observations. If blank, simple resampling is performed.
 #' @param n_replications Numeric. Number of replications to use in bootstrap.
 #' @param ci_sign If "+", genereates confidence intervals using only positive coefficients
 #' If "-", generates confidence intervals using only negative coefficients.
@@ -174,7 +174,15 @@ ci_ggcommonality <- function(
                           ci_lower = 0.025,
                           ci_upper = 0.975,
                           by = "partition",
+                          resample_type = "random",
                           ...) {
+
+
+  # if groups argument is not explicitly stated, set value to NULL
+  # when passed to mosaic::resample
+  if(missing(sample_column)) {
+    sample_column <- NULL
+  }
   commonality_df <- df_ggcommonality(formula,
                                      data,
                                      by = by)
@@ -194,6 +202,7 @@ ci_ggcommonality <- function(
     formula = formula,
     data = data,
     sample_column = sample_column,
+    resample_type = resample_type,
     ci_sign = ci_sign,
     ci_lower = ci_lower,
     ci_upper = ci_upper,

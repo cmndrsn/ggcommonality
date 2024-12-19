@@ -1,3 +1,3 @@
 exportPattern("^[[:alpha:]]+")
 importFrom("stats", "ave")
-
+importFrom("stats", "fitted", "lm", "quantile", "residuals", "terms")

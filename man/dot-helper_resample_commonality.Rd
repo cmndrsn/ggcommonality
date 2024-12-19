@@ -4,7 +4,7 @@
 \alias{.helper_resample_commonality}
 \title{Commonality Coefficients From Resampled Data}
 \usage{
-.helper_resample_commonality(formula, data, groups)
+.helper_resample_commonality(formula, data, groups, resample_type)
 }
 \arguments{
 \item{formula}{Formula to be used in helper_commonality_bootstrap}
@@ -12,6 +12,8 @@
 \item{data}{Data to be used in helper_commonality_bootstrap}
 
 \item{groups}{Groups to be used in helper_commonality_bootstrap}
+
+\item{resample_type}{Character vector specifying whether resampling should be fixed or random. See details.}
 }
 \value{
 Vector of commonality coefficients on resampled data.

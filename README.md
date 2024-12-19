@@ -1,22 +1,27 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# ggcommonality <img src="ggcommonality_sticker.png" align="right" style='height: 25%; width: 25%; object-fit: contain'/>
+# ggcommonality <img src="ggcommonality_sticker.png" align="right"/>
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-ggcommonality producees stacked bar plots of unique and joint
-effects from commonality analyses. The function works with ggplot functions, and can arrange effects in configurations that either stack unique vs. joint effects, or separate commonality partitions.
+ggcommonality creates bar plots of unique and joint effects from a
+commonality analysis of a linear regression model. The function outputs
+a bar plots with unique and common effects for each commonality
+partition.
 
-The function is scalable to multiple variables takes formula notation for input, calling on the
-`yhat` package (Nimon, Oswald, and Roberts. 2023). It builds bar plots in the style of those appearing in the
+The function is scalable to multiple variables and takes formula
+notation for input, calling on the `yhat` package (Nimon, Oswald, and
+Roberts. 2023).
+
+This function builds bar plots in the style of those appearing in the
 [MAPLE Lab’s](https://maplelab.net) work applying commonality analysis
 to the compositions of Bach and Chopin (Anderson and Schutz 2022).
 
 Partitions are plotted sequentially in alphabetical order, starting with
 unique effects and are built iteratively with joint effects at higher
-orders on top. There are redundancies if commonalities are plotted partition-wise, so this configuration can be deceptive if the total explained variance isn't taken into account.
+orders on top.
 
 ## Installation
 
@@ -25,7 +30,7 @@ You can install the development version of ggcommonality from
 
 ``` r
 # install.packages("pak")
-devtools::install_github("cmndrsn/ggcommonality", ref = "development", force = TRUE, build_vignettes = TRUE)
+pak::pak("cmndrsn/ggcommonality")
 ```
 
 ## Example
@@ -45,9 +50,22 @@ p <- ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
 print(p)
 ```
 
-<img src="man/figures/README-example-1.png" width="50%" />
+<img src="man/figures/README-example-1.png" width="100%" />
 
 The plot is customizable and can be used with ggprotos.
+
+``` r
+p + 
+  coord_flip() +
+    geom_hline(yintercept = 0.7652,
+                      linetype = "dashed",
+                      color = "grey50") + # adding total explained variance
+  annotate(geom="text", x=7.8, y=.71, label="Total\nvariance\nexplained\n(unique + joint)",
+              color="grey50") +
+  theme_minimal()
+```
+
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 ``` r
 p + scale_fill_manual(values = c("#7fc97f",
@@ -58,51 +76,11 @@ p + scale_fill_manual(values = c("#7fc97f",
   geom_hline(yintercept = 0.7652,
                       linetype = "dashed",
                       color = "grey50") + # adding total explained variance
-  annotate(geom="text", x=5, y=.79, label="Total variance explained\n(unique + joint)",
+  annotate(geom="text", x=5, y=.76, label="Total variance explained\n(unique + joint)",
               color="grey50")
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="50%" />
-
-## Adding confidence intervals
-
-You can also use the `ci_ggcommonality` function to add confidence intervals generated from a bootstrapping procedure. 
-Percentile-based confidence intervals can be generated for positive commonalites and negative commonalities separately, or both.
-If `ci_sign == "positive"` and `by == "partition"`,  positive unique and joint effects from the bootstrap replication are summed for every partition, and the range distinguishing the middle 95% of observations are used to construct a confidence interval. 
-``` r
-p +
-  # positive confidence interval
-  ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
-                   data = mtcars,
-                   sample_column = "gear",
-                   n_replications = 100) +
-  # negative confidence interval
-    ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
-                   data = mtcars,
-                   sample_column = "gear",
-                   n_replications = 100,
-                   ci_sign = "-")
-```
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="50%" />
-
-Conversely, if a stacked commonality is specified, e.g., `by == "."`, unique and joint effects are separately summed to generate confidence intervals. The appearance of the error bar can be changed using parameters passed to `geom_errorbar()`
-
-``` r
-p2 <- ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
-                   data = mtcars,
-                   by = ".")
-
-p2 +
-  ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
-                   data = mtcars,
-                   sample_column = "gear",
-                   n_replications = 100,
-                   by = ".",
-                   colour = "grey5",
-                   width = 0.5,
-                   alpha = 0.5) 
-```
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="50%" />
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 We can compare the bar plot output to the unique and common effects from
 the model:
@@ -147,7 +125,6 @@ frame used to create the black outline for the negative effects.
 ``` r
 df_commonality <- df_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
                    data = mtcars)
-#> Warning in yhat::regr(lm_out): NAs introduced by coercion
 
 ## Make output shorter
 lapply(df_commonality,
@@ -202,16 +179,88 @@ lapply(df_commonality,
 #> 3 drat     -0.0038 -0.0038   5.5   6.5   6  
 #> 4 vs       -0.0038 -0.0038   7     8     7.5
 ```
+
+# Adding confidence intervals
+
+You can add percentile-based bootstrap confidence intervals using the
+`ci_ggcommonality` function. The `resample_type` argument specifies
+whether to generate random-$x$ confidence intervals or fixed-$x$
+confidence intervals. The [online
+appendices](https://www.john-fox.ca/Companion/) to Fox and Weisberg
+(2018) provide useful explanations and examples of both types. If
+`by = "partition"`, confidence intervals represent the sum of unique and
+joint effects for individual commonality partitions. Otherwise, if
+`by = "common"`, separate confidence intervals are generated for the sum
+of unique effects and the sum of joint effects.
+
+## Adding random-$x$ bootstrap confidence intervals
+
+``` r
+p +
+  ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
+                   data = mtcars,
+                   n_replications = 100) +
+    ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
+                   data = mtcars,
+                   n_replications = 100,
+                   ci_sign = "-")
+```
+
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+
+## Adding fixed-$x$ bootstrap confidence intervals
+
+``` r
+p +
+  ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
+                   data = mtcars,
+                   resample_type = "fixed",
+                   n_replications = 100) +
+    ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
+                   data = mtcars,
+                   n_replications = 100,
+                   ci_sign = "-",
+                   resample_type = "fixed")
+```
+
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+
+# Stack by unique vs. common effects
+
+``` r
+p2 <- ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
+                   data = mtcars,
+                   by = "common")
+
+p2 +
+  ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
+                   data = mtcars,
+                   sample_column = "gear",
+                   n_replications = 100,
+                   by = "common",
+                   colour = "grey5",
+                   width = 0.5,
+                   alpha = 0.5) 
+```
+
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+
 # References
 
-<div id="refs" class="references csl-bib-body hanging-indent"
-entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 
 <div id="ref-anderson2022exploring" class="csl-entry">
 
 Anderson, Cameron J, and Michael Schutz. 2022. “Exploring Historic
 Changes in Musical Communication: Deconstructing Emotional Cues in
 Preludes by Bach and Chopin.” *Psychology of Music* 50 (5): 1424–42.
+
+</div>
+
+<div id="ref-fox2018r" class="csl-entry">
+
+Fox, John, and Sanford Weisberg. 2018. *An r Companion to Applied
+Regression*. Sage publications.
 
 </div>
 

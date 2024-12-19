@@ -23,25 +23,20 @@ knitr::opts_chunk$set(
 
 <!-- badges: end -->
 
-The goal of ggcommonality is to produce bar plots of unique and joint
-effects from commonality analyses. The function outputs a bar plots with
-unique and common effects for each commonality partition.
+ggcommonality creates bar plots of unique and joint
+effects from a commonality analysis of a linear regression model. 
+The function outputs a bar plots with unique and common effects for each commonality partition.
 
-The function is scalable to multiple variables (at the expense of
-interpretability) and takes formula notation for input, calling on the
+The function is scalable to multiple variables and takes formula notation for input, calling on the
 `yhat` package [@nimon2023r].
 
 This function builds bar plots in the style of those appearing in the
 [MAPLE Lab's](https://maplelab.net) work applying commonality analysis
 to the compositions of Bach and Chopin [@anderson2022exploring].
 
-This package is very new, so its functionality is quite limited.
-
 Partitions are plotted sequentially in alphabetical order, starting with
 unique effects and are built iteratively with joint effects at higher
-orders on top. This means there are redundancies between partitions, and
-the plot can be deceptive if you don't take the total explained variance
-into account.
+orders on top.
 
 ## Installation
 
@@ -92,7 +87,7 @@ p + scale_fill_manual(values = c("#7fc97f",
   geom_hline(yintercept = 0.7652,
                       linetype = "dashed",
                       color = "grey50") + # adding total explained variance
-  annotate(geom="text", x=5, y=.79, label="Total variance explained\n(unique + joint)",
+  annotate(geom="text", x=5, y=.76, label="Total variance explained\n(unique + joint)",
               color="grey50")
 
 ```
@@ -118,7 +113,7 @@ to create the black outline for the positive effects; (3) the data frame
 used to create the barplot for negative commonalities; and (4) the data
 frame used to create the black outline for the negative effects.
 
-```{r}
+```{r warning=FALSE}
 df_commonality <- df_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
                    data = mtcars)
 
@@ -128,19 +123,36 @@ lapply(df_commonality,
 
 ```
 
-## Adding confidence intervals
+# Adding confidence intervals
+
+You can add percentile-based bootstrap confidence intervals using the `ci_ggcommonality` function. The `resample_type` argument specifies whether to generate random-$x$ confidence intervals or fixed-$x$ confidence intervals. The [online appendices](https://www.john-fox.ca/Companion/) to @fox2018r provide useful explanations and examples of both types. If `by = "partition"`, confidence intervals represent the sum of unique and joint effects for individual commonality partitions. Otherwise, if `by = "common"`, separate confidence intervals are generated for the sum of unique effects and the sum of joint effects.
+
+## Adding random-$x$ bootstrap confidence intervals
 
 ```{r warning=FALSE, message=FALSE}
 p +
   ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
                    data = mtcars,
-                   sample_column = "gear",
                    n_replications = 100) +
     ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
                    data = mtcars,
-                   sample_column = "gear",
                    n_replications = 100,
                    ci_sign = "-")
+```
+
+## Adding fixed-$x$ bootstrap confidence intervals
+```{r, warning=FALSE}
+p +
+  ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
+                   data = mtcars,
+                   resample_type = "fixed",
+                   n_replications = 100) +
+    ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
+                   data = mtcars,
+                   n_replications = 100,
+                   ci_sign = "-",
+                   resample_type = "fixed")
+
 ```
 
 # Stack by unique vs. common effects
@@ -148,14 +160,14 @@ p +
 ```{r warning=FALSE, message=FALSE}
 p2 <- ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
                    data = mtcars,
-                   by = ".")
+                   by = "common")
 
 p2 +
   ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
                    data = mtcars,
                    sample_column = "gear",
                    n_replications = 100,
-                   by = ".",
+                   by = "common",
                    colour = "grey5",
                    width = 0.5,
                    alpha = 0.5) 

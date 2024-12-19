@@ -4,7 +4,13 @@
 \alias{run_commonality_bootstrap}
 \title{Perform bootstrapping on commonality coefficients}
 \usage{
-run_commonality_bootstrap(formula, data, groups, n_replications = 10000)
+run_commonality_bootstrap(
+  formula,
+  data,
+  groups,
+  resample_type = "random",
+  n_replications = 10000
+)
 }
 \arguments{
 \item{formula}{Formula to be used in helper_commonality_bootstrap}
@@ -22,7 +28,6 @@ Data frame containing commonality partitions for replications.
 Get commonality coefficients for n replications
 }
 \examples{
-# 1000 - 10000 replications recommended for publications.
 run_commonality_bootstrap(formula = cyl ~ mpg + hp,
 data = mtcars,
 groups = "gear",

@@ -13,6 +13,7 @@ ci_ggcommonality(
   ci_lower = 0.025,
   ci_upper = 0.975,
   by = "partition",
+  resample_type = "random",
   ...
 )
 }
@@ -21,7 +22,7 @@ ci_ggcommonality(
 
 \item{data}{Data frame matching formula argument}
 
-\item{sample_column}{Character. Name of column for resampling participants.}
+\item{sample_column}{Character. Name of column for resampling observations. If blank, simple resampling is performed.}
 
 \item{n_replications}{Numeric. Number of replications to use in bootstrap.}
 
