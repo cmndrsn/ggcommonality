@@ -25,23 +25,21 @@
 
 \item{resample_type}{Method for boostrap resampling. Either "random" or "fixed"}
 
-\item{ci_sign}{Character. Sign correspoding to which coefficients should be used for generating error bar for confidence interval.
-If sign = "+", samples only positive coefficients; if "-", only negative coefficients.}
+\item{ci_sign}{Character. Sign corresponding to which coefficients should be used for generating error bar for confidence interval. If sign = "+", samples only positive coefficients; if "-", only negative coefficients.}
 
-\item{ci_lower}{Lower bound of confidence interval. By default = 0.025 for generating 95% CI}
+\item{ci_lower}{Lower bound of confidence interval.}
 
-\item{ci_upper}{Upper bound of confidence interval. By default = 0.975 for generating 95% CI}
+\item{ci_upper}{Upper bound of confidence interval.}
 
 \item{n_replications}{The number of replications to perform in bootstrap simulation.}
 
-\item{by}{If "partition", samples from unique and joint effects for commonality partition.
-If by = "common", creates confidence interval based on unique vs. common effects.}
+\item{by}{If "partition", samples from unique and joint effects for commonality partition. If "common", creates confidence interval based on unique vs. common effects.}
 }
 \value{
-Data.frame object containing 95% confidence intervals for each variable.
+Data.frame object containing confidence intervals for each variable.
 }
 \description{
-Generate percentile-based confidence intervals for commonality coefficients
+Create random- or fixed-effect percentile-based bootstrap intervals.
 }
 \author{
 Cameron Anderson, Julianne Heitelman

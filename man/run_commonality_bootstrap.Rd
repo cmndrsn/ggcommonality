@@ -19,6 +19,8 @@ run_commonality_bootstrap(
 
 \item{groups}{Groups to be used in helper_commonality_bootstrap}
 
+\item{resample_type}{Method for boostrap resampling. Either "random" or "fixed"}
+
 \item{n_replications}{Number of replications in bootstrap}
 }
 \value{

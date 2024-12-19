@@ -1,18 +1,20 @@
 #' Generate percentile-based confidence intervals for commonality coefficients
+#'
+#' Create random- or fixed-effect percentile-based bootstrap intervals.
+#'
+#'
 #' @author Cameron Anderson, Julianne Heitelman
 #' @param formula Formula corresponding to linear regression model
 #' @param data  Data to sample observations from
 #' @param sample_column Optional column to sample from
 #' @param resample_type Method for boostrap resampling. Either "random" or "fixed"
-#' @param ci_sign Character. Sign correspoding to which coefficients should be used for generating error bar for confidence interval.
-#' If sign = "+", samples only positive coefficients; if "-", only negative coefficients.
-#' @param ci_lower Lower bound of confidence interval. By default = 0.025 for generating 95% CI
-#' @param ci_upper Upper bound of confidence interval. By default = 0.975 for generating 95% CI
+#' @param ci_sign Character. Sign corresponding to which coefficients should be used for generating error bar for confidence interval. If sign = "+", samples only positive coefficients; if "-", only negative coefficients.
+#' @param ci_lower Lower bound of confidence interval.
+#' @param ci_upper Upper bound of confidence interval.
 #' @param n_replications The number of replications to perform in bootstrap simulation.
-#' @param by If "partition", samples from unique and joint effects for commonality partition.
-#' If by = "common", creates confidence interval based on unique vs. common effects.
+#' @param by If "partition", samples from unique and joint effects for commonality partition. If "common", creates confidence interval based on unique vs. common effects.
 #'
-#' @return Data.frame object containing 95% confidence intervals for each variable.
+#' @return Data.frame object containing confidence intervals for each variable.
 .helper_make_ci <- function(formula,
                       data,
                       sample_column,

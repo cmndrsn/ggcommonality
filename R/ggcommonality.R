@@ -150,7 +150,8 @@ ggcommonality <- function(formula,
 #' @param ci_lower Numeric. Value for lower bound of confidence interval.
 #' @param ci_upper Numeric. Value for upper bound of confidence interval
 #' @param by In progress. Currently allows stacking unique and common effects by partition
-#' if "partition" is the input. Otherwise it stacks unique vs joint effects.
+#' if "partition" is the input. If by == "common" it stacks unique vs joint effects.
+#' @param resample_type Method for boostrap resampling. Either "random" or "fixed"
 #' @param ... Additional parameters passed to ggplot2::geom_errorbar
 #' @import pbapply
 #' @return ggproto instance

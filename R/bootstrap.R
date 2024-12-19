@@ -6,6 +6,7 @@
 #' @param data Data to be used in helper_commonality_bootstrap
 #' @param groups Groups to be used in helper_commonality_bootstrap
 #' @param n_replications Number of replications in bootstrap
+#' @param resample_type Method for boostrap resampling. Either "random" or "fixed"
 #' @return Data frame containing commonality partitions for replications.
 #' @export
 #' @examples
@@ -28,7 +29,7 @@ run_commonality_bootstrap <- function(formula,
     data_simplified,
     groups,
     resample_type
-  )
+    )
   )
 
   return(data_boot)

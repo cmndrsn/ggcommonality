@@ -35,7 +35,9 @@ Otherwise, generates confidence interval using both positive and negative.}
 \item{ci_upper}{Numeric. Value for upper bound of confidence interval}
 
 \item{by}{In progress. Currently allows stacking unique and common effects by partition
-if "partition" is the input. Otherwise it stacks unique vs joint effects.}
+if "partition" is the input. If by == "common" it stacks unique vs joint effects.}
+
+\item{resample_type}{Method for boostrap resampling. Either "random" or "fixed"}
 
 \item{...}{Additional parameters passed to ggplot2::geom_errorbar}
 }
