@@ -4,12 +4,20 @@
 \alias{.helper_define_x_coordinates}
 \title{Define X and Y coordinates for building commonality barplot}
 \usage{
-.helper_define_x_coordinates(pivoted_cue_df, unpivoted_cue_df, x_offset = 1.5)
+.helper_define_x_coordinates(
+  pivoted_cue_df,
+  unpivoted_cue_df,
+  stack_by = "partition",
+  x_offset = 1.5
+)
 }
 \arguments{
 \item{pivoted_cue_df}{Data.frame output from .helper_duplicate_inner_values}
 
 \item{unpivoted_cue_df}{Data.frame output of .helper_split_partition_effects}
+
+\item{stack_by}{In progress. Currently allows stacking unique and common effects by partition
+if "partition" is the input. Otherwise it stacks unique vs joint effects.}
 
 \item{x_offset}{Numeric. How much to offset adjacent partitions?}
 }

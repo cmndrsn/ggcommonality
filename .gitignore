@@ -53,4 +53,6 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
->>>>>>> 2d7d03c676ecdd1aa364c0d8292746d7b62041fa
+
+#
+.DS_Store

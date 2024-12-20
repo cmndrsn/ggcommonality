@@ -1,7 +1,9 @@
 #' Define XY coordinates for drawing commonality bar plots
 #'
-#' @param yhat_model Data.frame output of yhat::regr() function.
-#'
+#' @param formula Formula passed to regression model
+#' @param data data argument matching formula
+#' @param stack_by In progress. Currently allows stacking unique and common effects by partition
+#' if "partition" is the input. Otherwise it stacks unique vs joint effects.
 #' @return List of lists.
 #' Lists for positive and negative commonalities.
 #' Contained are data.frames for drawing barplot [1] effects and [2] outlines.
@@ -9,15 +11,16 @@
 #' @export
 #' @examples
 #' data(mtcars)
-#' yhat_model_cars <- yhat::regr(
-#' lm(
-#'   formula = mpg ~ cyl + disp + vs,
-#'   data = mtcars
-#'   )
-#' )
-#' df_ggcommonality(yhat_model_cars)
+#' df_ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars) |>
+#'   suppressWarnings()
 
-df_ggcommonality <- function(yhat_model) {
+df_ggcommonality <- function(formula,
+                             data,
+                             stack_by = "partition") {
+
+  lm_out <- lm(formula = formula,
+               data = data)
+  yhat_model <- yhat::regr(lm_out)
 
   n_pairs <- length(rownames(yhat_model$Commonality_Data$CCTotalbyVar))
 
@@ -37,18 +40,24 @@ df_ggcommonality <- function(yhat_model) {
  df_positive_xy <- .helper_define_x_coordinates(
    unpivoted_cue_df = df_positive_split,
    pivoted_cue_df = df_positive_pivot,
+   stack_by = stack_by,
    x_offset = 1.5)
  df_negative_xy <- .helper_define_x_coordinates(
    unpivoted_cue_df = df_negative_split,
    pivoted_cue_df = df_negative_pivot,
+   stack_by = stack_by,
    x_offset = 1.5)
 
- df_positive_xy <- .helper_define_y_coordinates(df_positive_xy)
- df_negative_xy <- .helper_define_y_coordinates(df_negative_xy)
+ df_positive_xy <- .helper_define_y_coordinates(df_positive_xy,
+                                                stack_by = stack_by)
+ df_negative_xy <- .helper_define_y_coordinates(df_negative_xy,
+                                                stack_by = stack_by)
 
- df_positive_outline <- .helper_draw_barplot_outline(df_positive_xy)
+ df_positive_outline <- .helper_draw_barplot_outline(df_positive_xy,
+                                                     stack_by = stack_by)
  df_negative_outline <- .helper_draw_barplot_outline(df_negative_xy,
-                                                     type = "negative")
+                                                     type = "negative",
+                                                     stack_by = stack_by)
  barplot_dfs <- list(df_positive_xy,
                      df_positive_outline,
                      df_negative_xy,

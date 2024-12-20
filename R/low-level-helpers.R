@@ -30,7 +30,6 @@
 #' @param nums Numeric array.
 #'
 #' @return Array.Returns values in nums, with inner values duplicated.
-#' @export
 .helper_duplicate_inner_values <- function(nums) {
   c(
     min(nums),

@@ -1,4 +1,2 @@
 exportPattern("^[[:alpha:]]+")
-importFrom("stats", "ave")
-import(ggplot2)
-import(yhat)
+importFrom("stats", "fitted", "ave", "lm", "quantile", "residuals", "terms")

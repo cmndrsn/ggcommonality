@@ -44,7 +44,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">.helper_define_y_coordinates</span><span class="op">(</span><span class="va">pivoted_cue_df</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">.helper_define_y_coordinates</span><span class="op">(</span><span class="va">pivoted_cue_df</span>, stack_by <span class="op">=</span> <span class="st">"partition"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -53,6 +53,11 @@
 
 <dl><dt id="arg-pivoted-cue-df">pivoted_cue_df<a class="anchor" aria-label="anchor" href="#arg-pivoted-cue-df"></a></dt>
 <dd><p>Data.frame output from .helper_define_x_coordinates</p></dd>
+
+
+<dt id="arg-stack-by">stack_by<a class="anchor" aria-label="anchor" href="#arg-stack-by"></a></dt>
+<dd><p>In progress. Currently allows stacking unique and common effects by partition
+if "partition" is the input. Otherwise it stacks unique vs joint effects.</p></dd>
 
 </dl></div>
     <div id="value">

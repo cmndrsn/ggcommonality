@@ -4,10 +4,15 @@
 \alias{ggcommonality}
 \title{Plot Commonality Partitions as a Bar Plot in ggplot}
 \usage{
-ggcommonality(yhat_model)
+ggcommonality(formula, data, stack_by = "partition")
 }
 \arguments{
-\item{yhat_model}{List. Model output of yhat::reg() applied to lm() object.}
+\item{formula}{Formula passed to regression model}
+
+\item{data}{data argument matching formula}
+
+\item{stack_by}{In progress. Currently allows stacking unique and common effects by partition
+if "partition" is the input. Otherwise it stacks unique vs joint effects.}
 }
 \value{
 ggplot object. Unique and common effects presented as a bar plot.
@@ -19,21 +24,10 @@ a bar plot based on the unique and common variance shared between variables.
 }
 \examples{
 data(mtcars)
-yhat_model_cars <- yhat::regr(
-lm(
-  formula = mpg ~ cyl + disp + vs,
-  data = mtcars
-  )
-)
-ggcommonality(yhat_model_cars)
+ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars) |>
+  suppressWarnings()
 
 data(trees)
-yhat_model_trees <- yhat::regr(
-lm(
-  formula = Height ~ Girth + Volume + Girth * Volume,
-  data = trees
-  )
-)
-ggcommonality(yhat_model_trees)
-
+ggcommonality(formula = Height ~ Girth + Volume + Girth * Volume,
+data = trees)
 }

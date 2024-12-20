@@ -5,7 +5,6 @@ Version: 0.1.0
 Author: Cameron J. Anderson
 Maintainer: Cameron J. Anderson <andersoc@mcmaster.ca>
 Description: This package helps create bar plots distinguishing unique and joint effects from commonality analysis output from the yhat package.
-License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
@@ -15,4 +14,7 @@ Imports:
     yhat,
     stringr,
     tibble,
-    tidyr
+    tidyr,
+    pbapply,
+    mosaic
+License: MIT + file LICENSE
