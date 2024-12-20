@@ -12,7 +12,7 @@
 #' @param ci_lower Lower bound of confidence interval.
 #' @param ci_upper Upper bound of confidence interval.
 #' @param n_replications The number of replications to perform in bootstrap simulation.
-#' @param by If "partition", samples from unique and joint effects for commonality partition. If "common", creates confidence interval based on unique vs. common effects.
+#' @param stack_by If "partition", samples from unique and joint effects for commonality partition. If "common", creates confidence interval based on unique vs. common effects.
 #'
 #' @return Data.frame object containing confidence intervals for each variable.
 .helper_make_ci <- function(formula,
@@ -23,7 +23,7 @@
                       ci_lower = 0.025,
                       ci_upper = 0.975,
                       n_replications = 1000,
-                      by = "partition") {
+                      stack_by = "partition") {
   # get terms from rhs of formula
   formula_terms <- labels(terms(formula)
                           )
@@ -34,7 +34,7 @@
                                       groups = sample_column,
                                       resample_type = resample_type,
                                       n_replications = n_replications)
-  if(by == "partition") {
+  if(stack_by == "partition") {
     lapply(1:length(formula_terms),
            function(x) {
              category <- formula_terms[x]
@@ -64,7 +64,7 @@
              return(out)
            }
     ) -> list_CI
-  } else if(by == "common") {
+  } else if(stack_by == "common") {
     effect_type <- c("Unique", "Common")
     lapply(1:length(effect_type), # sample across unique vs. common effects
            function(x) {

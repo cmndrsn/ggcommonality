@@ -13,7 +13,7 @@
   ci_lower = 0.025,
   ci_upper = 0.975,
   n_replications = 1000,
-  by = "partition"
+  stack_by = "partition"
 )
 }
 \arguments{
@@ -33,7 +33,7 @@
 
 \item{n_replications}{The number of replications to perform in bootstrap simulation.}
 
-\item{by}{If "partition", samples from unique and joint effects for commonality partition. If "common", creates confidence interval based on unique vs. common effects.}
+\item{stack_by}{If "partition", samples from unique and joint effects for commonality partition. If "common", creates confidence interval based on unique vs. common effects.}
 }
 \value{
 Data.frame object containing confidence intervals for each variable.

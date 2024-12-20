@@ -5,7 +5,7 @@
 #'
 #' @param formula Formula passed to regression model
 #' @param data data argument matching formula
-#' @param by In progress. Currently allows stacking unique and common effects by partition
+#' @param stack_by In progress. Currently allows stacking unique and common effects by partition
 #' if "partition" is the input. Otherwise it stacks unique vs joint effects.
 #' @return ggplot object. Unique and common effects presented as a bar plot.
 #' Variance attributable to two variables appears in partition for both.
@@ -23,10 +23,10 @@
 #'
 ggcommonality <- function(formula,
                           data,
-                          by = "partition") {
+                          stack_by = "partition") {
   commonality_df <- df_ggcommonality(formula,
                                      data,
-                                     by = by)
+                                     stack_by = stack_by)
   lm_out <- lm(formula = formula, data = data)
   yhat_model <- yhat::regr(lm_out)
 
@@ -111,7 +111,7 @@ ggcommonality <- function(formula,
      ggplot2::labs(x = "Commonality Partition",
           y = "Explained Variance\n(Unique + Common)",
           fill = "Variable")
-   if(by == "partition") {
+   if(stack_by == "partition") {
      p <- p +
        ggplot2::scale_x_continuous(
          breaks = positive_outline$x_mid,
@@ -149,8 +149,8 @@ ggcommonality <- function(formula,
 #' Otherwise, generates confidence interval using both positive and negative.
 #' @param ci_lower Numeric. Value for lower bound of confidence interval.
 #' @param ci_upper Numeric. Value for upper bound of confidence interval
-#' @param by In progress. Currently allows stacking unique and common effects by partition
-#' if "partition" is the input. If by == "common" it stacks unique vs joint effects.
+#' @param stack_by In progress. Currently allows stacking unique and common effects by partition
+#' if "partition" is the input. If stack_by == "common" it stacks unique vs joint effects.
 #' @param resample_type Method for boostrap resampling. Either "random" or "fixed"
 #' @param ... Additional parameters passed to ggplot2::geom_errorbar
 #' @import pbapply
@@ -174,7 +174,7 @@ ci_ggcommonality <- function(
                           ci_sign = "+",
                           ci_lower = 0.025,
                           ci_upper = 0.975,
-                          by = "partition",
+                          stack_by = "partition",
                           resample_type = "random",
                           ...) {
 
@@ -186,7 +186,7 @@ ci_ggcommonality <- function(
   }
   commonality_df <- df_ggcommonality(formula,
                                      data,
-                                     by = by)
+                                     stack_by = stack_by)
   lm_out <- lm(formula = formula, data = data)
   yhat_model <- yhat::regr(lm_out)
 
@@ -208,7 +208,7 @@ ci_ggcommonality <- function(
     ci_lower = ci_lower,
     ci_upper = ci_upper,
     n_replications = n_replications,
-    by = by
+    stack_by = stack_by
     )
 
     positive_outline <- merge(positive_outline, df_ci)

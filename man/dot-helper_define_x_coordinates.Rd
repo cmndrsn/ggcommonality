@@ -7,7 +7,7 @@
 .helper_define_x_coordinates(
   pivoted_cue_df,
   unpivoted_cue_df,
-  by = "partition",
+  stack_by = "partition",
   x_offset = 1.5
 )
 }
@@ -16,7 +16,7 @@
 
 \item{unpivoted_cue_df}{Data.frame output of .helper_split_partition_effects}
 
-\item{by}{In progress. Currently allows stacking unique and common effects by partition
+\item{stack_by}{In progress. Currently allows stacking unique and common effects by partition
 if "partition" is the input. Otherwise it stacks unique vs joint effects.}
 
 \item{x_offset}{Numeric. How much to offset adjacent partitions?}

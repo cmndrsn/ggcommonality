@@ -23,12 +23,13 @@ knitr::opts_chunk$set(
 
 <!-- badges: end -->
 
-ggcommonality creates bar plots of unique and joint
-effects from a commonality analysis of a linear regression model. 
-The function outputs a bar plots with unique and common effects for each commonality partition.
+ggcommonality creates bar plots of unique and joint effects from a
+commonality analysis of a linear regression model. The function outputs
+a bar plots with unique and common effects for each commonality
+partition.
 
-The function is scalable to multiple variables and takes formula notation for input, calling on the
-`yhat` package [@nimon2023r].
+The function is scalable to multiple variables and takes formula
+notation for input, calling on the `yhat` package [@nimon2023r].
 
 This function builds bar plots in the style of those appearing in the
 [MAPLE Lab's](https://maplelab.net) work applying commonality analysis
@@ -66,17 +67,6 @@ print(p)
 ```
 
 The plot is customizable and can be used with ggprotos.
-
-```{r}
-p + 
-  coord_flip() +
-    geom_hline(yintercept = 0.7652,
-                      linetype = "dashed",
-                      color = "grey50") + # adding total explained variance
-  annotate(geom="text", x=7.8, y=.71, label="Total\nvariance\nexplained\n(unique + joint)",
-              color="grey50") +
-  theme_minimal()
-```
 
 ```{r}
 p + scale_fill_manual(values = c("#7fc97f",
@@ -125,9 +115,18 @@ lapply(df_commonality,
 
 # Adding confidence intervals
 
-You can add percentile-based bootstrap confidence intervals using the `ci_ggcommonality` function. The `resample_type` argument specifies whether to generate random-$x$ confidence intervals or fixed-$x$ confidence intervals. The [online appendices](https://www.john-fox.ca/Companion/) to @fox2018r provide useful explanations and examples of both types. If `by = "partition"`, confidence intervals represent the sum of unique and joint effects for individual commonality partitions. Otherwise, if `by = "common"`, separate confidence intervals are generated for the sum of unique effects and the sum of joint effects.
+You can add percentile-based bootstrap confidence intervals using the
+`ci_ggcommonality` function. The `resample_type` argument specifies
+whether to generate random-*x* confidence intervals or fixed-*x*
+confidence intervals. The
+[appendices](https://www.john-fox.ca/Companion/) to @fox2018r provide
+useful explanations and examples of both types. If
+`stack_by = "partition"`, confidence intervals represent the sum of
+unique and joint effects for individual commonality partitions.
+Otherwise, if `stack_by = "common"`, separate confidence intervals are
+generated for the sum of unique effects and the sum of joint effects.
 
-## Adding random-$x$ bootstrap confidence intervals
+## Adding random-*x* bootstrap confidence intervals
 
 ```{r warning=FALSE, message=FALSE}
 p +
@@ -140,7 +139,8 @@ p +
                    ci_sign = "-")
 ```
 
-## Adding fixed-$x$ bootstrap confidence intervals
+## Adding fixed-*x* bootstrap confidence intervals
+
 ```{r, warning=FALSE}
 p +
   ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
@@ -160,14 +160,14 @@ p +
 ```{r warning=FALSE, message=FALSE}
 p2 <- ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
                    data = mtcars,
-                   by = "common")
+                   stack_by = "common")
 
 p2 +
   ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
                    data = mtcars,
                    sample_column = "gear",
                    n_replications = 100,
-                   by = "common",
+                   stack_by = "common",
                    colour = "grey5",
                    width = 0.5,
                    alpha = 0.5) 

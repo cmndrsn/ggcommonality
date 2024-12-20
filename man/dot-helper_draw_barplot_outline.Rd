@@ -7,7 +7,7 @@
 .helper_draw_barplot_outline(
   pivoted_cue_df_xy,
   type = "positive",
-  by = "partition"
+  stack_by = "partition"
 )
 }
 \arguments{
@@ -15,7 +15,7 @@
 
 \item{type}{Positive or negative.}
 
-\item{by}{In progress. Currently allows stacking unique and common effects by partition
+\item{stack_by}{In progress. Currently allows stacking unique and common effects by partition
 if "partition" is the input. Otherwise it stacks unique vs joint effects.
 Required for plotting positive and negative barplot effects.}
 }
