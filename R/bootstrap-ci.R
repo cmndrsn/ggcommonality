@@ -7,7 +7,12 @@
 #' @param formula Formula corresponding to linear regression model
 #' @param data  Data to sample observations from
 #' @param sample_column Optional column to sample from
-#' @param resample_type Method for boostrap resampling. Either "random" or "fixed"
+#' @param resample_type Method for boostrap resampling. Either "random", "fixed", or "wild".
+#' @param wild_type If resample_type == "wild", either "Gaussian" to
+#' multiply resampled residuals by random constants from the normal distribution,
+#' or sign to randomly multiply half of the residuals by +1 and half by -1.
+#' This provides a solution to "fixed" in the presence of model heteroscedasticity
+#' @return Data frame containing commonality partitions for replications.
 #' @param ci_sign Character. Sign corresponding to which coefficients should be used for generating error bar for confidence interval. If sign = "+", samples only positive coefficients; if "-", only negative coefficients.
 #' @param ci_lower Lower bound of confidence interval.
 #' @param ci_upper Upper bound of confidence interval.
@@ -19,21 +24,28 @@
                       data,
                       sample_column,
                       resample_type = "random",
+                      wild_type = "gaussian",
                       ci_sign = "+",
                       ci_lower = 0.025,
                       ci_upper = 0.975,
                       n_replications = 1000,
                       stack_by = "partition") {
   # get terms from rhs of formula
-  formula_terms <- labels(terms(formula)
-                          )
+  formula_terms <- labels(
+    terms(
+      formula
+      )
+    )
 
   #Run the bootstrap
-  comBoot <-run_commonality_bootstrap(formula = formula,
-                                      data = data,
-                                      groups = sample_column,
-                                      resample_type = resample_type,
-                                      n_replications = n_replications)
+  comBoot <-run_commonality_bootstrap(
+    formula = formula,
+    data = data,
+    groups = sample_column,
+    resample_type = resample_type,
+    wild_type = wild_type,
+    n_replications = n_replications
+    )
   if(stack_by == "partition") {
     lapply(1:length(formula_terms),
            function(x) {

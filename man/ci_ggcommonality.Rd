@@ -14,6 +14,7 @@ ci_ggcommonality(
   ci_upper = 0.975,
   stack_by = "partition",
   resample_type = "random",
+  wild_type = "gaussian",
   ...
 )
 }
@@ -37,11 +38,18 @@ Otherwise, generates confidence interval using both positive and negative.}
 \item{stack_by}{In progress. Currently allows stacking unique and common effects by partition
 if "partition" is the input. If stack_by == "common" it stacks unique vs joint effects.}
 
-\item{resample_type}{Method for boostrap resampling. Either "random" or "fixed"}
+\item{resample_type}{Method for boostrap resampling. Either "random", "fixed", or "wild".}
+
+\item{wild_type}{If resample_type == "wild", either "Gaussian" to
+multiply resampled residuals by random constants from the normal distribution,
+or sign to randomly multiply half of the residuals by +1 and half by -1.
+This provides a solution to "fixed" in the presence of model heteroscedasticity}
 
 \item{...}{Additional parameters passed to ggplot2::geom_errorbar}
 }
 \value{
+Data frame containing commonality partitions for replications.
+
 ggproto instance
 }
 \description{
