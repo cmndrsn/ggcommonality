@@ -20,15 +20,12 @@
 #' @param stack_by If "partition", samples from unique and joint effects for commonality partition. If "common", creates confidence interval based on unique vs. common effects.
 #'
 #' @return Data.frame object containing confidence intervals for each variable.
-.helper_make_ci <- function(formula,
+.helper_make_ci <- function(
                       data,
-                      sample_column,
-                      resample_type = "random",
-                      wild_type = "gaussian",
+                      formula,
                       ci_sign = "+",
                       ci_lower = 0.025,
                       ci_upper = 0.975,
-                      n_replications = 1000,
                       stack_by = "partition") {
   # get terms from rhs of formula
   formula_terms <- labels(
@@ -37,22 +34,13 @@
       )
     )
 
-  #Run the bootstrap
-  comBoot <-run_commonality_bootstrap(
-    formula = formula,
-    data = data,
-    groups = sample_column,
-    resample_type = resample_type,
-    wild_type = wild_type,
-    n_replications = n_replications
-    )
   if(stack_by == "partition") {
     lapply(1:length(formula_terms),
            function(x) {
              category <- formula_terms[x]
              # collect unique and joint effects for term
-             out <- comBoot[stringr::str_detect(
-               rownames(comBoot),
+             out <- data[stringr::str_detect(
+               rownames(data),
                formula_terms[x]
              ),
              ]
@@ -82,8 +70,8 @@
            function(x) {
              type <- effect_type[x]
              # collect unique and joint effects for term
-             out <- comBoot[stringr::str_detect(
-               rownames(comBoot),
+             out <- data[stringr::str_detect(
+               rownames(data),
                effect_type[x]
              ),
              ]

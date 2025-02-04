@@ -40,7 +40,6 @@ ggcommonality <- function(formula,
    p <- ggplot2::ggplot()+
      ggplot2::geom_rect(data = positive_effects,
               linejoin = "round",
-              alpha = 0.7,
               ggplot2::aes(xmin = x_min, xmax = x_max,
                   ymin = y_min, ymax = y_max,
                   fill = value
@@ -48,7 +47,6 @@ ggcommonality <- function(formula,
               ) +
      ggplot2::geom_rect(data = negative_effects,
               linejoin = "round",
-              alpha = 0.7,
               ggplot2::aes(xmin = x_min,
                  xmax = x_max,
                  ymin = y_min,
@@ -172,24 +170,19 @@ ggcommonality <- function(formula,
 #' @export
 #'
 ci_ggcommonality <- function(
+                          data.boot,
                           formula,
                           data,
-                          sample_column,
-                          n_replications,
                           ci_sign = "+",
                           ci_lower = 0.025,
                           ci_upper = 0.975,
                           stack_by = "partition",
-                          resample_type = "random",
-                          wild_type = "gaussian",
                           ...) {
 
 
   # if groups argument is not explicitly stated, set value to NULL
   # when passed to mosaic::resample
-  if(missing(sample_column)) {
-    sample_column <- NULL
-  }
+
   commonality_df <- df_ggcommonality(formula,
                                      data,
                                      stack_by = stack_by)
@@ -206,15 +199,11 @@ ci_ggcommonality <- function(
 
   df_ci <-
     .helper_make_ci(
+    data = data.boot,
     formula = formula,
-    data = data,
-    sample_column = sample_column,
-    resample_type = resample_type,
-    wild_type = wild_type,
     ci_sign = ci_sign,
     ci_lower = ci_lower,
     ci_upper = ci_upper,
-    n_replications = n_replications,
     stack_by = stack_by
     )
 

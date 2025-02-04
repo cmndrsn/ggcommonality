@@ -21,11 +21,13 @@
 run_commonality_bootstrap <- function(
     formula,
     data,
-    groups,
+    groups = NULL,
     resample_type = "random",
     wild_type = "gaussian",
-    n_replications = 10000
+    n_replications = 100,
+    seed = NULL
     ) {
+  set.seed(seed)
   data_simplified <- .helper_simplify_df(
     formula = formula,
     data = data,
