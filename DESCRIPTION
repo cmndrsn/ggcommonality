@@ -16,5 +16,4 @@ Imports:
     tibble,
     tidyr,
     pbapply,
-    mosaic
 License: MIT + file LICENSE
