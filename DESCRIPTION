@@ -13,6 +13,7 @@ Imports:
     ggplot2,
     yhat,
     stringr,
+    mosaic,
     tibble,
     tidyr,
     pbapply,
