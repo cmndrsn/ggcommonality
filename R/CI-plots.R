@@ -3,7 +3,6 @@ ci_plot_coordinates <- function(
     formula,
     data,
     include_total = TRUE,
-    n_replications = 1000,
     quantiles = c(.025, .975)
 ) {
   coef <- yhat::regr(
@@ -51,7 +50,12 @@ ci_plot_coordinates <- function(
     )
   bs_ci <- bs_ci |>
     group_by(com) |>
-    mutate(count = as.numeric(factor(var)))
+    # first sort so we can plot colours in alphabetical order
+    mutate(var = sort(var),
+           count = as.numeric(factor(var))
+           )
+  bs_ci$var <- factor(bs_ci$var, levels = sort(unique(bs_ci$var)))
+
   # define length of each line based on which position it is in the CA
   #bs_ci$xmax <- bs_ci$lci + ((bs_ci$uci-bs_ci$lci)/bs_ci$count)
 
@@ -94,7 +98,7 @@ ci_plot_coordinates <- function(
 
 }
 
-com_linerange <- function(df, t = NULL,s = NULL) {
+com_errorbox <- function(df, t = NULL,s = NULL) {
   df |>
     ggplot(
       aes(x = xmin, xmin = xmin, y = cc,
@@ -109,3 +113,23 @@ com_linerange <- function(df, t = NULL,s = NULL) {
     scale_x_continuous(breaks = df$xmin, labels = factor(df$com, levels = unique(df$com)))+
     ggtitle(t,s)
 }
+
+plot_com_unstacked <- function(df) {
+  df |>
+    ggplot(
+      aes(x = xmin, xmin = xmin, y = cc,
+          ymin = 0, ymax = cc)) +
+    geom_rect(aes(xmin=outline_xmin,
+                  xmax = outline_xmax,
+                  ymin = 0,
+                  ymax = cc),
+              colour = "black", size = 1.25)+
+    geom_rect(aes(xmin=start_pos, xmax = end_pos, fill = var))+
+    scale_x_continuous(breaks = df$xmin, labels = factor(df$com, levels = unique(df$com)))
+}
+
+
+com_unstacked_errorbar <- function(df, ...) {
+    geom_errorbar(data = df, aes(ymin = lci, ymax = uci), ...)
+}
+
