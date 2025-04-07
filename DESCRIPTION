@@ -13,8 +13,8 @@ Imports:
     ggplot2,
     yhat,
     stringr,
+    mosaic,
     tibble,
     tidyr,
     pbapply,
-    mosaic
 License: MIT + file LICENSE
