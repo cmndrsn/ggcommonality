@@ -40,7 +40,6 @@ ggcommonality <- function(formula,
    p <- ggplot2::ggplot()+
      ggplot2::geom_rect(data = positive_effects,
               linejoin = "round",
-              alpha = 0.7,
               ggplot2::aes(xmin = x_min, xmax = x_max,
                   ymin = y_min, ymax = y_max,
                   fill = value
@@ -48,7 +47,6 @@ ggcommonality <- function(formula,
               ) +
      ggplot2::geom_rect(data = negative_effects,
               linejoin = "round",
-              alpha = 0.7,
               ggplot2::aes(xmin = x_min,
                  xmax = x_max,
                  ymin = y_min,
@@ -107,7 +105,6 @@ ggcommonality <- function(formula,
                                           xmin = x_min,
                                           xmax = x_max)
      ) +
-     ggplot2::geom_hline(yintercept = 0)+
      ggplot2::labs(x = "Commonality Partition",
           y = "Explained Variance\n(Unique + Common)",
           fill = "Variable")
