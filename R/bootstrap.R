@@ -67,10 +67,17 @@ run_commonality_bootstrap <- function(
 #'
 #' Calculate commonality coefficients in bootstrap procedure
 #'
+#' Performs bootstrapping for coefficients. If resample_type is "fixed" or "wild",
+#' model errors are randomly resampled in bootstrap rather than data observations.
+#' For the wild bootstrap, these errors are then randomly multiplied by positive or negative 1 ("sign"),
+#' or by values sampled from the standard normal distribution to relax assumptions of errors being
+#' symmetrically distributed about 0.
+#'
 #' @param formula Formula to be used in helper_commonality_bootstrap
 #' @param data Data to be used in helper_commonality_bootstrap
 #' @param groups Groups to be used in helper_commonality_bootstrap
-#' @param resample_type Character vector specifying whether resampling should be fixed or random. See details.
+#' @param resample_type Character vector specifying whether resampling should be fixed, random, or wild. See details.
+#' @param wild_type One of "gaussian" or "sign"
 #' @return Vector of commonality coefficients on resampled data.
 .helper_resample_commonality <- function(
     formula,
