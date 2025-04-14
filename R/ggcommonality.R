@@ -40,7 +40,6 @@ ggcommonality <- function(formula,
    p <- ggplot2::ggplot()+
      ggplot2::geom_rect(data = positive_effects,
               linejoin = "round",
-              alpha = 0.7,
               ggplot2::aes(xmin = x_min, xmax = x_max,
                   ymin = y_min, ymax = y_max,
                   fill = value
@@ -48,7 +47,6 @@ ggcommonality <- function(formula,
               ) +
      ggplot2::geom_rect(data = negative_effects,
               linejoin = "round",
-              alpha = 0.7,
               ggplot2::aes(xmin = x_min,
                  xmax = x_max,
                  ymin = y_min,
@@ -107,7 +105,6 @@ ggcommonality <- function(formula,
                                           xmin = x_min,
                                           xmax = x_max)
      ) +
-     ggplot2::geom_hline(yintercept = 0)+
      ggplot2::labs(x = "Commonality Partition",
           y = "Explained Variance\n(Unique + Common)",
           fill = "Variable")
@@ -151,7 +148,12 @@ ggcommonality <- function(formula,
 #' @param ci_upper Numeric. Value for upper bound of confidence interval
 #' @param stack_by In progress. Currently allows stacking unique and common effects by partition
 #' if "partition" is the input. If stack_by == "common" it stacks unique vs joint effects.
-#' @param resample_type Method for boostrap resampling. Either "random" or "fixed"
+#' @param resample_type Method for boostrap resampling. Either "random", "fixed", or "wild".
+#' @param wild_type If resample_type == "wild", either "Gaussian" to
+#' multiply resampled residuals by random constants from the normal distribution,
+#' or sign to randomly multiply half of the residuals by +1 and half by -1.
+#' This provides a solution to "fixed" in the presence of model heteroscedasticity
+#' @return Data frame containing commonality partitions for replications.
 #' @param ... Additional parameters passed to ggplot2::geom_errorbar
 #' @import pbapply
 #' @return ggproto instance
@@ -176,6 +178,7 @@ ci_ggcommonality <- function(
                           ci_upper = 0.975,
                           stack_by = "partition",
                           resample_type = "random",
+                          wild_type = "gaussian",
                           ...) {
 
 
@@ -204,6 +207,7 @@ ci_ggcommonality <- function(
     data = data,
     sample_column = sample_column,
     resample_type = resample_type,
+    wild_type = wild_type,
     ci_sign = ci_sign,
     ci_lower = ci_lower,
     ci_upper = ci_upper,

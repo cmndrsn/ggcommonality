@@ -59,7 +59,8 @@ library(ggcommonality)
 library(ggplot2)
 # import data
 data(mtcars)
-p <- ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
+
+p <- ggcommonality(formula = mpg ~ cyl + disp + vs,
                    data = mtcars)
   
 
@@ -69,16 +70,24 @@ print(p)
 The plot is customizable and can be used with ggprotos.
 
 ```{r}
-p + scale_fill_manual(values = c("#7fc97f",
-                                          "#beaed4",
-                                          "#fdc086",
-                                          "#ffff99")
-                              ) +
-  geom_hline(yintercept = 0.7652,
-                      linetype = "dashed",
-                      color = "grey50") + # adding total explained variance
-  annotate(geom="text", x=5, y=.76, label="Total variance explained\n(unique + joint)",
-              color="grey50")
+p + scale_fill_manual(
+  values = c(
+    "#7fc97f",
+    "#beaed4",
+    "#fdc086"
+    )
+) +
+geom_hline(
+  yintercept = 0.7652,
+  linetype = "dashed",
+  color = "grey50"
+  ) + # adding total explained variance
+annotate(
+  geom="text", 
+  x=5 , y= .76, 
+  label="Total variance explained\n(unique + joint)",
+  color="grey50"
+)
 
 ```
 
@@ -88,11 +97,13 @@ the model:
 ```{r commonality, warning=FALSE}
 yhat_model <- yhat::regr(
   lm(
-    formula = mpg ~ cyl + disp + vs + drat,
+    formula = mpg ~ cyl + disp + vs,
     data = mtcars
   )
 )
-knitr::kable(yhat_model$Commonality_Data$CC)
+knitr::kable(
+  yhat_model$Commonality_Data$CC
+)
 ```
 
 To get the x and y coordinates passed to `geom_rect()` when making the
@@ -104,12 +115,16 @@ used to create the barplot for negative commonalities; and (4) the data
 frame used to create the black outline for the negative effects.
 
 ```{r warning=FALSE}
-df_commonality <- df_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
-                   data = mtcars)
+df_commonality <- df_ggcommonality(
+  formula = mpg ~ cyl + disp + vs,
+  data = mtcars
+)
 
 ## Make output shorter
-lapply(df_commonality,
-       head)
+lapply(
+  df_commonality,
+  head
+)
 
 ```
 
@@ -117,60 +132,89 @@ lapply(df_commonality,
 
 You can add percentile-based bootstrap confidence intervals using the
 `ci_ggcommonality` function. The `resample_type` argument specifies
-whether to generate random-*x* confidence intervals or fixed-*x*
+whether to generate random-*x*, confidence intervals, fixed-*x*, or wild-*x*
 confidence intervals. The
-[appendices](https://www.john-fox.ca/Companion/) to @fox2018r provide
-useful explanations and examples of both types. If
-`stack_by = "partition"`, confidence intervals represent the sum of
+[appendices](https://www.john-fox.ca/Companion/) to @fox2018r summarizes the advantages and disadvantages of fixed vs. random-*x* bootstrapping. Wild-*x* provides a solution to fixed-*x* for models featuring heteroscedasticity by multiplying resampled residuals with constants sampled from a Gaussian distribution (`wild_type = "gaussian"`), or by randomly multiplying half by 1 and half by -1 (`wild_type = "sign"`).
+
+If `stack_by = "partition"`, confidence intervals represent the sum of
 unique and joint effects for individual commonality partitions.
 Otherwise, if `stack_by = "common"`, separate confidence intervals are
 generated for the sum of unique effects and the sum of joint effects.
 
-## Adding random-*x* bootstrap confidence intervals
+## Comparing random-*x* bootstrap confidence intervals
 
 ```{r warning=FALSE, message=FALSE}
-p +
-  ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
-                   data = mtcars,
-                   n_replications = 100) +
-    ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
-                   data = mtcars,
-                   n_replications = 100,
-                   ci_sign = "-")
+# set r's random number generator
+set.seed(1)
+library(patchwork)
+
+lm_cars <- mpg ~ cyl + disp + vs
+
+p <- p + theme_void() + ylim(0, 1.2)
+
+ci_random <- p +
+  ci_ggcommonality(
+    formula = lm_cars,
+     data = mtcars,
+     n_replications = 100,
+    resample_type = "random"
+) +
+  labs(title = "Random-x") +
+  theme_classic()
+
+
+ci_fixed <- p +
+  ci_ggcommonality(
+    formula = lm_cars,
+     data = mtcars,
+     n_replications = 100,
+    resample_type = "fixed"
+) +
+  labs(subtitle = "Fixed-x") 
+
+ci_gaussian <- p +
+  ci_ggcommonality(
+    formula = lm_cars,
+     data = mtcars,
+     n_replications = 100,
+    resample_type = "wild"
+)+
+  labs(subtitle = "Wild (Gaussian)") 
+
+ci_sign <- p +
+  ci_ggcommonality(
+    formula = lm_cars,
+     data = mtcars,
+     n_replications = 100,
+    resample_type = "wild",
+    wild_type = "sign"
+)+
+  labs(subtitle = "Wild (sign)") 
+
+(ci_random|ci_fixed|ci_gaussian|ci_sign) +
+  plot_layout(guides = "collect")
+
 ```
-
-## Adding fixed-*x* bootstrap confidence intervals
-
-```{r, warning=FALSE}
-p +
-  ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
-                   data = mtcars,
-                   resample_type = "fixed",
-                   n_replications = 100) +
-    ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
-                   data = mtcars,
-                   n_replications = 100,
-                   ci_sign = "-",
-                   resample_type = "fixed")
-
-```
-
 # Stack by unique vs. common effects
 
 ```{r warning=FALSE, message=FALSE}
-p2 <- ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
-                   data = mtcars,
-                   stack_by = "common")
+p2 <- ggcommonality(
+  lm_cars,
+  data = mtcars,
+  stack_by = "common"
+)
 
 p2 +
-  ci_ggcommonality(formula = mpg ~ cyl + disp + vs + drat,
-                   data = mtcars,
-                   sample_column = "gear",
-                   n_replications = 100,
-                   stack_by = "common",
-                   colour = "grey5",
-                   width = 0.5,
-                   alpha = 0.5) 
+  ci_ggcommonality(
+    formula = lm_cars,
+    data = mtcars,
+    n_replications = 100,
+    stack_by = "common",
+    resample_type = "wild",
+    ci_sign = "",
+    width = 0.5,
+    alpha = 0.5
+) 
 ```
 
 # References

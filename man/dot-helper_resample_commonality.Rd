@@ -4,7 +4,13 @@
 \alias{.helper_resample_commonality}
 \title{Commonality Coefficients From Resampled Data}
 \usage{
-.helper_resample_commonality(formula, data, groups, resample_type)
+.helper_resample_commonality(
+  formula,
+  data,
+  groups,
+  resample_type,
+  wild_type = "gaussian"
+)
 }
 \arguments{
 \item{formula}{Formula to be used in helper_commonality_bootstrap}

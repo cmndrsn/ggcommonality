@@ -9,6 +9,7 @@ run_commonality_bootstrap(
   data,
   groups,
   resample_type = "random",
+  wild_type = "gaussian",
   n_replications = 10000
 )
 }
@@ -19,7 +20,12 @@ run_commonality_bootstrap(
 
 \item{groups}{Groups to be used in helper_commonality_bootstrap}
 
-\item{resample_type}{Method for boostrap resampling. Either "random" or "fixed"}
+\item{resample_type}{Method for boostrap resampling. Either "random", "fixed", or "wild".}
+
+\item{wild_type}{If resample_type == "wild", either "Gaussian" to
+multiply resampled residuals by random constants from the normal distribution,
+or sign to randomly multiply half of the residuals by +1 and half by -1.
+This provides a solution to "fixed" in the presence of model heteroscedasticity}
 
 \item{n_replications}{Number of replications in bootstrap}
 }

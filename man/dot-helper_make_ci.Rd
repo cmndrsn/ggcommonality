@@ -9,6 +9,7 @@
   data,
   sample_column,
   resample_type = "random",
+  wild_type = "gaussian",
   ci_sign = "+",
   ci_lower = 0.025,
   ci_upper = 0.975,
@@ -23,7 +24,12 @@
 
 \item{sample_column}{Optional column to sample from}
 
-\item{resample_type}{Method for boostrap resampling. Either "random" or "fixed"}
+\item{resample_type}{Method for boostrap resampling. Either "random", "fixed", or "wild".}
+
+\item{wild_type}{If resample_type == "wild", either "Gaussian" to
+multiply resampled residuals by random constants from the normal distribution,
+or sign to randomly multiply half of the residuals by +1 and half by -1.
+This provides a solution to "fixed" in the presence of model heteroscedasticity}
 
 \item{ci_sign}{Character. Sign corresponding to which coefficients should be used for generating error bar for confidence interval. If sign = "+", samples only positive coefficients; if "-", only negative coefficients.}
 
@@ -36,6 +42,8 @@
 \item{stack_by}{If "partition", samples from unique and joint effects for commonality partition. If "common", creates confidence interval based on unique vs. common effects.}
 }
 \value{
+Data frame containing commonality partitions for replications.
+
 Data.frame object containing confidence intervals for each variable.
 }
 \description{
