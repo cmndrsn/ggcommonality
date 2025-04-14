@@ -12,17 +12,17 @@ Normally for linear regression on valence and arousal.}
 
 \item{data}{Data.frame object corresponding to formula}
 
-\item{interval}{Numeric array of 2 values representing confidence
-interval to be computed. 95% CIs calculated by default}
+\item{interval}{Numeric array of 2 values representing confidence interval to be computed.}
 
-\item{...}{Additional parameters passed to
-ggcommonality::run_commonality_bootstrap}
+\item{...}{Additional parameters passed to [run_commonality_bootstrap()]}
 }
 \value{
-Data frame of bootstrapped commonality analysis with
-appropriate piechart proportions to represent commonality coefficients
+Data frame of bootstrapped commonality analysis with appropriate pie chart proportions to represent commonality coefficients
 }
 \description{
+Create dataframe containing information for visualizing 2-dimensional commonality analysis with scatterpie (bootstrap generalization)
+}
+\details{
 One way of visualizing commonality effects and their coefficients in
 a two-dimensional plot is to plot coefficients along with their 95% CIs.
 However, differentiating effect can be difficult as many explain only
@@ -33,7 +33,7 @@ the commonality such that the circle is split in half for two-ways
 commonalities, in thirds for three-way commonalities, etc.
 }
 \examples{
-df_2d_com <- df_2d_commonality(
+ df_2d_com <- df_2d_commonality(
   c(
     mpg ~ cyl + disp + wt,
     hp ~ cyl + disp + wt
@@ -64,7 +64,4 @@ df_2d_com |>
     ggplot2::aes(xmin = lci_mpg, xmax = uci_mpg)
     )+
   ggplot2::coord_equal()
-}
-\author{
-Cameron Anderson
 }

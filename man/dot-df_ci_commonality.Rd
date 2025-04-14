@@ -14,17 +14,11 @@
 \item{interval}{Numeric array of 2 values representing confidence
 interval to be computed. 95% CIs calculated by default}
 
-\item{...}{Additional parameters passed to
-ggcommonality::run_commonality_bootstrap}
+\item{...}{Additional parameters passed to [run_commonality_bootstrap()]}
 }
 \value{
-Data frame of bootstrapped commonality analysis with
-appropriate piechart proportions to represent commonality coefficients
+Data frame of bootstrapped commonality analysis with appropriate pie chart proportions to represent commonality coefficients
 }
 \description{
-This prepares a dataframe for use with plot_commonality_linerange
-(under construction). See [df_2d_commonality()] for details.
-}
-\author{
-Cameron Anderson
+Create dataframe containing information for visualizing 2-dimensional commonality analysis with scatterpie package
 }

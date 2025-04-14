@@ -13,25 +13,15 @@ coefficients will be extracted.}
 \item{data}{Data.frame object for which analysis will be performed.}
 }
 \value{
-Data.frame with proportions for each unique and common
-effect.
+Data.frame with proportions for each unique and common effect.
 }
 \description{
-Create tibble for commonality analysis with scatterpie functionality
+Create dataframe containing information for visualizing 2-dimensional commonality analysis with scatterpie
 }
 \details{
-The scatterpie package can be useful for colour-coding
-commonality coefficients. We can operationalize commonality
-coefficients as a scatter pie charts, where the proportion of the pie
-is represented by how many cues are involved in the commonality
-coefficient. geom_scatterpie requires one column for each effect,
-with values representing proportions. We can define a dataframe
-such that unique effects receive proportions of 1 in their respective
-columns, whereas second-order commonalities receive 0.5 in their
-respective columns, etc.
-
-This column prepares a dataframe to simplify commonality plots
-when using geom_scatterpie().
+The scatterpie package can be useful for colour-coding commonality coefficients. We can represent commonality
+coefficients as scatterpies, proportioning each unique and joint effect as a separate pie, such that unique effects receive
+proportions of 1 in their respective columns, whereas second-order commonalities receive 0.5 in their respective columns, etc.
 }
 \examples{
 # example with two predictors
@@ -56,7 +46,4 @@ ggplot2::ggplot() +
     data = df_joined,
     cols = c("cyl", "disp", "wt"))+
  ggplot2::coord_fixed()
-}
-\author{
-Cameron Anderson
 }

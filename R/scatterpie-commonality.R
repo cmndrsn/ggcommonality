@@ -1,27 +1,18 @@
 #' Create tibble for commonality analysis with scatterpie functionality
 #'
-#' @author Cameron Anderson
+#' Create dataframe containing information for visualizing 2-dimensional commonality analysis with scatterpie
 #'
-#' @details The scatterpie package can be useful for colour-coding
-#' commonality coefficients. We can operationalize commonality
-#' coefficients as a scatter pie charts, where the proportion of the pie
-#' is represented by how many cues are involved in the commonality
-#' coefficient. geom_scatterpie requires one column for each effect,
-#' with values representing proportions. We can define a dataframe
-#' such that unique effects receive proportions of 1 in their respective
-#' columns, whereas second-order commonalities receive 0.5 in their
-#' respective columns, etc.
-#'
-#' This column prepares a dataframe to simplify commonality plots
-#' when using geom_scatterpie().
-#'
+#' The scatterpie package can be useful for colour-coding commonality coefficients. We can represent commonality
+#' coefficients as scatterpies, proportioning each unique and joint effect as a separate pie, such that unique effects receive
+#' proportions of 1 in their respective columns, whereas second-order commonalities receive 0.5 in their respective columns, etc.
 #'
 #' @param formula Formula for linear model from which commonality
 #' coefficients will be extracted.
+#'
 #' @param data  Data.frame object for which analysis will be performed.
 #'
-#' @returns Data.frame with proportions for each unique and common
-#' effect.
+#' @returns Data.frame with proportions for each unique and common effect.
+#'
 #' @export
 #'
 #' @examples
@@ -97,26 +88,22 @@ df_commonality_scatterpie <- function(
   # return dataframe
   return(df_coef)
 }
-
 # -------------------------------------------------------------------- #
-
 #' Make scatterpie commonality line range plots
 #'
-#' @author Cameron Anderson
-#'
-#' @description
-#' This prepares a dataframe for use with plot_commonality_linerange
-#' (under construction). See [df_2d_commonality()] for details.
+#' Create dataframe containing information for visualizing 2-dimensional commonality analysis with scatterpie package
 #'
 #' @param formula Formula for relevant lm object to be bootstrapped
+#'
 #' @param data Data.frame object corresponding to formula
+#'
 #' @param interval Numeric array of 2 values representing confidence
 #' interval to be computed. 95% CIs calculated by default
-#' @param ... Additional parameters passed to
-#' ggcommonality::run_commonality_bootstrap
 #'
-#' @returns Data frame of bootstrapped commonality analysis with
-#' appropriate piechart proportions to represent commonality coefficients
+#' @param ... Additional parameters passed to [run_commonality_bootstrap()]
+#'
+#' @returns Data frame of bootstrapped commonality analysis with appropriate pie chart proportions to represent commonality coefficients
+#'
 #' @export
 .df_ci_commonality <- function(
     formula,
@@ -165,14 +152,11 @@ df_commonality_scatterpie <- function(
 
   return(result)
 }
-
 # -------------------------------------------------------------------- #
-
 #' Make scatterpie commonality line range plots
 #'
-#' @author Cameron Anderson
+#' Create dataframe containing information for visualizing 2-dimensional commonality analysis with scatterpie (bootstrap generalization)
 #'
-#' @description
 #' One way of visualizing commonality effects and their coefficients in
 #' a two-dimensional plot is to plot coefficients along with their 95% CIs.
 #' However, differentiating effect can be difficult as many explain only
@@ -181,21 +165,22 @@ df_commonality_scatterpie <- function(
 #' Circles are proportioned according to the number of cues involved in
 #' the commonality such that the circle is split in half for two-ways
 #' commonalities, in thirds for three-way commonalities, etc.
+#'
 #' @param formulae Array containing two formulae with the same predictors.
 #' Normally for linear regression on valence and arousal.
-#' @param data Data.frame object corresponding to formula
-#' @param interval Numeric array of 2 values representing confidence
-#' interval to be computed. 95% CIs calculated by default
-#' @param ... Additional parameters passed to
-#' ggcommonality::run_commonality_bootstrap
 #'
-#' @returns Data frame of bootstrapped commonality analysis with
-#' appropriate piechart proportions to represent commonality coefficients
+#' @param data Data.frame object corresponding to formula
+#'
+#' @param interval Numeric array of 2 values representing confidence interval to be computed.
+#'
+#' @param ... Additional parameters passed to [run_commonality_bootstrap()]
+#'
+#' @returns Data frame of bootstrapped commonality analysis with appropriate pie chart proportions to represent commonality coefficients
 #'
 #' @export
 #'
 #' @examples
-#' df_2d_com <- df_2d_commonality(
+#'  df_2d_com <- df_2d_commonality(
 #'   c(
 #'     mpg ~ cyl + disp + wt,
 #'     hp ~ cyl + disp + wt
@@ -205,7 +190,7 @@ df_commonality_scatterpie <- function(
 #'   n_replications = 100
 #' )
 #'
-#'# create plotting function with scatterpie package
+#' # create plotting function with scatterpie package
 #'
 #' df_2d_com |>
 #'   dplyr::filter(effect != "Total") |>
