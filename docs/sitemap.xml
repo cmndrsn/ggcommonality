@@ -5,7 +5,10 @@
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
 <url><loc>/reference/ci_ggcommonality.html</loc></url>
+<url><loc>/reference/df_2d_commonality.html</loc></url>
+<url><loc>/reference/df_commonality_scatterpie.html</loc></url>
 <url><loc>/reference/df_ggcommonality.html</loc></url>
+<url><loc>/reference/dot-df_ci_commonality.html</loc></url>
 <url><loc>/reference/dot-helper_define_x_coordinates.html</loc></url>
 <url><loc>/reference/dot-helper_define_y_coordinates.html</loc></url>
 <url><loc>/reference/dot-helper_draw_barplot_outline.html</loc></url>

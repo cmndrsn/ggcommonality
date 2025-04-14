@@ -4,6 +4,7 @@
 # ggcommonality <img src="ggcommonality_sticker.png" align="right"/>
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 ggcommonality creates bar plots of unique and joint effects from a
