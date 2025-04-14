@@ -2,7 +2,12 @@ Package: ggcommonality
 Type: Package
 Title: Bar Plot of Commonality Analysis Coefficients in ggplot2
 Version: 0.2.0
-Author: Cameron J. Anderson
+Authors@R: c(
+  person(given = "Cameron J.", family = "Anderson", email = "andersoc@mcmaster.ca", role =  c("aut", "cre"), 
+          comment = c(ORCID = "0000-0002-8737-2055")),
+  person(given = "Michael", family = "Schutz", email = "schutz@mcmaster.ca", role = "aut",
+          comment = c(ORCID = "0000-0002-6882-5928"))
+          )
 Maintainer: Cameron J. Anderson <andersoc@mcmaster.ca>
 Description: This package helps create bar plots distinguishing unique and joint effects from commonality analysis output from the yhat package.
 Encoding: UTF-8

@@ -19,11 +19,20 @@
 
 \item{groups}{Groups to be used in helper_commonality_bootstrap}
 
-\item{resample_type}{Character vector specifying whether resampling should be fixed or random. See details.}
+\item{resample_type}{Character vector specifying whether resampling should be fixed, random, or wild. See details.}
+
+\item{wild_type}{One of "gaussian" or "sign"}
 }
 \value{
 Vector of commonality coefficients on resampled data.
 }
 \description{
 Calculate commonality coefficients in bootstrap procedure
+}
+\details{
+Performs bootstrapping for coefficients. If resample_type is "fixed" or "wild",
+model errors are randomly resampled in bootstrap rather than data observations.
+For the wild bootstrap, these errors are then randomly multiplied by positive or negative 1 ("sign"),
+or by values sampled from the standard normal distribution to relax assumptions of errors being
+symmetrically distributed about 0.
 }

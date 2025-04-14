@@ -88,77 +88,15 @@ df_commonality_scatterpie <- function(
   # return dataframe
   return(df_coef)
 }
-# -------------------------------------------------------------------- #
-#' Make scatterpie commonality line range plots
-#'
-#' Create dataframe containing information for visualizing 2-dimensional commonality analysis with scatterpie package
-#'
-#' @param formula Formula for relevant lm object to be bootstrapped
-#'
-#' @param data Data.frame object corresponding to formula
-#'
-#' @param interval Numeric array of 2 values representing confidence
-#' interval to be computed. 95% CIs calculated by default
-#'
-#' @param ... Additional parameters passed to [run_commonality_bootstrap()]
-#'
-#' @returns Data frame of bootstrapped commonality analysis with appropriate pie chart proportions to represent commonality coefficients
-#'
-#' @export
-.df_ci_commonality <- function(
-    formula,
-    data,
-    interval = c(0.025, .975),
-    ...
-    ) {
-    # convenience function for labeling commonality names
-    .clean_commonality_names <- function(x) {
-      stringr::str_remove_all(x, "Unique to|Common to|, and|,") |>
-        trimws()
-    }
 
-    # take label for left-hand side of formula (name of DV)
-    label_lhs <- attr(terms(formula), "variables")[[2]]
-    # make pie df
-    df_pie <- df_commonality_scatterpie(
-      formula,
-      data = data
-    )
-    # run bootstrap
-    df_bs <- ggcommonality::run_commonality_bootstrap(
-      formula,
-      data = data,
-      ...
-  )
-  # summarize bootstrap to get 95 percentile interval
-  df_ci <- apply(
-    df_bs,
-    1,
-    function(x) quantile(x, interval)
-  )
-  # make labels for CIs
-  # this makes sure DV is included in column name
-  # (important for later merges)
-  ci_names <- paste0(c("lci_", "uci_"), label_lhs)
-  rownames(df_ci) <- ci_names
-  # clean names
-  colnames(df_ci) <- .clean_commonality_names(colnames(df_ci))
-  # format df_ci
-  df_ci <- t(df_ci) |>
-    as.data.frame() |>
-    tibble::rownames_to_column("effect")
-  # now merge
-  result <- merge(df_pie, df_ci)
-
-  return(result)
-}
 # -------------------------------------------------------------------- #
+
 #' Make scatterpie commonality line range plots
 #'
 #' Create dataframe containing information for visualizing 2-dimensional commonality analysis with scatterpie (bootstrap generalization)
 #'
 #' One way of visualizing commonality effects and their coefficients in
-#' a two-dimensional plot is to plot coefficients along with their 95% CIs.
+#' a two-dimensional plot is to plot coefficients along with their 95 percent CIs.
 #' However, differentiating effect can be difficult as many explain only
 #' a small amount of variance. This function prepares a dataframe which
 #' can be used with the scatterpie package in R to colour-code effects
@@ -188,7 +126,7 @@ df_commonality_scatterpie <- function(
 #'   data = mtcars,
 #'   groups = NULL,
 #'   n_replications = 100
-#' )
+#' ) |> suppressWarnings()
 #'
 #' # create plotting function with scatterpie package
 #'
@@ -231,6 +169,55 @@ df_2d_commonality <- function(
   result <- do.call('merge', out)
 }
 
+# -------------------------------------------------------------------- #
+
+.df_ci_commonality <- function(
+    formula,
+    data,
+    interval = c(0.025, .975),
+    ...
+) {
+  # convenience function for labeling commonality names
+  .clean_commonality_names <- function(x) {
+    stringr::str_remove_all(x, "Unique to|Common to|, and|,") |>
+      trimws()
+  }
+
+  # take label for left-hand side of formula (name of DV)
+  label_lhs <- attr(terms(formula), "variables")[[2]]
+  # make pie df
+  df_pie <- df_commonality_scatterpie(
+    formula,
+    data = data
+  )
+  # run bootstrap
+  df_bs <- ggcommonality::run_commonality_bootstrap(
+    formula,
+    data = data,
+    ...
+  )
+  # summarize bootstrap to get 95 percentile interval
+  df_ci <- apply(
+    df_bs,
+    1,
+    function(x) quantile(x, interval)
+  )
+  # make labels for CIs
+  # this makes sure DV is included in column name
+  # (important for later merges)
+  ci_names <- paste0(c("lci_", "uci_"), label_lhs)
+  rownames(df_ci) <- ci_names
+  # clean names
+  colnames(df_ci) <- .clean_commonality_names(colnames(df_ci))
+  # format df_ci
+  df_ci <- t(df_ci) |>
+    as.data.frame() |>
+    tibble::rownames_to_column("effect")
+  # now merge
+  result <- merge(df_pie, df_ci)
+
+  return(result)
+}
 
 
 

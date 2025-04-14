@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# ggcommonality <img src="ggcommonality_sticker.png" align="right"/>
+# ggcommonality <img src="man/ggcommonality_sticker.png" align="right"/>
 
 <!-- badges: start -->
 
@@ -63,18 +63,7 @@ p + scale_fill_manual(
     "#beaed4",
     "#fdc086"
     )
-) +
-geom_hline(
-  yintercept = 0.7652,
-  linetype = "dashed",
-  color = "grey50"
-  ) + # adding total explained variance
-annotate(
-  geom="text", 
-  x=5 , y= .76, 
-  label="Total variance explained\n(unique + joint)",
-  color="grey50"
-)
+) 
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
@@ -106,12 +95,13 @@ knitr::kable(
 | Total                       |      0.7605 |  100.00 |
 
 To get the x and y coordinates passed to `geom_rect()` when making the
-plot, you can use the following line of code, which returns a list with
-(1) the data frame used to create the barplot for positive commonalities
-(from xmin, xmax, ymin, and ymax coordinates); (2) the data frame used
-to create the black outline for the positive effects; (3) the data frame
-used to create the barplot for negative commonalities; and (4) the data
-frame used to create the black outline for the negative effects.
+plot, you can use the `df_ggcommonality()` function, which returns a
+list with (1) the data frame used to create the barplot for positive
+commonalities (from xmin, xmax, ymin, and ymax coordinates); (2) the
+data frame used to create the black outline for the positive effects;
+(3) the data frame used to create the barplot for negative
+commonalities; and (4) the data frame used to create the black outline
+for the negative effects.
 
 ``` r
 df_commonality <- df_ggcommonality(
@@ -201,7 +191,7 @@ library(patchwork)
 
 lm_cars <- mpg ~ cyl + disp + vs
 
-p <- p + theme_void() + ylim(0, 1.2)
+p <- p + theme_void() + ylim(0, 1.2) + theme(legend.position = 'none')
 
 ci_random <- p +
   ci_ggcommonality(
@@ -210,8 +200,7 @@ ci_random <- p +
      n_replications = 100,
     resample_type = "random"
 ) +
-  labs(title = "Random-x") +
-  theme_classic()
+  labs(subtitle = "Random-x")
 
 
 ci_fixed <- p +
@@ -220,7 +209,7 @@ ci_fixed <- p +
      data = mtcars,
      n_replications = 100,
     resample_type = "fixed"
-) +
+)+
   labs(subtitle = "Fixed-x") 
 
 ci_gaussian <- p +
@@ -242,12 +231,12 @@ ci_sign <- p +
 )+
   labs(subtitle = "Wild (sign)") 
 
-(ci_random|ci_fixed|ci_gaussian|ci_sign) +
-  plot_layout(guides = "collect")
+(ci_random|ci_fixed|ci_gaussian|ci_sign)
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" /> \#
-Stack by unique vs. common effects
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+
+# Stack by unique vs. common effects
 
 ``` r
 p2 <- ggcommonality(

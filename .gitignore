@@ -54,5 +54,8 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 
+# test scripts
+scripts/
+
 #
 .DS_Store

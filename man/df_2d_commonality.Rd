@@ -24,7 +24,7 @@ Create dataframe containing information for visualizing 2-dimensional commonalit
 }
 \details{
 One way of visualizing commonality effects and their coefficients in
-a two-dimensional plot is to plot coefficients along with their 95% CIs.
+a two-dimensional plot is to plot coefficients along with their 95 percent CIs.
 However, differentiating effect can be difficult as many explain only
 a small amount of variance. This function prepares a dataframe which
 can be used with the scatterpie package in R to colour-code effects
@@ -41,7 +41,7 @@ commonalities, in thirds for three-way commonalities, etc.
   data = mtcars,
   groups = NULL,
   n_replications = 100
-)
+) |> suppressWarnings()
 
 # create plotting function with scatterpie package
 
