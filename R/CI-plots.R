@@ -51,18 +51,18 @@ ci_plot_coordinates <- function(
   bs_ci <- bs_ci |>
     group_by(com) |>
     # first sort so we can plot colours in alphabetical order
-    mutate(var = sort(var),
+    mutate(
            count = as.numeric(factor(var))
            )
-  bs_ci$var <- factor(bs_ci$var, levels = sort(unique(bs_ci$var)))
+  bs_ci$var <- factor(bs_ci$var, levels = (unique(bs_ci$var)))
 
   # define length of each line based on which position it is in the CA
   #bs_ci$xmax <- bs_ci$lci + ((bs_ci$uci-bs_ci$lci)/bs_ci$count)
 
   bs_ci$order <- stringr::str_count(bs_ci$com, ",")+1
-
-  bs_ci$xmin <-as.numeric(as.factor(bs_ci$com))
-  bs_ci$start_pos <- as.numeric(as.factor(bs_ci$com)) - 0.45
+  xmin_lvls <<- unique(bs_ci$com[order(bs_ci$order)])
+  bs_ci$xmin <-as.numeric(factor(bs_ci$com, levels = xmin_lvls))
+  bs_ci$start_pos <- bs_ci$xmin - 0.45
   bs_ci$end_pos <- bs_ci$xmin + 0.45
   bs_ci$end_pos <- bs_ci$start_pos +
     bs_ci$count * ((bs_ci$end_pos-bs_ci$start_pos)/bs_ci$order)

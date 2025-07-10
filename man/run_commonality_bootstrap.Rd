@@ -7,10 +7,11 @@
 run_commonality_bootstrap(
   formula,
   data,
-  groups,
+  groups = NULL,
   resample_type = "random",
   wild_type = "gaussian",
-  n_replications = 10000
+  n_replications = 100,
+  seed = NULL
 )
 }
 \arguments{

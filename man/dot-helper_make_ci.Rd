@@ -5,22 +5,26 @@
 \title{Generate percentile-based confidence intervals for commonality coefficients}
 \usage{
 .helper_make_ci(
-  formula,
   data,
-  sample_column,
-  resample_type = "random",
-  wild_type = "gaussian",
+  formula,
   ci_sign = "+",
   ci_lower = 0.025,
   ci_upper = 0.975,
-  n_replications = 1000,
   stack_by = "partition"
 )
 }
 \arguments{
+\item{data}{Data to sample observations from}
+
 \item{formula}{Formula corresponding to linear regression model}
 
-\item{data}{Data to sample observations from}
+\item{ci_sign}{Character. Sign corresponding to which coefficients should be used for generating error bar for confidence interval. If sign = "+", samples only positive coefficients; if "-", only negative coefficients.}
+
+\item{ci_lower}{Lower bound of confidence interval.}
+
+\item{ci_upper}{Upper bound of confidence interval.}
+
+\item{stack_by}{If "partition", samples from unique and joint effects for commonality partition. If "common", creates confidence interval based on unique vs. common effects.}
 
 \item{sample_column}{Optional column to sample from}
 
@@ -31,15 +35,7 @@ multiply resampled residuals by random constants from the normal distribution,
 or sign to randomly multiply half of the residuals by +1 and half by -1.
 This provides a solution to "fixed" in the presence of model heteroscedasticity}
 
-\item{ci_sign}{Character. Sign corresponding to which coefficients should be used for generating error bar for confidence interval. If sign = "+", samples only positive coefficients; if "-", only negative coefficients.}
-
-\item{ci_lower}{Lower bound of confidence interval.}
-
-\item{ci_upper}{Upper bound of confidence interval.}
-
 \item{n_replications}{The number of replications to perform in bootstrap simulation.}
-
-\item{stack_by}{If "partition", samples from unique and joint effects for commonality partition. If "common", creates confidence interval based on unique vs. common effects.}
 }
 \value{
 Data frame containing commonality partitions for replications.

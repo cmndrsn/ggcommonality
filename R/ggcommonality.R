@@ -158,17 +158,6 @@ ggcommonality <- function(formula,
 #' @param ... Additional parameters passed to ggplot2::geom_errorbar
 #' @import pbapply
 #' @return ggproto instance
-#'
-#' @examples
-#'  ggcommonality(formula = mpg ~ cyl + disp + vs,
-#'                data = mtcars) +
-#'    ci_ggcommonality(formula = mpg ~ cyl + disp + vs,
-#'                     data = mtcars,
-#'                     sample_column = "gear",
-#'                     n_replications = 100,
-#'                     ci_sign = "+") |> suppressWarnings()
-#' @export
-#'
 ci_ggcommonality <- function(
                           data.boot,
                           formula,
