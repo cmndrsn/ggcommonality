@@ -1,16 +1,21 @@
-#' Title
+#' Visualizing commonality analyses
 #'
-#' @slot data data.frame.
-#' @slot data.boot matrix.
-#' @slot formula formula.
-#' @slot stack ANY.
-#' @slot stack_by character.
-#' @slot n_replications numeric.
-#' @slot sample_column ANY.
-#' @slot resample_type character.
-#' @slot wild_type character.
-#' @slot include_total ANY.
-#' @slot seed ANY.
+#' @slot data Data.frame object containing data to be visualized.
+#' @slot data.boot Matrix of bootstrapped data used to generate confidence interval.
+#' @slot formula formula. Formula representing equation for linear regression model.
+#' @slot stack ANY. Logical indicating whether commonality coefficients should be stacked.
+#' @slot stack_by character. Character specifying how to stack commonality coefficients. Either "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
+#' @slot n_replications numeric. Number of bootstrap replications.
+#' @slot sample_column ANY. Column to resample from in bootstrap.
+#' @slot resample_type character. Character vector specifying whether resampling should be fixed or random. See details.
+#' @slot wild_type character.If resample_type == "wild", either "Gaussian" to
+#' multiply resampled residuals by random constants from the normal distribution,
+#' or sign to randomly multiply half of the residuals by +1 and half by -1.
+#' This provides a solution to "fixed" in the presence of model heteroscedasticity
+#' @return Data frame containing commonality partitions for replications.
+#' @slot include_total ANY. TRUE or FALSE, specifying whether to include bar representing total explained variance.
+#' @slot seed ANY. Number specifying which seed to set R's random number generator to.
+#' @slot yhat_out ANY.
 #' @slot ... ANY.
 #'
 #' @returns
@@ -28,6 +33,7 @@ methods::setClass("GGCommonality",
                         resample_type = "character",
                         wild_type = "character",
                         include_total = "ANY",
+                        yhat_out = "ANY",
                         seed = "ANY",
                         ... = "ANY"),
 )
@@ -36,12 +42,12 @@ methods::setClass("GGCommonality",
 
 # Declare a generic function
 
+methods::setGeneric("yhat_out", function(x) {
+  standardGeneric("yhat_out")
+})
 methods::setGeneric("boot_commonality", function(x) {
   standardGeneric("boot_commonality")
 })
-# setGeneric("plot", function(x) {
-#   standardGeneric("plot")
-# })
 methods::setGeneric("add_ci", function(x, ...) {
   standardGeneric("add_ci")
 })
@@ -58,6 +64,22 @@ methods::setMethod("boot_commonality", signature("GGCommonality"), function(x) {
     resample_type = x@resample_type,
     wild_type = x@wild_type,
     seed = x@seed
+  )
+})
+methods::setMethod("yhat_out", signature("GGCommonality"), function(x) {
+  list(
+    yhat =
+  yhat::regr(
+    lm(
+      data = x@data,
+      formula = x@formula
+    )
+  ),
+  ci = apply(
+    x@data.boot,
+    1,
+    function(x) quantile(x, c(0.025, 0.975))
+    )
   )
 })
 methods::setMethod("plot", signature("GGCommonality"), function(x) {
@@ -134,6 +156,7 @@ plot_commonality <- function(
       resample_type = resample_type,
       wild_type = wild_type,
       include_total = include_total,
+      yhat_out = yhat_out,
       seed = seed
       )
 
