@@ -5,16 +5,13 @@
 \title{Percentile-based Bootstrap Confidence Intervals for ggcommonality.}
 \usage{
 ci_ggcommonality(
+  data.boot,
   formula,
   data,
-  sample_column,
-  n_replications,
   ci_sign = "+",
   ci_lower = 0.025,
   ci_upper = 0.975,
   stack_by = "partition",
-  resample_type = "random",
-  wild_type = "gaussian",
   ...
 )
 }
@@ -22,10 +19,6 @@ ci_ggcommonality(
 \item{formula}{Formula for linear regression model}
 
 \item{data}{Data frame matching formula argument}
-
-\item{sample_column}{Character. Name of column for resampling observations. If blank, simple resampling is performed.}
-
-\item{n_replications}{Numeric. Number of replications to use in bootstrap.}
 
 \item{ci_sign}{If "+", genereates confidence intervals using only positive coefficients
 If "-", generates confidence intervals using only negative coefficients.
@@ -38,14 +31,18 @@ Otherwise, generates confidence interval using both positive and negative.}
 \item{stack_by}{In progress. Currently allows stacking unique and common effects by partition
 if "partition" is the input. If stack_by == "common" it stacks unique vs joint effects.}
 
+\item{...}{Additional parameters passed to ggplot2::geom_errorbar}
+
+\item{sample_column}{Character. Name of column for resampling observations. If blank, simple resampling is performed.}
+
+\item{n_replications}{Numeric. Number of replications to use in bootstrap.}
+
 \item{resample_type}{Method for boostrap resampling. Either "random", "fixed", or "wild".}
 
 \item{wild_type}{If resample_type == "wild", either "Gaussian" to
 multiply resampled residuals by random constants from the normal distribution,
 or sign to randomly multiply half of the residuals by +1 and half by -1.
 This provides a solution to "fixed" in the presence of model heteroscedasticity}
-
-\item{...}{Additional parameters passed to ggplot2::geom_errorbar}
 }
 \value{
 Data frame containing commonality partitions for replications.
@@ -61,13 +58,4 @@ data resampled with replacement. Then it sums unique and joint effects for each
 commonality partition and generates a 95% confidence interval.
 By setting ci_sign to "positive" or "negative", you can generate an errorbar
 for positive and negative commonalities, respectively.
-}
-\examples{
- ggcommonality(formula = mpg ~ cyl + disp + vs,
-               data = mtcars) +
-   ci_ggcommonality(formula = mpg ~ cyl + disp + vs,
-                    data = mtcars,
-                    sample_column = "gear",
-                    n_replications = 100,
-                    ci_sign = "+") |> suppressWarnings()
 }

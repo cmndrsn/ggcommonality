@@ -13,15 +13,11 @@
 #' @import yhat
 #' @examples
 #' data(mtcars)
-#' ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars) |>
+#' plot_ggcommonality(formula = mpg ~ hp + wt, data = mtcars) |>
 #'   suppressWarnings()
-#'
-#' data(trees)
-#' ggcommonality(formula = Height ~ Girth + Volume + Girth * Volume,
-#' data = trees)
 #' @export
 #'
-ggcommonality <- function(formula,
+plot_ggcommonality <- function(formula,
                           data,
                           stack_by = "partition") {
   commonality_df <- df_ggcommonality(formula,
@@ -157,36 +153,20 @@ ggcommonality <- function(formula,
 #' @param ... Additional parameters passed to ggplot2::geom_errorbar
 #' @import pbapply
 #' @return ggproto instance
-#'
-#' @examples
-#'  ggcommonality(formula = mpg ~ cyl + disp + vs,
-#'                data = mtcars) +
-#'    ci_ggcommonality(formula = mpg ~ cyl + disp + vs,
-#'                     data = mtcars,
-#'                     sample_column = "gear",
-#'                     n_replications = 100,
-#'                     ci_sign = "+") |> suppressWarnings()
-#' @export
-#'
 ci_ggcommonality <- function(
+                          data.boot,
                           formula,
                           data,
-                          sample_column,
-                          n_replications,
                           ci_sign = "+",
                           ci_lower = 0.025,
                           ci_upper = 0.975,
                           stack_by = "partition",
-                          resample_type = "random",
-                          wild_type = "gaussian",
                           ...) {
 
 
   # if groups argument is not explicitly stated, set value to NULL
   # when passed to mosaic::resample
-  if(missing(sample_column)) {
-    sample_column <- NULL
-  }
+
   commonality_df <- df_ggcommonality(formula,
                                      data,
                                      stack_by = stack_by)
@@ -203,15 +183,11 @@ ci_ggcommonality <- function(
 
   df_ci <-
     .helper_make_ci(
+    data = data.boot,
     formula = formula,
-    data = data,
-    sample_column = sample_column,
-    resample_type = resample_type,
-    wild_type = wild_type,
     ci_sign = ci_sign,
     ci_lower = ci_lower,
     ci_upper = ci_upper,
-    n_replications = n_replications,
     stack_by = stack_by
     )
 

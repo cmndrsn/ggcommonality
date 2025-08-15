@@ -8,17 +8,12 @@
 <!-- badges: end -->
 
 ggcommonality creates bar plots of unique and joint effects from a
-commonality analysis of a linear regression model. The function outputs
-a bar plots with unique and common effects for each commonality
-partition.
-
-The function is scalable to multiple variables and takes formula
-notation for input, calling on the `yhat` package (Nimon, Oswald, and
-Roberts. 2023).
-
-This function builds bar plots in the style of those appearing in the
-[MAPLE Lab’s](https://maplelab.net) work applying commonality analysis
-to the compositions of Bach and Chopin (Anderson and Schutz 2022).
+commonality analysis of a linear regression model. The S4 branch extends
+its functionality using an object-oriented syntax. The package calls on
+`yhat` to perform commonality analyses (Nimon, Oswald, and Roberts.
+2023), building bar plots in the style of those appearing in the [MAPLE
+Lab’s](https://maplelab.net) work applying commonality analysis to the
+compositions of Bach and Chopin (Anderson and Schutz 2022).
 
 Partitions are plotted sequentially in alphabetical order, starting with
 unique effects and are built iteratively with joint effects at higher
@@ -26,153 +21,192 @@ orders on top.
 
 ## Installation
 
-You can install the development version of ggcommonality from
+You can install the S4 version of ggcommonality (under development) from
 [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("pak")
-pak::pak("cmndrsn/ggcommonality")
+devtools::install_github("cmndrsn/ggcommonality", ref = "S4")
 ```
 
 ## Example
 
-The function produces a barplot of a commonality analysis from a formula
-and data set.
+The function produces a GGCommonality object, containing ingredients for
+plotting commonality effects, along with the results from the
+commonality analysis.
 
 ``` r
 library(ggcommonality)
-library(ggplot2)
-# import data
-data(mtcars)
 
-p <- ggcommonality(formula = mpg ~ cyl + disp + vs,
+my_formula <- mpg ~ wt + hp
+
+p <- ggcommonality(formula = my_formula,
                    data = mtcars)
+#> Registered S3 method overwritten by 'mosaic':
+#>   method                           from   
+#>   fortify.SpatialPolygonsDataFrame ggplot2
   
-
-print(p)
+p |> attributes() |> summary()
+#>                Length Class                      Mode     
+#> data            11    data.frame                 list     
+#> data.boot      400    -none-                     numeric  
+#> formula          3    formula                    call     
+#> stack            1    -none-                     logical  
+#> stack_by         1    -none-                     character
+#> n_replications   1    -none-                     numeric  
+#> sample_column    1    -none-                     name     
+#> resample_type    1    -none-                     character
+#> wild_type        1    -none-                     character
+#> include_total    1    -none-                     logical  
+#> get_yhat         1    nonstandardGenericFunction function 
+#> seed             1    -none-                     name     
+#> ...              1    -none-                     name     
+#> class            1    -none-                     character
 ```
 
-<img src="man/figures/README-example-1.png" width="100%" />
-
-The plot is customizable and can be used with ggprotos.
+ggcommonality objects can be defined, plotted, and summarized using
+built-in methods.
 
 ``` r
-p + scale_fill_manual(
-  values = c(
-    "#7fc97f",
-    "#beaed4",
-    "#fdc086"
-    )
-) 
+# visualize commonality effects and add confidence intervals
+plot(p) +
+  add_ci(p)
+#> Bootstrap confidence intervals:
+#>       Unique to wt         Unique to hp         Common to wt, and hp
+#> 2.5%              0.102445            0.0217475            0.4407075
+#> 97.5%             0.336340            0.1451100            0.6017200
+#>       Total               
+#> 2.5%             0.7077775
+#> 97.5%            0.9461025
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
-We can compare the bar plot output to the unique and common effects from
-the model:
+We can also check the results from `yhat`
 
 ``` r
-yhat_model <- yhat::regr(
-  lm(
-    formula = mpg ~ cyl + disp + vs,
-    data = mtcars
-  )
-)
-knitr::kable(
-  yhat_model$Commonality_Data$CC
-)
+
+get_yhat(p)
+#> $yhat
+#> $yhat$LM_Output
+#> 
+#> Call:
+#> lm(formula = x@formula, data = x@data)
+#> 
+#> Residuals:
+#>    Min     1Q Median     3Q    Max 
+#> -3.941 -1.600 -0.182  1.050  5.854 
+#> 
+#> Coefficients:
+#>             Estimate Std. Error t value Pr(>|t|)    
+#> (Intercept) 37.22727    1.59879  23.285  < 2e-16 ***
+#> wt          -3.87783    0.63273  -6.129 1.12e-06 ***
+#> hp          -0.03177    0.00903  -3.519  0.00145 ** 
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> 
+#> Residual standard error: 2.593 on 29 degrees of freedom
+#> Multiple R-squared:  0.8268, Adjusted R-squared:  0.8148 
+#> F-statistic: 69.21 on 2 and 29 DF,  p-value: 9.109e-12
+#> 
+#> 
+#> $yhat$Beta_Weights
+#>         wt         hp 
+#> -0.6295545 -0.3614507 
+#> 
+#> $yhat$Structure_Coefficients
+#>              wt         hp
+#> [1,] -0.9542295 -0.8536101
+#> 
+#> $yhat$Commonality_Data
+#> $yhat$Commonality_Data$CC
+#>                      Coefficient     % Total
+#> Unique to wt              0.2243       27.13
+#> Unique to hp              0.0740        8.94
+#> Common to wt, and hp      0.5285       63.92
+#> Total                     0.8268      100.00
+#> 
+#> $yhat$Commonality_Data$CCTotalbyVar
+#>    Unique Common  Total
+#> wt 0.2243 0.5285 0.7528
+#> hp 0.0740 0.5284 0.6024
+#> 
+#> 
+#> $yhat$Effect_Size
+#>                     Effect.Size Recommended
+#> Wherry1       0.808226750298805          No
+#> Claudy3       0.824785233237495          No
+#> Smith         0.808866705525839          No
+#> Wherry2       0.814839620978156          No
+#> Olkin & Pratt 0.818527562995977         Yes
+#> Pratt         0.818271515745636          No
+#> 
+#> $yhat$Comment
+#> [1] "The Effect Size recommendations are based on Yin and Fan (2001). Your dataset may take on a different covariance structure, thus making another effect size estimate more appropriate."
+#> 
+#> 
+#> $ci
+#>       Unique to wt         Unique to hp         Common to wt, and hp
+#> 2.5%              0.102445            0.0217475            0.4407075
+#> 97.5%             0.336340            0.1451100            0.6017200
+#>       Total               
+#> 2.5%             0.7077775
+#> 97.5%            0.9461025
 ```
 
-|                             | Coefficient | % Total |
-|:----------------------------|------------:|--------:|
-| Unique to cyl               |      0.0344 |    4.53 |
-| Unique to disp              |      0.0322 |    4.24 |
-| Unique to vs                |      0.0010 |    0.13 |
-| Common to cyl, and disp     |      0.2529 |   33.25 |
-| Common to cyl, and vs       |      0.0068 |    0.89 |
-| Common to disp, and vs      |      0.0012 |    0.15 |
-| Common to cyl, disp, and vs |      0.4320 |   56.81 |
-| Total                       |      0.7605 |  100.00 |
-
-To get the x and y coordinates passed to `geom_rect()` when making the
-plot, you can use the `df_ggcommonality()` function, which returns a
-list with (1) the data frame used to create the barplot for positive
-commonalities (from xmin, xmax, ymin, and ymax coordinates); (2) the
-data frame used to create the black outline for the positive effects;
-(3) the data frame used to create the barplot for negative
-commonalities; and (4) the data frame used to create the black outline
-for the negative effects.
+Commonality effects can be stacked in multiple ways:
 
 ``` r
-df_commonality <- df_ggcommonality(
-  formula = mpg ~ cyl + disp + vs,
-  data = mtcars
-)
 
-## Make output shorter
-lapply(
-  df_commonality,
-  head
+# define object 
+p <- ggcommonality(
+  formula = my_formula,
+  data = mtcars,
+  stack = TRUE
 )
-#> [[1]]
-#>            names   vals total category plot_order n_cues   type cue value x_min
-#> 3            cyl 0.0344  4.53      cyl          1      1 unique   1   cyl   2.5
-#> 1       cyl,  vs 0.0068  0.89      cyl          2      2 common   1   cyl   2.5
-#> 2       cyl,  vs 0.0068  0.89      cyl          2      2 common   2    vs   3.0
-#> 4     cyl,  disp 0.2529 33.25      cyl          3      2 common   1   cyl   2.5
-#> 5     cyl,  disp 0.2529 33.25      cyl          3      2 common   2  disp   3.0
-#> 6 cyl, disp,  vs 0.4320 56.81      cyl          4      3 common   1   cyl   2.5
-#>      x_max category_numeric  y_min  y_max
-#> 3 3.500000                1 0.0000 0.0344
-#> 1 3.000000                1 0.0344 0.0412
-#> 2 3.500000                1 0.0344 0.0412
-#> 4 3.000000                1 0.0412 0.2941
-#> 5 3.500000                1 0.0412 0.2941
-#> 6 2.833333                1 0.2941 0.7261
-#> 
-#> [[2]]
-#> # A tibble: 3 × 6
-#>   category y_min y_max x_min x_max x_mid
-#>   <chr>    <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1 cyl          0 0.726   2.5   3.5   3  
-#> 2 disp         0 0.718   4     5     4.5
-#> 3 vs           0 0.441   5.5   6.5   6  
-#> 
-#> [[3]]
-#>   names vals total category plot_order 2 3 n_cues   type cue value x_min x_max
-#> 1   cyl    0     0      cyl          1          1 unique   1   cyl   2.5   2.5
-#> 4   cyl    0     0      cyl          1          1 unique   1   cyl   3.5   3.5
-#> 2  disp    0     0     disp          1          1 unique   1  disp   5.0   5.0
-#> 5  disp    0     0     disp          1          1 unique   1  disp   4.0   4.0
-#> 3    vs    0     0       vs          1          1 unique   1    vs   5.5   5.5
-#> 6    vs    0     0       vs          1          1 unique   1    vs   6.5   6.5
-#>   category_numeric y_min y_max
-#> 1                1     0     0
-#> 4                1     0     0
-#> 2                2     0     0
-#> 5                2     0     0
-#> 3                3     0     0
-#> 6                3     0     0
-#> 
-#> [[4]]
-#> # A tibble: 3 × 6
-#>   category y_min y_max x_min x_max x_mid
-#>   <chr>    <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1 cyl          0     0   2.5   3.5   3  
-#> 2 disp         0     0   4     5     4.5
-#> 3 vs           0     0   5.5   6.5   6
+  
+
+# stack
+plot(p) +
+  add_ci(p)
+#> Bootstrap confidence intervals:
+#>        type     lower   upper
+#> 2.5% unique 0.2430325 0.38724
+#>        type   lower    upper
+#> 2.5% common 0.39058 0.602515
 ```
 
-# Adding confidence intervals
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
-You can add percentile-based bootstrap confidence intervals using the
-`ci_ggcommonality` function. The `resample_type` argument specifies
-whether to generate random-*x*, confidence intervals, fixed-*x*, or
-wild-*x* confidence intervals. The
+``` r
+# define object 
+p <- ggcommonality(
+  formula = my_formula,
+  data = mtcars,
+  stack = TRUE, 
+  stack_by = "partition"
+)
+  
+# stack
+plot(p) +
+  add_ci(p)
+#> Bootstrap confidence intervals:
+#>      category    lower     upper
+#> 2.5%       wt 0.575685 0.8670875
+#>      category   lower    upper
+#> 2.5%       hp 0.44979 0.716075
+```
+
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+
+# Confidence intervals
+
+The `resample_type` argument specifies whether to generate random-*x*,
+confidence intervals, fixed-*x*, or wild-*x* confidence intervals. The
 [appendices](https://www.john-fox.ca/Companion/) to Fox and Weisberg
 (2018) summarizes the advantages and disadvantages of fixed
 vs. random-*x* bootstrapping. Wild-*x* provides a solution to fixed-*x*
-for models featuring heteroscedasticity by multiplying resampled
+for models featuring heteroscedasticity by multiplying re-sampled
 residuals with constants sampled from a Gaussian distribution
 (`wild_type = "gaussian"`), or by randomly multiplying half by 1 and
 half by -1 (`wild_type = "sign"`).
@@ -182,83 +216,65 @@ unique and joint effects for individual commonality partitions.
 Otherwise, if `stack_by = "common"`, separate confidence intervals are
 generated for the sum of unique effects and the sum of joint effects.
 
-## Comparing random-*x* bootstrap confidence intervals
+## Comparing confidence intervals
 
 ``` r
 # set r's random number generator
-set.seed(1)
+p1 <- ggcommonality(
+  formula = my_formula,
+  data = mtcars,
+  resample_type = "fixed"
+)
+p2 <- ggcommonality(
+  formula = my_formula,
+  data = mtcars,
+  resample_type = "wild"
+)
+  
 library(patchwork)
 
-lm_cars <- mpg ~ cyl + disp + vs
-
-p <- p + theme_void() + ylim(0, 1.2) + theme(legend.position = 'none')
-
-ci_random <- p +
-  ci_ggcommonality(
-    formula = lm_cars,
-     data = mtcars,
-     n_replications = 100,
-    resample_type = "random"
-) +
-  labs(subtitle = "Random-x")
-
-
-ci_fixed <- p +
-  ci_ggcommonality(
-    formula = lm_cars,
-     data = mtcars,
-     n_replications = 100,
-    resample_type = "fixed"
-)+
-  labs(subtitle = "Fixed-x") 
-
-ci_gaussian <- p +
-  ci_ggcommonality(
-    formula = lm_cars,
-     data = mtcars,
-     n_replications = 100,
-    resample_type = "wild"
-)+
-  labs(subtitle = "Wild (Gaussian)") 
-
-ci_sign <- p +
-  ci_ggcommonality(
-    formula = lm_cars,
-     data = mtcars,
-     n_replications = 100,
-    resample_type = "wild",
-    wild_type = "sign"
-)+
-  labs(subtitle = "Wild (sign)") 
-
-(ci_random|ci_fixed|ci_gaussian|ci_sign)
-```
-
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
-
-# Stack by unique vs. common effects
-
-``` r
-p2 <- ggcommonality(
-  lm_cars,
-  data = mtcars,
-  stack_by = "common"
-)
-
-p2 +
-  ci_ggcommonality(
-    formula = lm_cars,
-    data = mtcars,
-    n_replications = 100,
-    stack_by = "common",
-    resample_type = "wild",
-    ci_sign = "",
-    width = 0.5,
-    alpha = 0.5
-) 
+# stack
+plot(p1) +
+  add_ci(p1)+
+  ylim(0,0.65)+
+  ggtitle("Fixed")|
+  plot(p2) +
+  add_ci(p2)+
+    ylim(0,0.65)+
+  ggtitle("Wild")
+#>       Unique to wt         Unique to hp         Common to wt, and hp
+#> 2.5%             0.1337675            0.0142875            0.4594825
+#> 97.5%            0.3733625            0.1504600            0.5930400
+#>       Total               
+#> 2.5%             0.7478275
+#> 97.5%            0.9133325
+#>       Unique to wt         Unique to hp         Common to wt, and hp
+#> 2.5%             0.1337675            0.0142875            0.4594825
+#> 97.5%            0.3733625            0.1504600            0.5930400
+#>       Total               
+#> 2.5%             0.7478275
+#> 97.5%            0.9133325
+#>       Unique to wt         Unique to hp         Common to wt, and hp
+#> 2.5%             0.1208525            0.0196800              0.43912
+#> 97.5%            0.3378900            0.1432725              0.61448
+#>       Total               
+#> 2.5%              0.699095
+#> 97.5%             0.943825
+#>       Unique to wt         Unique to hp         Common to wt, and hp
+#> 2.5%             0.1208525            0.0196800              0.43912
+#> 97.5%            0.3378900            0.1432725              0.61448
+#>       Total               
+#> 2.5%              0.699095
+#> 97.5%             0.943825
 ```
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+
+# Getting help
+
+For additional information, read the help documentation
+`?ggcommonality()`, or [email Cameron
+Anderson](mailto:andersoc@mcmaster.ca)!
 
 # References
 

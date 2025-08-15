@@ -21,11 +21,13 @@
 run_commonality_bootstrap <- function(
     formula,
     data,
-    groups,
+    groups = NULL,
     resample_type = "random",
     wild_type = "gaussian",
-    n_replications = 10000
+    n_replications = 100,
+    seed = NULL
     ) {
+  set.seed(seed)
   data_simplified <- .helper_simplify_df(
     formula = formula,
     data = data,
@@ -48,7 +50,7 @@ run_commonality_bootstrap <- function(
 #' Drop columns unnecessary to bootstrap commonality analysis
 #'
 #' Gets rid of columns not specified in formula
-#'
+#' @noRd
 #' @param formula Formula to be used in helper_commonality_bootstrap
 #' @param data Data to be used in helper_commonality_bootstrap
 #' @param groups Groups to be used in helper_commonality_bootstrap
@@ -66,6 +68,7 @@ run_commonality_bootstrap <- function(
 #' Commonality Coefficients From Resampled Data
 #'
 #' Calculate commonality coefficients in bootstrap procedure
+#' @noRd
 #'
 #' Performs bootstrapping for coefficients. If resample_type is "fixed" or "wild",
 #' model errors are randomly resampled in bootstrap rather than data observations.
