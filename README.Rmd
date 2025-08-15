@@ -29,7 +29,7 @@ its functionality using an object-oriented syntax. The package calls on
 `yhat` to perform commonality analyses [@nimon2023r], building bar plots
 in the style of those appearing in the [MAPLE
 Lab's](https://maplelab.net) work applying commonality analysis to the
-compositions of Bach and Chopin [@anderson2022exploring].
+compositions of Bach and Chopin [@delle2025breaking; @anderson2022exploring].
 
 Partitions are plotted sequentially in alphabetical order, starting with
 unique effects and are built iteratively with joint effects at higher
