@@ -25,7 +25,6 @@ You can install the S4 version of ggcommonality (under development) from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
 devtools::install_github("cmndrsn/ggcommonality", ref = "S4")
 ```
 
@@ -71,13 +70,6 @@ built-in methods.
 # visualize commonality effects and add confidence intervals
 plot(p) +
   add_ci(p)
-#> Bootstrap confidence intervals:
-#>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1170125            0.0205925            0.4475825
-#> 97.5%            0.3520000            0.1820375            0.6056625
-#>       Total               
-#> 2.5%             0.7241625
-#> 97.5%            0.9469150
 #> Bootstrap confidence intervals:
 #>       Unique to wt         Unique to hp         Common to wt, and hp
 #> 2.5%             0.1170125            0.0205925            0.4475825
