@@ -1,7 +1,7 @@
 Package: ggcommonality
 Type: Package
 Title: Bar Plot of Commonality Analysis Coefficients in ggplot2
-Version: 0.1.0
+Version: 1.0.0
 Author: Cameron J. Anderson
 Maintainer: Cameron J. Anderson <andersoc@mcmaster.ca>
 Description: This package helps create bar plots distinguishing unique and joint effects from commonality analysis output from the yhat package.
