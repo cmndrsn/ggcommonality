@@ -1,7 +1,7 @@
 #' Preprocessing Functions for Commonality Barplot
 #'
 #' Format yhat::regr() output for plotting purposes.
-#'
+#' @noRd
 #' @param fitted_model List returned by yhat::regr() function.
 #' @param type Character. One of "positive" or "negative".
 #' Return positive and negative commonality values from model respectively
@@ -70,7 +70,7 @@
 #'
 #' Expand out data frame so common effects are represented in separate rows.
 #' Use regex functions for splitting.
-#'
+#' @noRd
 #' @param plot_data Data.frame with columns "names" and "values".
 #' Names column should include a consistent splitter between variable names.
 #' @param splitter String pattern used to separate joint effects. E.g., "and"
@@ -139,7 +139,7 @@
  #' Preprocessing Functions for Commonality Barplot
 #'
 #' Pivot commonality data.frame longer.
-#'
+#' @noRd
 #' @param partition_effect_df Data.frame returned from .helper_split_partition_effects
 #'
 #' @return Data.frame with pivoted values.
@@ -161,7 +161,7 @@
 #' Define X and Y coordinates for building commonality barplot
 #'
 #' Separate adjacent commonality partitions.
-#'
+#' @noRd
 #' @param pivoted_cue_df Data.frame output from .helper_duplicate_inner_values
 #' @param unpivoted_cue_df Data.frame output of .helper_split_partition_effects
 #' @param x_offset Numeric. How much to offset adjacent partitions?
@@ -220,7 +220,7 @@
 #' Define X and Y coordinates for building commonality barplot
 #'
 #' Incrementally add common effects on top of unique effects.
-#'
+#' @noRd
 #' @param pivoted_cue_df Data.frame output from .helper_define_x_coordinates
 #' @param stack_by In progress. Currently allows stacking unique and common effects by partition
 #' if "partition" is the input. Otherwise it stacks unique vs joint effects.
@@ -293,7 +293,7 @@
 #' Define X and Y coordinates for building commonality barplot
 #'
 #' Get coordinates for drawing outline of commonality barplot
-#'
+#' @noRd
 #' @param pivoted_cue_df_xy  Data.frame. Output of.helper_define_y_coordinates
 #' @param type Positive or negative.
 #' @param stack_by In progress. Currently allows stacking unique and common effects by partition

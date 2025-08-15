@@ -17,23 +17,19 @@ knitr::opts_chunk$set(
 )
 ```
 
-# ggcommonality <img src="ggcommonality_sticker.png" align="right"/>
+# ggcommonality <img src="man/ggcommonality_sticker.png" align="right"/>
 
 <!-- badges: start -->
 
 <!-- badges: end -->
 
 ggcommonality creates bar plots of unique and joint effects from a
-commonality analysis of a linear regression model. The function outputs
-a bar plots with unique and common effects for each commonality
-partition.
-
-The function is scalable to multiple variables and takes formula
-notation for input, calling on the `yhat` package [@nimon2023r].
-
-This function builds bar plots in the style of those appearing in the
-[MAPLE Lab's](https://maplelab.net) work applying commonality analysis
-to the compositions of Bach and Chopin [@anderson2022exploring].
+commonality analysis of a linear regression model. The S4 branch extends
+its functionality using an object-oriented syntax. The package calls on
+`yhat` to perform commonality analyses [@nimon2023r], building bar plots
+in the style of those appearing in the [MAPLE
+Lab's](https://maplelab.net) work applying commonality analysis to the
+compositions of Bach and Chopin [@anderson2022exploring].
 
 Partitions are plotted sequentially in alphabetical order, starting with
 unique effects and are built iteratively with joint effects at higher
@@ -41,180 +37,131 @@ orders on top.
 
 ## Installation
 
-You can install the development version of ggcommonality from
+You can install the S4 version of ggcommonality (under development) from
 [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("pak")
-pak::pak("cmndrsn/ggcommonality")
+devtools::install_github("cmndrsn/ggcommonality", ref = "S4")
 ```
 
 ## Example
 
-The function produces a barplot of a commonality analysis from a formula
-and data set.
+The function produces a GGCommonality object, containing ingredients for
+plotting commonality effects, along with the results from the
+commonality analysis.
 
 ```{r example, warning=FALSE}
 library(ggcommonality)
-library(ggplot2)
-# import data
-data(mtcars)
 
-p <- ggcommonality(formula = mpg ~ cyl + disp + vs,
+my_formula <- mpg ~ wt + hp
+
+p <- plot_commonality(formula = my_formula,
                    data = mtcars)
   
-
-print(p)
+p |> attributes() |> summary()
 ```
 
-The plot is customizable and can be used with ggprotos.
+ggcommonality objects can be defined, plotted, and summarized using
+built-in methods.
 
 ```{r}
-p + scale_fill_manual(
-  values = c(
-    "#7fc97f",
-    "#beaed4",
-    "#fdc086"
-    )
-) +
-geom_hline(
-  yintercept = 0.7652,
-  linetype = "dashed",
-  color = "grey50"
-  ) + # adding total explained variance
-annotate(
-  geom="text", 
-  x=5 , y= .76, 
-  label="Total variance explained\n(unique + joint)",
-  color="grey50"
-)
+# visualize commonality effects and add confidence intervals
+plot(p) +
+  add_ci(p)
 
 ```
 
-We can compare the bar plot output to the unique and common effects from
-the model:
+We can also check the results from `yhat`
 
 ```{r commonality, warning=FALSE}
-yhat_model <- yhat::regr(
-  lm(
-    formula = mpg ~ cyl + disp + vs,
-    data = mtcars
-  )
-)
-knitr::kable(
-  yhat_model$Commonality_Data$CC
-)
+
+get_yhat(p)
 ```
 
-To get the x and y coordinates passed to `geom_rect()` when making the
-plot, you can use the following line of code, which returns a list with
-(1) the data frame used to create the barplot for positive commonalities
-(from xmin, xmax, ymin, and ymax coordinates); (2) the data frame used
-to create the black outline for the positive effects; (3) the data frame
-used to create the barplot for negative commonalities; and (4) the data
-frame used to create the black outline for the negative effects.
+Commonality effects can be stacked in multiple ways
 
 ```{r warning=FALSE}
-df_commonality <- df_ggcommonality(
-  formula = mpg ~ cyl + disp + vs,
-  data = mtcars
-)
 
-## Make output shorter
-lapply(
-  df_commonality,
-  head
+# define object 
+p <- plot_commonality(
+  formula = my_formula,
+  data = mtcars,
+  stack = TRUE
 )
+  
+
+# stack
+plot(p) +
+  add_ci(p)
+
 
 ```
 
-# Adding confidence intervals
+```{r}
+# define object 
+p <- plot_commonality(
+  formula = my_formula,
+  data = mtcars,
+  stack = TRUE, 
+  stack_by = "partition"
+)
+  
 
-You can add percentile-based bootstrap confidence intervals using the
-`ci_ggcommonality` function. The `resample_type` argument specifies
-whether to generate random-*x*, confidence intervals, fixed-*x*, or wild-*x*
-confidence intervals. The
-[appendices](https://www.john-fox.ca/Companion/) to @fox2018r summarizes the advantages and disadvantages of fixed vs. random-*x* bootstrapping. Wild-*x* provides a solution to fixed-*x* for models featuring heteroscedasticity by multiplying resampled residuals with constants sampled from a Gaussian distribution (`wild_type = "gaussian"`), or by randomly multiplying half by 1 and half by -1 (`wild_type = "sign"`).
+# stack
+plot(p) +
+  add_ci(p)
+
+```
+
+# Confidence intervals
+
+The `resample_type` argument specifies whether to generate random-*x*,
+confidence intervals, fixed-*x*, or wild-*x* confidence intervals. The
+[appendices](https://www.john-fox.ca/Companion/) to @fox2018r summarizes
+the advantages and disadvantages of fixed vs. random-*x* bootstrapping.
+Wild-*x* provides a solution to fixed-*x* for models featuring
+heteroscedasticity by multiplying re-sampled residuals with constants
+sampled from a Gaussian distribution (`wild_type = "gaussian"`), or by
+randomly multiplying half by 1 and half by -1 (`wild_type = "sign"`).
 
 If `stack_by = "partition"`, confidence intervals represent the sum of
 unique and joint effects for individual commonality partitions.
 Otherwise, if `stack_by = "common"`, separate confidence intervals are
 generated for the sum of unique effects and the sum of joint effects.
 
-## Comparing random-*x* bootstrap confidence intervals
+## Comparing confidence intervals
 
 ```{r warning=FALSE, message=FALSE}
 # set r's random number generator
-set.seed(1)
+p1 <- plot_commonality(
+  formula = my_formula,
+  data = mtcars,
+  resample_type = "fixed"
+)
+p2 <- plot_commonality(
+  formula = my_formula,
+  data = mtcars,
+  resample_type = "wild"
+)
+  
 library(patchwork)
 
-lm_cars <- mpg ~ cyl + disp + vs
-
-p <- p + theme_void() + ylim(0, 1.2)
-
-ci_random <- p +
-  ci_ggcommonality(
-    formula = lm_cars,
-     data = mtcars,
-     n_replications = 100,
-    resample_type = "random"
-) +
-  labs(title = "Random-x") +
-  theme_classic()
-
-
-ci_fixed <- p +
-  ci_ggcommonality(
-    formula = lm_cars,
-     data = mtcars,
-     n_replications = 100,
-    resample_type = "fixed"
-) +
-  labs(subtitle = "Fixed-x") 
-
-ci_gaussian <- p +
-  ci_ggcommonality(
-    formula = lm_cars,
-     data = mtcars,
-     n_replications = 100,
-    resample_type = "wild"
-)+
-  labs(subtitle = "Wild (Gaussian)") 
-
-ci_sign <- p +
-  ci_ggcommonality(
-    formula = lm_cars,
-     data = mtcars,
-     n_replications = 100,
-    resample_type = "wild",
-    wild_type = "sign"
-)+
-  labs(subtitle = "Wild (sign)") 
-
-(ci_random|ci_fixed|ci_gaussian|ci_sign) +
-  plot_layout(guides = "collect")
+# stack
+plot(p1) +
+  add_ci(p1)+
+  ylim(0,0.65)+
+  ggtitle("Fixed")|
+  plot(p2) +
+  add_ci(p2)+
+    ylim(0,0.65)+
+  ggtitle("Wild")
 
 ```
-# Stack by unique vs. common effects
 
-```{r warning=FALSE, message=FALSE}
-p2 <- ggcommonality(
-  lm_cars,
-  data = mtcars,
-  stack_by = "common"
-)
+# Getting help
 
-p2 +
-  ci_ggcommonality(
-    formula = lm_cars,
-    data = mtcars,
-    n_replications = 100,
-    stack_by = "common",
-    resample_type = "wild",
-    ci_sign = "",
-    width = 0.5,
-    alpha = 0.5
-) 
-```
+For additional information, read the help documentation
+`?plot_commonality()`, or [email Cameron Anderson](mailto:andersoc@mcmaster.ca)!
 
 # References

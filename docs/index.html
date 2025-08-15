@@ -57,259 +57,244 @@
   <div class="contents col-md-9">
 
 <div class="section level1">
-<div class="page-header"><h1 id="ggcommonality-">ggcommonality <img src="ggcommonality_sticker.png" align="right"><a class="anchor" aria-label="anchor" href="#ggcommonality-"></a>
+<div class="page-header"><h1 id="ggcommonality-">ggcommonality <img src="man/ggcommonality_sticker.png" align="right"><a class="anchor" aria-label="anchor" href="#ggcommonality-"></a>
 </h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
-<p>ggcommonality creates bar plots of unique and joint effects from a commonality analysis of a linear regression model. The function outputs a bar plots with unique and common effects for each commonality partition.</p>
-<p>The function is scalable to multiple variables and takes formula notation for input, calling on the <code>yhat</code> package (Nimon, Oswald, and Roberts. 2023).</p>
-<p>This function builds bar plots in the style of those appearing in the <a href="https://maplelab.net" class="external-link">MAPLE Lab’s</a> work applying commonality analysis to the compositions of Bach and Chopin (Anderson and Schutz 2022).</p>
+<p>ggcommonality creates bar plots of unique and joint effects from a commonality analysis of a linear regression model. The S4 branch extends its functionality using an object-oriented syntax. The package calls on <code>yhat</code> to perform commonality analyses (Nimon, Oswald, and Roberts. 2023), building bar plots in the style of those appearing in the <a href="https://maplelab.net" class="external-link">MAPLE Lab’s</a> work applying commonality analysis to the compositions of Bach and Chopin (Anderson and Schutz 2022).</p>
 <p>Partitions are plotted sequentially in alphabetical order, starting with unique effects and are built iteratively with joint effects at higher orders on top.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of ggcommonality from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>You can install the S4 version of ggcommonality (under development) from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu">pak</span><span class="op">(</span><span class="st">"cmndrsn/ggcommonality"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"cmndrsn/ggcommonality"</span>, ref <span class="op">=</span> <span class="st">"S4"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<p>The function produces a barplot of a commonality analysis from a formula and data set.</p>
+<p>The function produces a GGCommonality object, containing ingredients for plotting commonality effects, along with the results from the commonality analysis.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">ggcommonality</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="co"># import data</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ggcommonality.html">ggcommonality</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">mpg</span> <span class="op">~</span> <span class="va">cyl</span> <span class="op">+</span> <span class="va">disp</span> <span class="op">+</span> <span class="va">vs</span>,</span>
+<span><span class="va">my_formula</span> <span class="op">&lt;-</span> <span class="va">mpg</span> <span class="op">~</span> <span class="va">wt</span> <span class="op">+</span> <span class="va">hp</span></span>
+<span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot_commonality.html">plot_commonality</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
 <span>                   data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Registered S3 method overwritten by 'mosaic':</span></span>
+<span><span class="co">#&gt;   method                           from   </span></span>
+<span><span class="co">#&gt;   fortify.SpatialPolygonsDataFrame ggplot2</span></span>
+<span>  </span>
+<span><span class="va">p</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                Length Class                      Mode     </span></span>
+<span><span class="co">#&gt; data            11    data.frame                 list     </span></span>
+<span><span class="co">#&gt; data.boot      400    -none-                     numeric  </span></span>
+<span><span class="co">#&gt; formula          3    formula                    call     </span></span>
+<span><span class="co">#&gt; stack            1    -none-                     logical  </span></span>
+<span><span class="co">#&gt; stack_by         1    -none-                     character</span></span>
+<span><span class="co">#&gt; n_replications   1    -none-                     numeric  </span></span>
+<span><span class="co">#&gt; sample_column    1    -none-                     name     </span></span>
+<span><span class="co">#&gt; resample_type    1    -none-                     character</span></span>
+<span><span class="co">#&gt; wild_type        1    -none-                     character</span></span>
+<span><span class="co">#&gt; include_total    1    -none-                     logical  </span></span>
+<span><span class="co">#&gt; get_yhat         1    nonstandardGenericFunction function </span></span>
+<span><span class="co">#&gt; seed             1    -none-                     name     </span></span>
+<span><span class="co">#&gt; ...              1    -none-                     name     </span></span>
+<span><span class="co">#&gt; class            1    -none-                     character</span></span></code></pre></div>
+<p>ggcommonality objects can be defined, plotted, and summarized using built-in methods.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># visualize commonality effects and add confidence intervals</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">add_ci</span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Bootstrap confidence intervals:</span></span>
+<span><span class="co">#&gt;       Unique to wt         Unique to hp         Common to wt, and hp</span></span>
+<span><span class="co">#&gt; 2.5%             0.1170125            0.0205925            0.4475825</span></span>
+<span><span class="co">#&gt; 97.5%            0.3520000            0.1820375            0.6056625</span></span>
+<span><span class="co">#&gt;       Total               </span></span>
+<span><span class="co">#&gt; 2.5%             0.7241625</span></span>
+<span><span class="co">#&gt; 97.5%            0.9469150</span></span>
+<span><span class="co">#&gt; Bootstrap confidence intervals:</span></span>
+<span><span class="co">#&gt;       Unique to wt         Unique to hp         Common to wt, and hp</span></span>
+<span><span class="co">#&gt; 2.5%             0.1170125            0.0205925            0.4475825</span></span>
+<span><span class="co">#&gt; 97.5%            0.3520000            0.1820375            0.6056625</span></span>
+<span><span class="co">#&gt;       Total               </span></span>
+<span><span class="co">#&gt; 2.5%             0.7241625</span></span>
+<span><span class="co">#&gt; 97.5%            0.9469150</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="100%"></p>
+<p>We can also check the results from <code>yhat</code></p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu">get_yhat</span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $yhat</span></span>
+<span><span class="co">#&gt; $yhat$LM_Output</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; lm(formula = x@formula, data = x@data)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Residuals:</span></span>
+<span><span class="co">#&gt;    Min     1Q Median     3Q    Max </span></span>
+<span><span class="co">#&gt; -3.941 -1.600 -0.182  1.050  5.854 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span><span class="co">#&gt; (Intercept) 37.22727    1.59879  23.285  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; wt          -3.87783    0.63273  -6.129 1.12e-06 ***</span></span>
+<span><span class="co">#&gt; hp          -0.03177    0.00903  -3.519  0.00145 ** </span></span>
+<span><span class="co">#&gt; ---</span></span>
+<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Residual standard error: 2.593 on 29 degrees of freedom</span></span>
+<span><span class="co">#&gt; Multiple R-squared:  0.8268, Adjusted R-squared:  0.8148 </span></span>
+<span><span class="co">#&gt; F-statistic: 69.21 on 2 and 29 DF,  p-value: 9.109e-12</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $yhat$Beta_Weights</span></span>
+<span><span class="co">#&gt;         wt         hp </span></span>
+<span><span class="co">#&gt; -0.6295545 -0.3614507 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $yhat$Structure_Coefficients</span></span>
+<span><span class="co">#&gt;              wt         hp</span></span>
+<span><span class="co">#&gt; [1,] -0.9542295 -0.8536101</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $yhat$Commonality_Data</span></span>
+<span><span class="co">#&gt; $yhat$Commonality_Data$CC</span></span>
+<span><span class="co">#&gt;                      Coefficient     % Total</span></span>
+<span><span class="co">#&gt; Unique to wt              0.2243       27.13</span></span>
+<span><span class="co">#&gt; Unique to hp              0.0740        8.94</span></span>
+<span><span class="co">#&gt; Common to wt, and hp      0.5285       63.92</span></span>
+<span><span class="co">#&gt; Total                     0.8268      100.00</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $yhat$Commonality_Data$CCTotalbyVar</span></span>
+<span><span class="co">#&gt;    Unique Common  Total</span></span>
+<span><span class="co">#&gt; wt 0.2243 0.5285 0.7528</span></span>
+<span><span class="co">#&gt; hp 0.0740 0.5284 0.6024</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $yhat$Effect_Size</span></span>
+<span><span class="co">#&gt;                     Effect.Size Recommended</span></span>
+<span><span class="co">#&gt; Wherry1       0.808226750298805          No</span></span>
+<span><span class="co">#&gt; Claudy3       0.824785233237495          No</span></span>
+<span><span class="co">#&gt; Smith         0.808866705525839          No</span></span>
+<span><span class="co">#&gt; Wherry2       0.814839620978156          No</span></span>
+<span><span class="co">#&gt; Olkin &amp; Pratt 0.818527562995977         Yes</span></span>
+<span><span class="co">#&gt; Pratt         0.818271515745636          No</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $yhat$Comment</span></span>
+<span><span class="co">#&gt; [1] "The Effect Size recommendations are based on Yin and Fan (2001). Your dataset may take on a different covariance structure, thus making another effect size estimate more appropriate."</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ci</span></span>
+<span><span class="co">#&gt;       Unique to wt         Unique to hp         Common to wt, and hp</span></span>
+<span><span class="co">#&gt; 2.5%             0.1170125            0.0205925            0.4475825</span></span>
+<span><span class="co">#&gt; 97.5%            0.3520000            0.1820375            0.6056625</span></span>
+<span><span class="co">#&gt;       Total               </span></span>
+<span><span class="co">#&gt; 2.5%             0.7241625</span></span>
+<span><span class="co">#&gt; 97.5%            0.9469150</span></span></code></pre></div>
+<p>Commonality effects can be stacked in multiple ways</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># define object </span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot_commonality.html">plot_commonality</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">mtcars</span>,</span>
+<span>  stack <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
 <span>  </span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-example-1.png" width="100%"></p>
-<p>The plot is customizable and can be used with ggprotos.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span></span>
-<span>  values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"#7fc97f"</span>,</span>
-<span>    <span class="st">"#beaed4"</span>,</span>
-<span>    <span class="st">"#fdc086"</span></span>
-<span>    <span class="op">)</span></span>
-<span><span class="op">)</span> <span class="op">+</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span></span>
-<span>  yintercept <span class="op">=</span> <span class="fl">0.7652</span>,</span>
-<span>  linetype <span class="op">=</span> <span class="st">"dashed"</span>,</span>
-<span>  color <span class="op">=</span> <span class="st">"grey50"</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span> <span class="co"># adding total explained variance</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span></span>
-<span>  geom<span class="op">=</span><span class="st">"text"</span>, </span>
-<span>  x<span class="op">=</span><span class="fl">5</span> , y<span class="op">=</span> <span class="fl">.76</span>, </span>
-<span>  label<span class="op">=</span><span class="st">"Total variance explained\n(unique + joint)"</span>,</span>
-<span>  color<span class="op">=</span><span class="st">"grey50"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="100%"></p>
-<p>We can compare the bar plot output to the unique and common effects from the model:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">yhat_model</span> <span class="op">&lt;-</span> <span class="fu">yhat</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/yhat/man/regr.html" class="external-link">regr</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span></span>
-<span>    formula <span class="op">=</span> <span class="va">mpg</span> <span class="op">~</span> <span class="va">cyl</span> <span class="op">+</span> <span class="va">disp</span> <span class="op">+</span> <span class="va">vs</span>,</span>
-<span>    data <span class="op">=</span> <span class="va">mtcars</span></span>
-<span>  <span class="op">)</span></span>
+<span><span class="co"># stack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">add_ci</span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Bootstrap confidence intervals:</span></span>
+<span><span class="co">#&gt;        type  lower     upper</span></span>
+<span><span class="co">#&gt; 2.5% unique 0.2238 0.3731525</span></span>
+<span><span class="co">#&gt;        type     lower     upper</span></span>
+<span><span class="co">#&gt; 2.5% common 0.3920375 0.6046075</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%"></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># define object </span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot_commonality.html">plot_commonality</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">mtcars</span>,</span>
+<span>  stack <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>  stack_by <span class="op">=</span> <span class="st">"partition"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
-<span>  <span class="va">yhat_model</span><span class="op">$</span><span class="va">Commonality_Data</span><span class="op">$</span><span class="va">CC</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="left"></th>
-<th align="right">Coefficient</th>
-<th align="right">% Total</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">Unique to cyl</td>
-<td align="right">0.0344</td>
-<td align="right">4.53</td>
-</tr>
-<tr class="even">
-<td align="left">Unique to disp</td>
-<td align="right">0.0322</td>
-<td align="right">4.24</td>
-</tr>
-<tr class="odd">
-<td align="left">Unique to vs</td>
-<td align="right">0.0010</td>
-<td align="right">0.13</td>
-</tr>
-<tr class="even">
-<td align="left">Common to cyl, and disp</td>
-<td align="right">0.2529</td>
-<td align="right">33.25</td>
-</tr>
-<tr class="odd">
-<td align="left">Common to cyl, and vs</td>
-<td align="right">0.0068</td>
-<td align="right">0.89</td>
-</tr>
-<tr class="even">
-<td align="left">Common to disp, and vs</td>
-<td align="right">0.0012</td>
-<td align="right">0.15</td>
-</tr>
-<tr class="odd">
-<td align="left">Common to cyl, disp, and vs</td>
-<td align="right">0.4320</td>
-<td align="right">56.81</td>
-</tr>
-<tr class="even">
-<td align="left">Total</td>
-<td align="right">0.7605</td>
-<td align="right">100.00</td>
-</tr>
-</tbody>
-</table>
-<p>To get the x and y coordinates passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_rect()</a></code> when making the plot, you can use the following line of code, which returns a list with (1) the data frame used to create the barplot for positive commonalities (from xmin, xmax, ymin, and ymax coordinates); (2) the data frame used to create the black outline for the positive effects; (3) the data frame used to create the barplot for negative commonalities; and (4) the data frame used to create the black outline for the negative effects.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df_commonality</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/df_ggcommonality.html">df_ggcommonality</a></span><span class="op">(</span></span>
-<span>  formula <span class="op">=</span> <span class="va">mpg</span> <span class="op">~</span> <span class="va">cyl</span> <span class="op">+</span> <span class="va">disp</span> <span class="op">+</span> <span class="va">vs</span>,</span>
-<span>  data <span class="op">=</span> <span class="va">mtcars</span></span>
-<span><span class="op">)</span></span>
+<span>  </span>
 <span></span>
-<span><span class="co">## Make output shorter</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
-<span>  <span class="va">df_commonality</span>,</span>
-<span>  <span class="va">head</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; [[1]]</span></span>
-<span><span class="co">#&gt;            names   vals total category plot_order n_cues   type cue value x_min</span></span>
-<span><span class="co">#&gt; 3            cyl 0.0344  4.53      cyl          1      1 unique   1   cyl   2.5</span></span>
-<span><span class="co">#&gt; 1       cyl,  vs 0.0068  0.89      cyl          2      2 common   1   cyl   2.5</span></span>
-<span><span class="co">#&gt; 2       cyl,  vs 0.0068  0.89      cyl          2      2 common   2    vs   3.0</span></span>
-<span><span class="co">#&gt; 4     cyl,  disp 0.2529 33.25      cyl          3      2 common   1   cyl   2.5</span></span>
-<span><span class="co">#&gt; 5     cyl,  disp 0.2529 33.25      cyl          3      2 common   2  disp   3.0</span></span>
-<span><span class="co">#&gt; 6 cyl, disp,  vs 0.4320 56.81      cyl          4      3 common   1   cyl   2.5</span></span>
-<span><span class="co">#&gt;      x_max category_numeric  y_min  y_max</span></span>
-<span><span class="co">#&gt; 3 3.500000                1 0.0000 0.0344</span></span>
-<span><span class="co">#&gt; 1 3.000000                1 0.0344 0.0412</span></span>
-<span><span class="co">#&gt; 2 3.500000                1 0.0344 0.0412</span></span>
-<span><span class="co">#&gt; 4 3.000000                1 0.0412 0.2941</span></span>
-<span><span class="co">#&gt; 5 3.500000                1 0.0412 0.2941</span></span>
-<span><span class="co">#&gt; 6 2.833333                1 0.2941 0.7261</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[2]]</span></span>
-<span><span class="co">#&gt; # A tibble: 3 × 6</span></span>
-<span><span class="co">#&gt;   category y_min y_max x_min x_max x_mid</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 cyl          0 0.726   2.5   3.5   3  </span></span>
-<span><span class="co">#&gt; 2 disp         0 0.718   4     5     4.5</span></span>
-<span><span class="co">#&gt; 3 vs           0 0.441   5.5   6.5   6  </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[3]]</span></span>
-<span><span class="co">#&gt;   names vals total category plot_order 2 3 n_cues   type cue value x_min x_max</span></span>
-<span><span class="co">#&gt; 1   cyl    0     0      cyl          1          1 unique   1   cyl   2.5   2.5</span></span>
-<span><span class="co">#&gt; 4   cyl    0     0      cyl          1          1 unique   1   cyl   3.5   3.5</span></span>
-<span><span class="co">#&gt; 2  disp    0     0     disp          1          1 unique   1  disp   5.0   5.0</span></span>
-<span><span class="co">#&gt; 5  disp    0     0     disp          1          1 unique   1  disp   4.0   4.0</span></span>
-<span><span class="co">#&gt; 3    vs    0     0       vs          1          1 unique   1    vs   5.5   5.5</span></span>
-<span><span class="co">#&gt; 6    vs    0     0       vs          1          1 unique   1    vs   6.5   6.5</span></span>
-<span><span class="co">#&gt;   category_numeric y_min y_max</span></span>
-<span><span class="co">#&gt; 1                1     0     0</span></span>
-<span><span class="co">#&gt; 4                1     0     0</span></span>
-<span><span class="co">#&gt; 2                2     0     0</span></span>
-<span><span class="co">#&gt; 5                2     0     0</span></span>
-<span><span class="co">#&gt; 3                3     0     0</span></span>
-<span><span class="co">#&gt; 6                3     0     0</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[4]]</span></span>
-<span><span class="co">#&gt; # A tibble: 3 × 6</span></span>
-<span><span class="co">#&gt;   category y_min y_max x_min x_max x_mid</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 cyl          0     0   2.5   3.5   3  </span></span>
-<span><span class="co">#&gt; 2 disp         0     0   4     5     4.5</span></span>
-<span><span class="co">#&gt; 3 vs           0     0   5.5   6.5   6</span></span></code></pre></div>
+<span><span class="co"># stack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">add_ci</span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Bootstrap confidence intervals:</span></span>
+<span><span class="co">#&gt;      category     lower   upper</span></span>
+<span><span class="co">#&gt; 2.5%       wt 0.5821575 0.88555</span></span>
+<span><span class="co">#&gt;      category     lower    upper</span></span>
+<span><span class="co">#&gt; 2.5%       hp 0.3960225 0.735545</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="100%"></p>
 </div>
 </div>
 <div class="section level1">
-<h1 id="adding-confidence-intervals">Adding confidence intervals<a class="anchor" aria-label="anchor" href="#adding-confidence-intervals"></a>
+<h1 id="confidence-intervals">Confidence intervals<a class="anchor" aria-label="anchor" href="#confidence-intervals"></a>
 </h1>
-<p>You can add percentile-based bootstrap confidence intervals using the <code>ci_ggcommonality</code> function. The <code>resample_type</code> argument specifies whether to generate random-<em>x</em>, confidence intervals, fixed-<em>x</em>, or wild-<em>x</em> confidence intervals. The <a href="https://www.john-fox.ca/Companion/" class="external-link">appendices</a> to Fox and Weisberg (2018) summarizes the advantages and disadvantages of fixed vs. random-<em>x</em> bootstrapping. Wild-<em>x</em> provides a solution to fixed-<em>x</em> for models featuring heteroscedasticity by multiplying resampled residuals with constants sampled from a Gaussian distribution (<code>wild_type = "gaussian"</code>), or by randomly multiplying half by 1 and half by -1 (<code>wild_type = "sign"</code>).</p>
+<p>The <code>resample_type</code> argument specifies whether to generate random-<em>x</em>, confidence intervals, fixed-<em>x</em>, or wild-<em>x</em> confidence intervals. The <a href="https://www.john-fox.ca/Companion/" class="external-link">appendices</a> to Fox and Weisberg (2018) summarizes the advantages and disadvantages of fixed vs. random-<em>x</em> bootstrapping. Wild-<em>x</em> provides a solution to fixed-<em>x</em> for models featuring heteroscedasticity by multiplying re-sampled residuals with constants sampled from a Gaussian distribution (<code>wild_type = "gaussian"</code>), or by randomly multiplying half by 1 and half by -1 (<code>wild_type = "sign"</code>).</p>
 <p>If <code>stack_by = "partition"</code>, confidence intervals represent the sum of unique and joint effects for individual commonality partitions. Otherwise, if <code>stack_by = "common"</code>, separate confidence intervals are generated for the sum of unique effects and the sum of joint effects.</p>
 <div class="section level2">
 <h2 id="comparing-random-x-bootstrap-confidence-intervals">Comparing random-<em>x</em> bootstrap confidence intervals<a class="anchor" aria-label="anchor" href="#comparing-random-x-bootstrap-confidence-intervals"></a>
 </h2>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># set r's random number generator</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot_commonality.html">plot_commonality</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">mtcars</span>,</span>
+<span>  resample_type <span class="op">=</span> <span class="st">"fixed"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot_commonality.html">plot_commonality</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">mtcars</span>,</span>
+<span>  resample_type <span class="op">=</span> <span class="st">"wild"</span></span>
+<span><span class="op">)</span></span>
+<span>  </span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">lm_cars</span> <span class="op">&lt;-</span> <span class="va">mpg</span> <span class="op">~</span> <span class="va">cyl</span> <span class="op">+</span> <span class="va">disp</span> <span class="op">+</span> <span class="va">vs</span></span>
-<span></span>
-<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_void</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">ylim</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1.2</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">ci_random</span> <span class="op">&lt;-</span> <span class="va">p</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/ci_ggcommonality.html">ci_ggcommonality</a></span><span class="op">(</span></span>
-<span>    formula <span class="op">=</span> <span class="va">lm_cars</span>,</span>
-<span>     data <span class="op">=</span> <span class="va">mtcars</span>,</span>
-<span>     n_replications <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>    resample_type <span class="op">=</span> <span class="st">"random"</span></span>
-<span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Random-x"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_classic</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span></span>
-<span><span class="va">ci_fixed</span> <span class="op">&lt;-</span> <span class="va">p</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/ci_ggcommonality.html">ci_ggcommonality</a></span><span class="op">(</span></span>
-<span>    formula <span class="op">=</span> <span class="va">lm_cars</span>,</span>
-<span>     data <span class="op">=</span> <span class="va">mtcars</span>,</span>
-<span>     n_replications <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>    resample_type <span class="op">=</span> <span class="st">"fixed"</span></span>
-<span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>subtitle <span class="op">=</span> <span class="st">"Fixed-x"</span><span class="op">)</span> </span>
-<span></span>
-<span><span class="va">ci_gaussian</span> <span class="op">&lt;-</span> <span class="va">p</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/ci_ggcommonality.html">ci_ggcommonality</a></span><span class="op">(</span></span>
-<span>    formula <span class="op">=</span> <span class="va">lm_cars</span>,</span>
-<span>     data <span class="op">=</span> <span class="va">mtcars</span>,</span>
-<span>     n_replications <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>    resample_type <span class="op">=</span> <span class="st">"wild"</span></span>
-<span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>subtitle <span class="op">=</span> <span class="st">"Wild (Gaussian)"</span><span class="op">)</span> </span>
-<span></span>
-<span><span class="va">ci_sign</span> <span class="op">&lt;-</span> <span class="va">p</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/ci_ggcommonality.html">ci_ggcommonality</a></span><span class="op">(</span></span>
-<span>    formula <span class="op">=</span> <span class="va">lm_cars</span>,</span>
-<span>     data <span class="op">=</span> <span class="va">mtcars</span>,</span>
-<span>     n_replications <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>    resample_type <span class="op">=</span> <span class="st">"wild"</span>,</span>
-<span>    wild_type <span class="op">=</span> <span class="st">"sign"</span></span>
-<span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>subtitle <span class="op">=</span> <span class="st">"Wild (sign)"</span><span class="op">)</span> </span>
-<span></span>
-<span><span class="op">(</span><span class="va">ci_random</span><span class="op">|</span><span class="va">ci_fixed</span><span class="op">|</span><span class="va">ci_gaussian</span><span class="op">|</span><span class="va">ci_sign</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html" class="external-link">plot_layout</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="100%"> # Stack by unique vs. common effects</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ggcommonality.html">ggcommonality</a></span><span class="op">(</span></span>
-<span>  <span class="va">lm_cars</span>,</span>
-<span>  data <span class="op">=</span> <span class="va">mtcars</span>,</span>
-<span>  stack_by <span class="op">=</span> <span class="st">"common"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">p2</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/ci_ggcommonality.html">ci_ggcommonality</a></span><span class="op">(</span></span>
-<span>    formula <span class="op">=</span> <span class="va">lm_cars</span>,</span>
-<span>    data <span class="op">=</span> <span class="va">mtcars</span>,</span>
-<span>    n_replications <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>    stack_by <span class="op">=</span> <span class="st">"common"</span>,</span>
-<span>    resample_type <span class="op">=</span> <span class="st">"wild"</span>,</span>
-<span>    ci_sign <span class="op">=</span> <span class="st">""</span>,</span>
-<span>    width <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>    alpha <span class="op">=</span> <span class="fl">0.5</span></span>
-<span><span class="op">)</span> </span></code></pre></div>
+<span><span class="co"># stack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">add_ci</span><span class="op">(</span><span class="va">p1</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">ylim</span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.65</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Fixed"</span><span class="op">)</span><span class="op">|</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">add_ci</span><span class="op">(</span><span class="va">p2</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu">ylim</span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.65</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Wild"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;       Unique to wt         Unique to hp         Common to wt, and hp</span></span>
+<span><span class="co">#&gt; 2.5%             0.1263650            0.0167900            0.4515175</span></span>
+<span><span class="co">#&gt; 97.5%            0.3437175            0.1577875            0.5847175</span></span>
+<span><span class="co">#&gt;       Total               </span></span>
+<span><span class="co">#&gt; 2.5%             0.7574175</span></span>
+<span><span class="co">#&gt; 97.5%            0.9228125</span></span>
+<span><span class="co">#&gt;       Unique to wt         Unique to hp         Common to wt, and hp</span></span>
+<span><span class="co">#&gt; 2.5%             0.1263650            0.0167900            0.4515175</span></span>
+<span><span class="co">#&gt; 97.5%            0.3437175            0.1577875            0.5847175</span></span>
+<span><span class="co">#&gt;       Total               </span></span>
+<span><span class="co">#&gt; 2.5%             0.7574175</span></span>
+<span><span class="co">#&gt; 97.5%            0.9228125</span></span>
+<span><span class="co">#&gt;       Unique to wt         Unique to hp         Common to wt, and hp</span></span>
+<span><span class="co">#&gt; 2.5%             0.1253925            0.0177825            0.4274475</span></span>
+<span><span class="co">#&gt; 97.5%            0.3599775            0.1465550            0.6116525</span></span>
+<span><span class="co">#&gt;       Total               </span></span>
+<span><span class="co">#&gt; 2.5%             0.6874075</span></span>
+<span><span class="co">#&gt; 97.5%            0.9497975</span></span>
+<span><span class="co">#&gt;       Unique to wt         Unique to hp         Common to wt, and hp</span></span>
+<span><span class="co">#&gt; 2.5%             0.1253925            0.0177825            0.4274475</span></span>
+<span><span class="co">#&gt; 97.5%            0.3599775            0.1465550            0.6116525</span></span>
+<span><span class="co">#&gt;       Total               </span></span>
+<span><span class="co">#&gt; 2.5%             0.6874075</span></span>
+<span><span class="co">#&gt; 97.5%            0.9497975</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
 </div>
+</div>
+<div class="section level1">
+<h1 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
+</h1>
+<p>For additional information, read the help documentation <code>?plot_commonality()</code>, or <a href="mailto:andersoc@mcmaster.ca">email Cameron Anderson</a>!</p>
 </div>
 <div class="section level1">
 <h1 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -349,7 +334,7 @@ Nimon, Kim, Fred Oswald, and J. Kyle Roberts. 2023. <em>Yhat: Interpreting Regre
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Cameron J. Anderson <br><small class="roles"> Maintainer </small>  </li>
+<li>Cameron J. Anderson <br><small class="roles"> Maintainer </small>   </li>
 </ul>
 </div>
 
@@ -366,7 +351,7 @@ Nimon, Kim, Fred Oswald, and J. Kyle Roberts. 2023. <em>Yhat: Interpreting Regre
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
 </div>
 
       </footer>

@@ -2,7 +2,7 @@
 #'
 #' Create random- or fixed-effect percentile-based bootstrap intervals.
 #'
-#'
+#' @noRd
 #' @author Cameron Anderson, Julianne Heitelman
 #' @param formula Formula corresponding to linear regression model
 #' @param data  Data to sample observations from

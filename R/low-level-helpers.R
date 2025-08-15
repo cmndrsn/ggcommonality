@@ -4,7 +4,7 @@
 #'
 #' Sequence from 1 to 2 by a user-input name.
 #' Function applied across an array of values.
-#'
+#' @noRd
 #' @param x Numeric. Value or array of values to sequence across.
 #'
 #' @return List. For each value in x, returns a sequence from 1 to 2 by x.
@@ -26,7 +26,7 @@
 #' Used when defining common effect bar width.
 #'
 #' Duplicate the inner values of a sequence.
-#'
+#' @noRd
 #' @param nums Numeric array.
 #'
 #' @return Array.Returns values in nums, with inner values duplicated.

@@ -1,4 +1,15 @@
-ci_plot_coordinates <- function(
+#' Title
+#' @noRd
+#' @param data.boot
+#' @param formula
+#' @param data
+#' @param include_total
+#' @param quantiles
+#'
+#' @returns
+#'
+#' @examples
+.ci_plot_coordinates <- function(
     data.boot,
     formula,
     data,
@@ -99,7 +110,16 @@ ci_plot_coordinates <- function(
 
 }
 
-com_errorbox <- function(df, t = NULL,s = NULL) {
+#' Title
+#' @noRd
+#' @param df
+#' @param t
+#' @param s
+#'
+#' @returns
+#'
+#' @examples
+.com_errorbox <- function(df, t = NULL,s = NULL) {
   df |>
     ggplot(
       aes(x = xmin, xmin = xmin, y = cc,
@@ -115,7 +135,14 @@ com_errorbox <- function(df, t = NULL,s = NULL) {
     ggtitle(t,s)
 }
 
-plot_com_unstacked <- function(df) {
+#' Title
+#' @noRd
+#' @param df
+#'
+#' @returns
+#'
+#' @examples
+.plot_com_unstacked <- function(df) {
   df |>
     ggplot(
       aes(x = xmin, xmin = xmin, y = cc,
@@ -130,7 +157,15 @@ plot_com_unstacked <- function(df) {
 }
 
 
-com_unstacked_errorbar <- function(df, ...) {
+#' Title
+#' @noRd
+#' @param df
+#' @param ...
+#'
+#' @returns
+#'
+#' @examples
+.com_unstacked_errorbar <- function(df, ...) {
     geom_errorbar(data = df, aes(ymin = lci, ymax = uci), ...)
 }
 

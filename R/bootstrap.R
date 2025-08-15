@@ -50,7 +50,7 @@ run_commonality_bootstrap <- function(
 #' Drop columns unnecessary to bootstrap commonality analysis
 #'
 #' Gets rid of columns not specified in formula
-#'
+#' @noRd
 #' @param formula Formula to be used in helper_commonality_bootstrap
 #' @param data Data to be used in helper_commonality_bootstrap
 #' @param groups Groups to be used in helper_commonality_bootstrap
@@ -68,7 +68,7 @@ run_commonality_bootstrap <- function(
 #' Commonality Coefficients From Resampled Data
 #'
 #' Calculate commonality coefficients in bootstrap procedure
-#'
+#' @noRd
 #' @param formula Formula to be used in helper_commonality_bootstrap
 #' @param data Data to be used in helper_commonality_bootstrap
 #' @param groups Groups to be used in helper_commonality_bootstrap

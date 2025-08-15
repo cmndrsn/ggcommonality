@@ -1,5 +1,5 @@
 #' Visualizing commonality analyses
-#'
+#' @noRd
 #' @slot data Data.frame object containing data to be visualized.
 #' @slot data.boot Matrix of bootstrapped data used to generate confidence interval.
 #' @slot formula formula. Formula representing equation for linear regression model.
@@ -15,7 +15,7 @@
 #' @return Data frame containing commonality partitions for replications.
 #' @slot include_total ANY. TRUE or FALSE, specifying whether to include bar representing total explained variance.
 #' @slot seed ANY. Number specifying which seed to set R's random number generator to.
-#' @slot yhat_out ANY.
+#' @slot get_yhat ANY.
 #' @slot ... ANY.
 #'
 #' @returns
@@ -33,7 +33,7 @@ methods::setClass("GGCommonality",
                         resample_type = "character",
                         wild_type = "character",
                         include_total = "ANY",
-                        yhat_out = "ANY",
+                        get_yhat = "ANY",
                         seed = "ANY",
                         ... = "ANY"),
 )
@@ -42,8 +42,8 @@ methods::setClass("GGCommonality",
 
 # Declare a generic function
 
-methods::setGeneric("yhat_out", function(x) {
-  standardGeneric("yhat_out")
+methods::setGeneric("get_yhat", function(x) {
+  standardGeneric("get_yhat")
 })
 methods::setGeneric("boot_commonality", function(x) {
   standardGeneric("boot_commonality")
@@ -66,7 +66,7 @@ methods::setMethod("boot_commonality", signature("GGCommonality"), function(x) {
     seed = x@seed
   )
 })
-methods::setMethod("yhat_out", signature("GGCommonality"), function(x) {
+methods::setMethod("get_yhat", signature("GGCommonality"), function(x) {
   list(
     yhat =
   yhat::regr(
@@ -84,12 +84,12 @@ methods::setMethod("yhat_out", signature("GGCommonality"), function(x) {
 })
 methods::setMethod("plot", signature("GGCommonality"), function(x) {
     if(x@stack == FALSE) {
-      plot_coords <- ci_plot_coordinates(
+      plot_coords <- .ci_plot_coordinates(
         data.boot = x@data.boot,
         include_total = x@include_total,
         data = x@data,
         formula = x@formula)
-        plot_com_unstacked(plot_coords)
+        .plot_com_unstacked(plot_coords)
     } else {
     ggcommonality(data = x@data,
                   formula = x@formula,
@@ -98,14 +98,14 @@ methods::setMethod("plot", signature("GGCommonality"), function(x) {
 })
 methods::setMethod("add_ci", signature("GGCommonality"), function(x, ...) {
   if(x@stack == FALSE) {
-    plot_coords <- ci_plot_coordinates(
+    plot_coords <- .ci_plot_coordinates(
       data.boot = x@data.boot,
       include_total = x@include_total,
       data = x@data,
       formula = x@formula
     )
 
-      com_unstacked_errorbar(plot_coords, ...)
+      .com_unstacked_errorbar(plot_coords, ...)
 
   } else {
     ci_ggcommonality(
@@ -177,7 +177,7 @@ plot_commonality <- function(
       resample_type = resample_type,
       wild_type = wild_type,
       include_total = include_total,
-      yhat_out = yhat_out,
+      get_yhat = get_yhat,
       seed = seed
       )
 
