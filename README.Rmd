@@ -69,7 +69,6 @@ built-in methods.
 # visualize commonality effects and add confidence intervals
 plot(p) +
   add_ci(p)
-
 ```
 
 We can also check the results from `yhat`
@@ -79,7 +78,7 @@ We can also check the results from `yhat`
 get_yhat(p)
 ```
 
-Commonality effects can be stacked in multiple ways
+Commonality effects can be stacked in multiple ways:
 
 ```{r warning=FALSE}
 
@@ -107,7 +106,6 @@ p <- ggcommonality(
   stack_by = "partition"
 )
   
-
 # stack
 plot(p) +
   add_ci(p)

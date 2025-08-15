@@ -25,6 +25,7 @@ You can install the S4 version of ggcommonality (under development) from
 [GitHub](https://github.com/) with:
 
 ``` r
+# install.packages("pak")
 devtools::install_github("cmndrsn/ggcommonality", ref = "S4")
 ```
 
@@ -72,16 +73,11 @@ plot(p) +
   add_ci(p)
 #> Bootstrap confidence intervals:
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%               0.10737              0.02279            0.4454500
-#> 97.5%              0.35395              0.17832            0.6077575
+#> 2.5%              0.102445            0.0217475            0.4407075
+#> 97.5%             0.336340            0.1451100            0.6017200
 #>       Total               
-<<<<<<< HEAD
-#> 2.5%             0.7241625
-#> 97.5%            0.9469150
-=======
-#> 2.5%             0.6974275
-#> 97.5%            0.9481625
->>>>>>> 6598b34 (refactor(ggcommonality): rename core functions)
+#> 2.5%             0.7077775
+#> 97.5%            0.9461025
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
@@ -151,14 +147,14 @@ get_yhat(p)
 #> 
 #> $ci
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%               0.10737              0.02279            0.4454500
-#> 97.5%              0.35395              0.17832            0.6077575
+#> 2.5%              0.102445            0.0217475            0.4407075
+#> 97.5%             0.336340            0.1451100            0.6017200
 #>       Total               
-#> 2.5%             0.6974275
-#> 97.5%            0.9481625
+#> 2.5%             0.7077775
+#> 97.5%            0.9461025
 ```
 
-Commonality effects can be stacked in multiple ways
+Commonality effects can be stacked in multiple ways:
 
 ``` r
 
@@ -174,10 +170,10 @@ p <- ggcommonality(
 plot(p) +
   add_ci(p)
 #> Bootstrap confidence intervals:
-#>        type     lower     upper
-#> 2.5% unique 0.2549375 0.3770075
 #>        type     lower   upper
-#> 2.5% common 0.4284475 0.61023
+#> 2.5% unique 0.2430325 0.38724
+#>        type   lower    upper
+#> 2.5% common 0.39058 0.602515
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
@@ -191,15 +187,14 @@ p <- ggcommonality(
   stack_by = "partition"
 )
   
-
 # stack
 plot(p) +
   add_ci(p)
 #> Bootstrap confidence intervals:
-#>      category   lower     upper
-#> 2.5%       wt 0.62849 0.8976075
 #>      category    lower     upper
-#> 2.5%       hp 0.405685 0.7445975
+#> 2.5%       wt 0.575685 0.8670875
+#>      category   lower    upper
+#> 2.5%       hp 0.44979 0.716075
 ```
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
@@ -248,29 +243,29 @@ plot(p1) +
     ylim(0,0.65)+
   ggtitle("Wild")
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1249175            0.0214925            0.4680025
-#> 97.5%            0.3549850            0.1637200            0.5915550
+#> 2.5%             0.1337675            0.0142875            0.4594825
+#> 97.5%            0.3733625            0.1504600            0.5930400
 #>       Total               
-#> 2.5%             0.7731225
-#> 97.5%            0.9106050
+#> 2.5%             0.7478275
+#> 97.5%            0.9133325
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1249175            0.0214925            0.4680025
-#> 97.5%            0.3549850            0.1637200            0.5915550
+#> 2.5%             0.1337675            0.0142875            0.4594825
+#> 97.5%            0.3733625            0.1504600            0.5930400
 #>       Total               
-#> 2.5%             0.7731225
-#> 97.5%            0.9106050
+#> 2.5%             0.7478275
+#> 97.5%            0.9133325
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1071375             0.024800            0.4289250
-#> 97.5%            0.3282025             0.173205            0.6059875
+#> 2.5%             0.1208525            0.0196800              0.43912
+#> 97.5%            0.3378900            0.1432725              0.61448
 #>       Total               
-#> 2.5%             0.7289525
-#> 97.5%            0.9424550
+#> 2.5%              0.699095
+#> 97.5%             0.943825
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1071375             0.024800            0.4289250
-#> 97.5%            0.3282025             0.173205            0.6059875
+#> 2.5%             0.1208525            0.0196800              0.43912
+#> 97.5%            0.3378900            0.1432725              0.61448
 #>       Total               
-#> 2.5%             0.7289525
-#> 97.5%            0.9424550
+#> 2.5%              0.699095
+#> 97.5%             0.943825
 ```
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
