@@ -118,9 +118,30 @@ methods::setMethod("add_ci", signature("GGCommonality"), function(x, ...) {
   }
 })
 
+#' Object for plotting commonality analyses
+#'
+#' @param data Data.frame object containing data to be visualized
+#' @param formula Formula in form of y ~ x1 + x2
+#' @param add_ci Logical. Add bootstrap-estimated confidence interval?
+#' @param stack Logical. Stack commonality effects?
+#' @param stack_by Character. Either "common" to stack unique vs. common effects or "partition" to stack unique and common effects for each IV.
+#' @param n_replications Numeric. Number of replications for bootstrap simulation.
+#' @param sample_column Character. Name of column to perform stratified sampling with, or leave as NULL
+#' @param resample_type Character. Method for boostrap resampling. Either "random", "fixed", or "wild". See README for details.
+#' @param wild_type Character. If resample_type == "wild", either "Gaussian" to
+#' multiply resampled residuals by random constants from the normal distribution,
+#' or sign to randomly multiply half of the residuals by +1 and half by -1.
+#' This provides a solution to "fixed" in the presence of model heteroscedasticity. See README for details
+#' @param include_total Logical. Include bar representing total variance explained across all unique and common effects?
+#' @param seed Numeric. Number to set R's randomization seed to (for reproducibility).
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 plot_commonality <- function(
-    data,
     formula,
+    data,
     add_ci = TRUE,
     stack = FALSE,
     stack_by = "common",

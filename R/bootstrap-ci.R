@@ -33,7 +33,7 @@
       formula
       )
     )
-
+  message("Bootstrap confidence intervals:")
   if(stack_by == "partition") {
     lapply(1:length(formula_terms),
            function(x) {
@@ -61,6 +61,7 @@
              lower <- quantile(out, ci_lower)
              upper <- quantile(out, ci_upper)
              out <- data.frame(category, lower, upper)
+             print(out)
              return(out)
            }
     ) -> list_CI
@@ -87,12 +88,14 @@
                out[out>0] <- 0
              } else {
              }
-             out <- colSums(out)
+             if(!is.null(dim(out))) out <- colSums(out)
              # produce confidence interval
              lower <- quantile(out, ci_lower)
              upper <- quantile(out, ci_upper)
              out <- data.frame(type, lower, upper)
              out$type <- tolower(out$type)
+
+             print(out)
              return(out)
            }
     ) -> list_CI

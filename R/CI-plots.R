@@ -29,7 +29,8 @@ ci_plot_coordinates <- function(
 
   )
 
-
+  message("Bootstrap confidence intervals:")
+  print(bs_ci)
 
   bs_ci <- t(bs_ci) |>
     as.data.frame() |>
@@ -60,7 +61,7 @@ ci_plot_coordinates <- function(
   #bs_ci$xmax <- bs_ci$lci + ((bs_ci$uci-bs_ci$lci)/bs_ci$count)
 
   bs_ci$order <- stringr::str_count(bs_ci$com, ",")+1
-  xmin_lvls <<- unique(bs_ci$com[order(bs_ci$order)])
+  xmin_lvls <- unique(bs_ci$com[order(bs_ci$order)])
   bs_ci$xmin <-as.numeric(factor(bs_ci$com, levels = xmin_lvls))
   bs_ci$start_pos <- bs_ci$xmin - 0.45
   bs_ci$end_pos <- bs_ci$xmin + 0.45
