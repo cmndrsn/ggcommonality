@@ -13,7 +13,8 @@ its functionality using an object-oriented syntax. The package calls on
 `yhat` to perform commonality analyses (Nimon, Oswald, and Roberts.
 2023), building bar plots in the style of those appearing in the [MAPLE
 Lab’s](https://maplelab.net) work applying commonality analysis to the
-compositions of Bach and Chopin (Anderson and Schutz 2022).
+compositions of Bach and Chopin (Delle Grazie, Anderson, and Schutz
+2025; Anderson and Schutz 2022).
 
 Partitions are plotted sequentially in alphabetical order, starting with
 unique effects and are built iteratively with joint effects at higher
@@ -73,11 +74,18 @@ plot(p) +
   add_ci(p)
 #> Bootstrap confidence intervals:
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%              0.102445            0.0217475            0.4407075
-#> 97.5%             0.336340            0.1451100            0.6017200
+#> 2.5%             0.1309825             0.020545            0.4061000
+#> 97.5%            0.3454650             0.148425            0.6040325
 #>       Total               
-#> 2.5%             0.7077775
-#> 97.5%            0.9461025
+#> 2.5%             0.6928625
+#> 97.5%            0.9439675
+#> Bootstrap confidence intervals:
+#>       Unique to wt         Unique to hp         Common to wt, and hp
+#> 2.5%             0.1309825             0.020545            0.4061000
+#> 97.5%            0.3454650             0.148425            0.6040325
+#>       Total               
+#> 2.5%             0.6928625
+#> 97.5%            0.9439675
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
@@ -147,11 +155,11 @@ get_yhat(p)
 #> 
 #> $ci
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%              0.102445            0.0217475            0.4407075
-#> 97.5%             0.336340            0.1451100            0.6017200
+#> 2.5%             0.1309825             0.020545            0.4061000
+#> 97.5%            0.3454650             0.148425            0.6040325
 #>       Total               
-#> 2.5%             0.7077775
-#> 97.5%            0.9461025
+#> 2.5%             0.6928625
+#> 97.5%            0.9439675
 ```
 
 Commonality effects can be stacked in multiple ways:
@@ -170,10 +178,10 @@ p <- ggcommonality(
 plot(p) +
   add_ci(p)
 #> Bootstrap confidence intervals:
-#>        type     lower   upper
-#> 2.5% unique 0.2430325 0.38724
-#>        type   lower    upper
-#> 2.5% common 0.39058 0.602515
+#>        type     lower    upper
+#> 2.5% unique 0.2506725 0.379575
+#>        type     lower    upper
+#> 2.5% common 0.4427775 0.602435
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
@@ -191,10 +199,10 @@ p <- ggcommonality(
 plot(p) +
   add_ci(p)
 #> Bootstrap confidence intervals:
-#>      category    lower     upper
-#> 2.5%       wt 0.575685 0.8670875
-#>      category   lower    upper
-#> 2.5%       hp 0.44979 0.716075
+#>      category    lower   upper
+#> 2.5%       wt 0.629705 0.87233
+#>      category     lower    upper
+#> 2.5%       hp 0.4417625 0.720255
 ```
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
@@ -243,29 +251,29 @@ plot(p1) +
     ylim(0,0.65)+
   ggtitle("Wild")
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1337675            0.0142875            0.4594825
-#> 97.5%            0.3733625            0.1504600            0.5930400
+#> 2.5%             0.1225775            0.0159325              0.45048
+#> 97.5%            0.3579475            0.1570925              0.59279
 #>       Total               
-#> 2.5%             0.7478275
-#> 97.5%            0.9133325
+#> 2.5%             0.7532200
+#> 97.5%            0.9122625
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1337675            0.0142875            0.4594825
-#> 97.5%            0.3733625            0.1504600            0.5930400
+#> 2.5%             0.1225775            0.0159325              0.45048
+#> 97.5%            0.3579475            0.1570925              0.59279
 #>       Total               
-#> 2.5%             0.7478275
-#> 97.5%            0.9133325
+#> 2.5%             0.7532200
+#> 97.5%            0.9122625
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1208525            0.0196800              0.43912
-#> 97.5%            0.3378900            0.1432725              0.61448
+#> 2.5%             0.1040175            0.0196225              0.39819
+#> 97.5%            0.3716800            0.1802075              0.61039
 #>       Total               
-#> 2.5%              0.699095
-#> 97.5%             0.943825
+#> 2.5%             0.6406675
+#> 97.5%            0.9403900
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1208525            0.0196800              0.43912
-#> 97.5%            0.3378900            0.1432725              0.61448
+#> 2.5%             0.1040175            0.0196225              0.39819
+#> 97.5%            0.3716800            0.1802075              0.61039
 #>       Total               
-#> 2.5%              0.699095
-#> 97.5%             0.943825
+#> 2.5%             0.6406675
+#> 97.5%            0.9403900
 ```
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
@@ -286,6 +294,14 @@ entry-spacing="0">
 Anderson, Cameron J, and Michael Schutz. 2022. “Exploring Historic
 Changes in Musical Communication: Deconstructing Emotional Cues in
 Preludes by Bach and Chopin.” *Psychology of Music* 50 (5): 1424–42.
+
+</div>
+
+<div id="ref-delle2025breaking" class="csl-entry">
+
+Delle Grazie, Max, Cameron J Anderson, and Michael Schutz. 2025.
+“Breaking with Common Practice: Exploring Modernist Musical Emotion.”
+*Psychology of Music*, 03057356241296852.
 
 </div>
 
