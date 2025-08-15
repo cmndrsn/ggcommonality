@@ -91,7 +91,7 @@ methods::setMethod("plot", signature("GGCommonality"), function(x) {
         formula = x@formula)
         .plot_com_unstacked(plot_coords)
     } else {
-    ggcommonality(data = x@data,
+    plot_ggcommonality(data = x@data,
                   formula = x@formula,
                   stack_by = x@stack_by)
     }
@@ -139,7 +139,7 @@ methods::setMethod("add_ci", signature("GGCommonality"), function(x, ...) {
 #' @export
 #'
 #' @examples
-plot_commonality <- function(
+ggcommonality <- function(
     formula,
     data,
     add_ci = TRUE,

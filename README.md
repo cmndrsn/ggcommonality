@@ -39,7 +39,7 @@ library(ggcommonality)
 
 my_formula <- mpg ~ wt + hp
 
-p <- plot_commonality(formula = my_formula,
+p <- ggcommonality(formula = my_formula,
                    data = mtcars)
 #> Registered S3 method overwritten by 'mosaic':
 #>   method                           from   
@@ -72,11 +72,16 @@ plot(p) +
   add_ci(p)
 #> Bootstrap confidence intervals:
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1170125            0.0205925            0.4475825
-#> 97.5%            0.3520000            0.1820375            0.6056625
+#> 2.5%               0.10737              0.02279            0.4454500
+#> 97.5%              0.35395              0.17832            0.6077575
 #>       Total               
+<<<<<<< HEAD
 #> 2.5%             0.7241625
 #> 97.5%            0.9469150
+=======
+#> 2.5%             0.6974275
+#> 97.5%            0.9481625
+>>>>>>> 6598b34 (refactor(ggcommonality): rename core functions)
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
@@ -146,11 +151,11 @@ get_yhat(p)
 #> 
 #> $ci
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1170125            0.0205925            0.4475825
-#> 97.5%            0.3520000            0.1820375            0.6056625
+#> 2.5%               0.10737              0.02279            0.4454500
+#> 97.5%              0.35395              0.17832            0.6077575
 #>       Total               
-#> 2.5%             0.7241625
-#> 97.5%            0.9469150
+#> 2.5%             0.6974275
+#> 97.5%            0.9481625
 ```
 
 Commonality effects can be stacked in multiple ways
@@ -158,7 +163,7 @@ Commonality effects can be stacked in multiple ways
 ``` r
 
 # define object 
-p <- plot_commonality(
+p <- ggcommonality(
   formula = my_formula,
   data = mtcars,
   stack = TRUE
@@ -169,17 +174,17 @@ p <- plot_commonality(
 plot(p) +
   add_ci(p)
 #> Bootstrap confidence intervals:
-#>        type  lower     upper
-#> 2.5% unique 0.2238 0.3731525
 #>        type     lower     upper
-#> 2.5% common 0.3920375 0.6046075
+#> 2.5% unique 0.2549375 0.3770075
+#>        type     lower   upper
+#> 2.5% common 0.4284475 0.61023
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 ``` r
 # define object 
-p <- plot_commonality(
+p <- ggcommonality(
   formula = my_formula,
   data = mtcars,
   stack = TRUE, 
@@ -191,10 +196,10 @@ p <- plot_commonality(
 plot(p) +
   add_ci(p)
 #> Bootstrap confidence intervals:
-#>      category     lower   upper
-#> 2.5%       wt 0.5821575 0.88555
-#>      category     lower    upper
-#> 2.5%       hp 0.3960225 0.735545
+#>      category   lower     upper
+#> 2.5%       wt 0.62849 0.8976075
+#>      category    lower     upper
+#> 2.5%       hp 0.405685 0.7445975
 ```
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
@@ -216,16 +221,16 @@ unique and joint effects for individual commonality partitions.
 Otherwise, if `stack_by = "common"`, separate confidence intervals are
 generated for the sum of unique effects and the sum of joint effects.
 
-## Comparing random-*x* bootstrap confidence intervals
+## Comparing confidence intervals
 
 ``` r
 # set r's random number generator
-p1 <- plot_commonality(
+p1 <- ggcommonality(
   formula = my_formula,
   data = mtcars,
   resample_type = "fixed"
 )
-p2 <- plot_commonality(
+p2 <- ggcommonality(
   formula = my_formula,
   data = mtcars,
   resample_type = "wild"
@@ -243,29 +248,29 @@ plot(p1) +
     ylim(0,0.65)+
   ggtitle("Wild")
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1263650            0.0167900            0.4515175
-#> 97.5%            0.3437175            0.1577875            0.5847175
+#> 2.5%             0.1249175            0.0214925            0.4680025
+#> 97.5%            0.3549850            0.1637200            0.5915550
 #>       Total               
-#> 2.5%             0.7574175
-#> 97.5%            0.9228125
+#> 2.5%             0.7731225
+#> 97.5%            0.9106050
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1263650            0.0167900            0.4515175
-#> 97.5%            0.3437175            0.1577875            0.5847175
+#> 2.5%             0.1249175            0.0214925            0.4680025
+#> 97.5%            0.3549850            0.1637200            0.5915550
 #>       Total               
-#> 2.5%             0.7574175
-#> 97.5%            0.9228125
+#> 2.5%             0.7731225
+#> 97.5%            0.9106050
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1253925            0.0177825            0.4274475
-#> 97.5%            0.3599775            0.1465550            0.6116525
+#> 2.5%             0.1071375             0.024800            0.4289250
+#> 97.5%            0.3282025             0.173205            0.6059875
 #>       Total               
-#> 2.5%             0.6874075
-#> 97.5%            0.9497975
+#> 2.5%             0.7289525
+#> 97.5%            0.9424550
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1253925            0.0177825            0.4274475
-#> 97.5%            0.3599775            0.1465550            0.6116525
+#> 2.5%             0.1071375             0.024800            0.4289250
+#> 97.5%            0.3282025             0.173205            0.6059875
 #>       Total               
-#> 2.5%             0.6874075
-#> 97.5%            0.9497975
+#> 2.5%             0.7289525
+#> 97.5%            0.9424550
 ```
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
@@ -273,7 +278,7 @@ plot(p1) +
 # Getting help
 
 For additional information, read the help documentation
-`?plot_commonality()`, or [email Cameron
+`?ggcommonality()`, or [email Cameron
 Anderson](mailto:andersoc@mcmaster.ca)!
 
 # References

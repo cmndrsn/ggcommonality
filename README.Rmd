@@ -56,7 +56,7 @@ library(ggcommonality)
 
 my_formula <- mpg ~ wt + hp
 
-p <- plot_commonality(formula = my_formula,
+p <- ggcommonality(formula = my_formula,
                    data = mtcars)
   
 p |> attributes() |> summary()
@@ -84,7 +84,7 @@ Commonality effects can be stacked in multiple ways
 ```{r warning=FALSE}
 
 # define object 
-p <- plot_commonality(
+p <- ggcommonality(
   formula = my_formula,
   data = mtcars,
   stack = TRUE
@@ -100,7 +100,7 @@ plot(p) +
 
 ```{r}
 # define object 
-p <- plot_commonality(
+p <- ggcommonality(
   formula = my_formula,
   data = mtcars,
   stack = TRUE, 
@@ -134,12 +134,12 @@ generated for the sum of unique effects and the sum of joint effects.
 
 ```{r warning=FALSE, message=FALSE}
 # set r's random number generator
-p1 <- plot_commonality(
+p1 <- ggcommonality(
   formula = my_formula,
   data = mtcars,
   resample_type = "fixed"
 )
-p2 <- plot_commonality(
+p2 <- ggcommonality(
   formula = my_formula,
   data = mtcars,
   resample_type = "wild"
@@ -162,6 +162,6 @@ plot(p1) +
 # Getting help
 
 For additional information, read the help documentation
-`?plot_commonality()`, or [email Cameron Anderson](mailto:andersoc@mcmaster.ca)!
+`?ggcommonality()`, or [email Cameron Anderson](mailto:andersoc@mcmaster.ca)!
 
 # References

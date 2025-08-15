@@ -80,7 +80,7 @@
 <span></span>
 <span><span class="va">my_formula</span> <span class="op">&lt;-</span> <span class="va">mpg</span> <span class="op">~</span> <span class="va">wt</span> <span class="op">+</span> <span class="va">hp</span></span>
 <span></span>
-<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot_commonality.html">plot_commonality</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ggcommonality.html">ggcommonality</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
 <span>                   data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Registered S3 method overwritten by 'mosaic':</span></span>
 <span><span class="co">#&gt;   method                           from   </span></span>
@@ -109,18 +109,18 @@
 <span>  <span class="fu">add_ci</span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Bootstrap confidence intervals:</span></span>
 <span><span class="co">#&gt;       Unique to wt         Unique to hp         Common to wt, and hp</span></span>
-<span><span class="co">#&gt; 2.5%             0.1170125            0.0205925            0.4475825</span></span>
-<span><span class="co">#&gt; 97.5%            0.3520000            0.1820375            0.6056625</span></span>
+<span><span class="co">#&gt; 2.5%               0.10737              0.02279            0.4454500</span></span>
+<span><span class="co">#&gt; 97.5%              0.35395              0.17832            0.6077575</span></span>
 <span><span class="co">#&gt;       Total               </span></span>
-<span><span class="co">#&gt; 2.5%             0.7241625</span></span>
-<span><span class="co">#&gt; 97.5%            0.9469150</span></span>
+<span><span class="co">#&gt; 2.5%             0.6974275</span></span>
+<span><span class="co">#&gt; 97.5%            0.9481625</span></span>
 <span><span class="co">#&gt; Bootstrap confidence intervals:</span></span>
 <span><span class="co">#&gt;       Unique to wt         Unique to hp         Common to wt, and hp</span></span>
-<span><span class="co">#&gt; 2.5%             0.1170125            0.0205925            0.4475825</span></span>
-<span><span class="co">#&gt; 97.5%            0.3520000            0.1820375            0.6056625</span></span>
+<span><span class="co">#&gt; 2.5%               0.10737              0.02279            0.4454500</span></span>
+<span><span class="co">#&gt; 97.5%              0.35395              0.17832            0.6077575</span></span>
 <span><span class="co">#&gt;       Total               </span></span>
-<span><span class="co">#&gt; 2.5%             0.7241625</span></span>
-<span><span class="co">#&gt; 97.5%            0.9469150</span></span></code></pre></div>
+<span><span class="co">#&gt; 2.5%             0.6974275</span></span>
+<span><span class="co">#&gt; 97.5%            0.9481625</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="100%"></p>
 <p>We can also check the results from <code>yhat</code></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -186,16 +186,16 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ci</span></span>
 <span><span class="co">#&gt;       Unique to wt         Unique to hp         Common to wt, and hp</span></span>
-<span><span class="co">#&gt; 2.5%             0.1170125            0.0205925            0.4475825</span></span>
-<span><span class="co">#&gt; 97.5%            0.3520000            0.1820375            0.6056625</span></span>
+<span><span class="co">#&gt; 2.5%               0.10737              0.02279            0.4454500</span></span>
+<span><span class="co">#&gt; 97.5%              0.35395              0.17832            0.6077575</span></span>
 <span><span class="co">#&gt;       Total               </span></span>
-<span><span class="co">#&gt; 2.5%             0.7241625</span></span>
-<span><span class="co">#&gt; 97.5%            0.9469150</span></span></code></pre></div>
+<span><span class="co">#&gt; 2.5%             0.6974275</span></span>
+<span><span class="co">#&gt; 97.5%            0.9481625</span></span></code></pre></div>
 <p>Commonality effects can be stacked in multiple ways</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># define object </span></span>
-<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot_commonality.html">plot_commonality</a></span><span class="op">(</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ggcommonality.html">ggcommonality</a></span><span class="op">(</span></span>
 <span>  formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">mtcars</span>,</span>
 <span>  stack <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -206,14 +206,14 @@
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">add_ci</span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Bootstrap confidence intervals:</span></span>
-<span><span class="co">#&gt;        type  lower     upper</span></span>
-<span><span class="co">#&gt; 2.5% unique 0.2238 0.3731525</span></span>
 <span><span class="co">#&gt;        type     lower     upper</span></span>
-<span><span class="co">#&gt; 2.5% common 0.3920375 0.6046075</span></span></code></pre></div>
+<span><span class="co">#&gt; 2.5% unique 0.2549375 0.3770075</span></span>
+<span><span class="co">#&gt;        type     lower   upper</span></span>
+<span><span class="co">#&gt; 2.5% common 0.4284475 0.61023</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># define object </span></span>
-<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot_commonality.html">plot_commonality</a></span><span class="op">(</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ggcommonality.html">ggcommonality</a></span><span class="op">(</span></span>
 <span>  formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">mtcars</span>,</span>
 <span>  stack <span class="op">=</span> <span class="cn">TRUE</span>, </span>
@@ -225,10 +225,10 @@
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">add_ci</span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Bootstrap confidence intervals:</span></span>
-<span><span class="co">#&gt;      category     lower   upper</span></span>
-<span><span class="co">#&gt; 2.5%       wt 0.5821575 0.88555</span></span>
-<span><span class="co">#&gt;      category     lower    upper</span></span>
-<span><span class="co">#&gt; 2.5%       hp 0.3960225 0.735545</span></span></code></pre></div>
+<span><span class="co">#&gt;      category   lower     upper</span></span>
+<span><span class="co">#&gt; 2.5%       wt 0.62849 0.8976075</span></span>
+<span><span class="co">#&gt;      category    lower     upper</span></span>
+<span><span class="co">#&gt; 2.5%       hp 0.405685 0.7445975</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="100%"></p>
 </div>
 </div>
@@ -238,16 +238,16 @@
 <p>The <code>resample_type</code> argument specifies whether to generate random-<em>x</em>, confidence intervals, fixed-<em>x</em>, or wild-<em>x</em> confidence intervals. The <a href="https://www.john-fox.ca/Companion/" class="external-link">appendices</a> to Fox and Weisberg (2018) summarizes the advantages and disadvantages of fixed vs. random-<em>x</em> bootstrapping. Wild-<em>x</em> provides a solution to fixed-<em>x</em> for models featuring heteroscedasticity by multiplying re-sampled residuals with constants sampled from a Gaussian distribution (<code>wild_type = "gaussian"</code>), or by randomly multiplying half by 1 and half by -1 (<code>wild_type = "sign"</code>).</p>
 <p>If <code>stack_by = "partition"</code>, confidence intervals represent the sum of unique and joint effects for individual commonality partitions. Otherwise, if <code>stack_by = "common"</code>, separate confidence intervals are generated for the sum of unique effects and the sum of joint effects.</p>
 <div class="section level2">
-<h2 id="comparing-random-x-bootstrap-confidence-intervals">Comparing random-<em>x</em> bootstrap confidence intervals<a class="anchor" aria-label="anchor" href="#comparing-random-x-bootstrap-confidence-intervals"></a>
+<h2 id="comparing-confidence-intervals">Comparing confidence intervals<a class="anchor" aria-label="anchor" href="#comparing-confidence-intervals"></a>
 </h2>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># set r's random number generator</span></span>
-<span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot_commonality.html">plot_commonality</a></span><span class="op">(</span></span>
+<span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ggcommonality.html">ggcommonality</a></span><span class="op">(</span></span>
 <span>  formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">mtcars</span>,</span>
 <span>  resample_type <span class="op">=</span> <span class="st">"fixed"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot_commonality.html">plot_commonality</a></span><span class="op">(</span></span>
+<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ggcommonality.html">ggcommonality</a></span><span class="op">(</span></span>
 <span>  formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">mtcars</span>,</span>
 <span>  resample_type <span class="op">=</span> <span class="st">"wild"</span></span>
@@ -265,36 +265,36 @@
 <span>    <span class="fu">ylim</span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.65</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Wild"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       Unique to wt         Unique to hp         Common to wt, and hp</span></span>
-<span><span class="co">#&gt; 2.5%             0.1263650            0.0167900            0.4515175</span></span>
-<span><span class="co">#&gt; 97.5%            0.3437175            0.1577875            0.5847175</span></span>
+<span><span class="co">#&gt; 2.5%             0.1249175            0.0214925            0.4680025</span></span>
+<span><span class="co">#&gt; 97.5%            0.3549850            0.1637200            0.5915550</span></span>
 <span><span class="co">#&gt;       Total               </span></span>
-<span><span class="co">#&gt; 2.5%             0.7574175</span></span>
-<span><span class="co">#&gt; 97.5%            0.9228125</span></span>
+<span><span class="co">#&gt; 2.5%             0.7731225</span></span>
+<span><span class="co">#&gt; 97.5%            0.9106050</span></span>
 <span><span class="co">#&gt;       Unique to wt         Unique to hp         Common to wt, and hp</span></span>
-<span><span class="co">#&gt; 2.5%             0.1263650            0.0167900            0.4515175</span></span>
-<span><span class="co">#&gt; 97.5%            0.3437175            0.1577875            0.5847175</span></span>
+<span><span class="co">#&gt; 2.5%             0.1249175            0.0214925            0.4680025</span></span>
+<span><span class="co">#&gt; 97.5%            0.3549850            0.1637200            0.5915550</span></span>
 <span><span class="co">#&gt;       Total               </span></span>
-<span><span class="co">#&gt; 2.5%             0.7574175</span></span>
-<span><span class="co">#&gt; 97.5%            0.9228125</span></span>
+<span><span class="co">#&gt; 2.5%             0.7731225</span></span>
+<span><span class="co">#&gt; 97.5%            0.9106050</span></span>
 <span><span class="co">#&gt;       Unique to wt         Unique to hp         Common to wt, and hp</span></span>
-<span><span class="co">#&gt; 2.5%             0.1253925            0.0177825            0.4274475</span></span>
-<span><span class="co">#&gt; 97.5%            0.3599775            0.1465550            0.6116525</span></span>
+<span><span class="co">#&gt; 2.5%             0.1071375             0.024800            0.4289250</span></span>
+<span><span class="co">#&gt; 97.5%            0.3282025             0.173205            0.6059875</span></span>
 <span><span class="co">#&gt;       Total               </span></span>
-<span><span class="co">#&gt; 2.5%             0.6874075</span></span>
-<span><span class="co">#&gt; 97.5%            0.9497975</span></span>
+<span><span class="co">#&gt; 2.5%             0.7289525</span></span>
+<span><span class="co">#&gt; 97.5%            0.9424550</span></span>
 <span><span class="co">#&gt;       Unique to wt         Unique to hp         Common to wt, and hp</span></span>
-<span><span class="co">#&gt; 2.5%             0.1253925            0.0177825            0.4274475</span></span>
-<span><span class="co">#&gt; 97.5%            0.3599775            0.1465550            0.6116525</span></span>
+<span><span class="co">#&gt; 2.5%             0.1071375             0.024800            0.4289250</span></span>
+<span><span class="co">#&gt; 97.5%            0.3282025             0.173205            0.6059875</span></span>
 <span><span class="co">#&gt;       Total               </span></span>
-<span><span class="co">#&gt; 2.5%             0.6874075</span></span>
-<span><span class="co">#&gt; 97.5%            0.9497975</span></span></code></pre></div>
+<span><span class="co">#&gt; 2.5%             0.7289525</span></span>
+<span><span class="co">#&gt; 97.5%            0.9424550</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
 </div>
 </div>
 <div class="section level1">
 <h1 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
 </h1>
-<p>For additional information, read the help documentation <code>?plot_commonality()</code>, or <a href="mailto:andersoc@mcmaster.ca">email Cameron Anderson</a>!</p>
+<p>For additional information, read the help documentation <code>?ggcommonality()</code>, or <a href="mailto:andersoc@mcmaster.ca">email Cameron Anderson</a>!</p>
 </div>
 <div class="section level1">
 <h1 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

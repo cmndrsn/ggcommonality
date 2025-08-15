@@ -13,15 +13,11 @@
 #' @import yhat
 #' @examples
 #' data(mtcars)
-#' ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars) |>
+#' plot_ggcommonality(formula = mpg ~ hp + wt, data = mtcars) |>
 #'   suppressWarnings()
-#'
-#' data(trees)
-#' ggcommonality(formula = Height ~ Girth + Volume + Girth * Volume,
-#' data = trees)
 #' @export
 #'
-ggcommonality <- function(formula,
+plot_ggcommonality <- function(formula,
                           data,
                           stack_by = "partition") {
   commonality_df <- df_ggcommonality(formula,
