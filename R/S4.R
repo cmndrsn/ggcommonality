@@ -12,12 +12,13 @@
 #' multiply resampled residuals by random constants from the normal distribution,
 #' or sign to randomly multiply half of the residuals by +1 and half by -1.
 #' This provides a solution to "fixed" in the presence of model heteroscedasticity
-#' @return Data frame containing commonality partitions for replications.
 #' @slot include_total ANY. TRUE or FALSE, specifying whether to include bar representing total explained variance.
 #' @slot seed ANY. Number specifying which seed to set R's random number generator to.
 #' @slot get_yhat ANY.
+#' @slot bs_ci ANY.
+#' @slot ci_bounds ANY.
 #' @slot ... ANY.
-#'
+#' @return Data frame containing commonality partitions for replications.
 #' @returns
 #' @export
 #'
@@ -34,6 +35,8 @@ methods::setClass("GGCommonality",
                         wild_type = "character",
                         include_total = "ANY",
                         get_yhat = "ANY",
+                        bs_ci = "ANY",
+                        ci_bounds = "ANY",
                         seed = "ANY",
                         ... = "ANY"),
 )
@@ -51,7 +54,9 @@ methods::setGeneric("boot_commonality", function(x) {
 methods::setGeneric("add_ci", function(x, ...) {
   standardGeneric("add_ci")
 })
-
+methods::setGeneric("bs_ci", function(x, ...) {
+  standardGeneric("bs_ci")
+})
 
 # Add function as method to GGCommonality
 
@@ -78,16 +83,39 @@ methods::setMethod("get_yhat", signature("GGCommonality"), function(x) {
   ci = apply(
     x@data.boot,
     1,
-    function(x) quantile(x, c(0.025, 0.975))
+    function(y) quantile(y, x@ci_bounds)
     )
   )
 })
+
+methods::setMethod("bs_ci", signature("GGCommonality"), function(x, ...) {
+  message("Bootstrapped confidence intervals:")
+  if(x@stack == FALSE) x@bs_ci <- .ci_plot_coordinates(
+    data.boot = x@data.boot,
+    include_total = x@include_total,
+    data = x@data,
+    formula = x@formula,
+    ci_bounds = x@ci_bounds
+  )[,c('com', 'lci', 'uci')] |> distinct()
+  else x@bs_ci <-
+      .helper_make_ci(
+        data = x@data.boot,
+        formula = x@formula,
+        ci_bounds = x@ci_bounds,
+        stack_by = x@stack_by,
+        ...
+      )
+  print(x@bs_ci)
+})
+
+
 methods::setMethod("plot", signature("GGCommonality"), function(x) {
     if(x@stack == FALSE) {
       plot_coords <- .ci_plot_coordinates(
         data.boot = x@data.boot,
         include_total = x@include_total,
         data = x@data,
+        ci_bounds = x@ci_bounds,
         formula = x@formula)
         .plot_com_unstacked(plot_coords)
     } else {
@@ -96,26 +124,30 @@ methods::setMethod("plot", signature("GGCommonality"), function(x) {
                   stack_by = x@stack_by)
     }
 })
-methods::setMethod("add_ci", signature("GGCommonality"), function(x, ...) {
-  if(x@stack == FALSE) {
-    plot_coords <- .ci_plot_coordinates(
-      data.boot = x@data.boot,
-      include_total = x@include_total,
-      data = x@data,
-      formula = x@formula
-    )
+methods::setMethod("add_ci", signature("GGCommonality"),
+   function(x, ...) {
+    if(x@stack == FALSE) {
+      plot_coords <- .ci_plot_coordinates(
+        data.boot = x@data.boot,
+        include_total = x@include_total,
+        data = x@data,
+        formula = x@formula,
+        ci_bounds = x@ci_bounds
+      )
 
-      .com_unstacked_errorbar(plot_coords, ...)
+        .com_unstacked_errorbar(plot_coords, ...)
 
-  } else {
-    ci_ggcommonality(
-      data.boot = x@data.boot,
-      data = x@data,
-      formula = x@formula,
-      stack_by = x@stack_by,
-      ...
-    )
-  }
+    } else {
+
+      ci_ggcommonality(
+        data.boot = x@data.boot,
+        data = x@data,
+        formula = x@formula,
+        stack_by = x@stack_by,
+        ci_bounds = x@ci_bounds,
+        ...
+      )
+    }
 })
 
 #' Object for plotting commonality analyses
@@ -134,6 +166,8 @@ methods::setMethod("add_ci", signature("GGCommonality"), function(x, ...) {
 #' This provides a solution to "fixed" in the presence of model heteroscedasticity. See README for details
 #' @param include_total Logical. Include bar representing total variance explained across all unique and common effects?
 #' @param seed Numeric. Number to set R's randomization seed to (for reproducibility).
+#' @param sign Character. Applies to stacked commonality effects only. "+" for confidence intervals based on positive effects only, "-" for negative effects only, and "" for CIs based on all positive and negative values.
+#' @param ci_bounds Array. Values representing bounds of confidence intervals. c(0.025, 0.975) for 95% CIs.
 #'
 #' @returns
 #' @export
@@ -150,6 +184,7 @@ ggcommonality <- function(
     resample_type = "wild",
     wild_type = "gaussian",
     include_total = FALSE,
+    ci_bounds = c(0.025, 0.975),
     seed = NULL
     ) {
 
@@ -178,6 +213,8 @@ ggcommonality <- function(
       wild_type = wild_type,
       include_total = include_total,
       get_yhat = get_yhat,
+      ci_bounds = ci_bounds,
+      bs_ci = bs_ci,
       seed = seed
       )
 

@@ -29,7 +29,8 @@ its functionality using an object-oriented syntax. The package calls on
 `yhat` to perform commonality analyses [@nimon2023r], building bar plots
 in the style of those appearing in the [MAPLE
 Lab's](https://maplelab.net) work applying commonality analysis to the
-compositions of Bach and Chopin [@delle2025breaking; @anderson2022exploring].
+compositions of Bach and Chopin [@delle2025breaking;
+@anderson2022exploring].
 
 Partitions are plotted sequentially in alphabetical order, starting with
 unique effects and are built iteratively with joint effects at higher
@@ -37,12 +38,11 @@ orders on top.
 
 ## Installation
 
-You can install the S4 version of ggcommonality (under development) from
+You can install ggcommonality (under development) from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
-devtools::install_github("cmndrsn/ggcommonality", ref = "S4")
+devtools::install_github("cmndrsn/ggcommonality", build_vignettes = TRUE, force = TRUE)
 ```
 
 ## Example
@@ -112,6 +112,13 @@ plot(p) +
 
 ```
 
+The `bs_ci()` method prints confidence intervals generated for stacked
+effects.
+
+```{r}
+bs_ci(p)
+```
+
 # Confidence intervals
 
 The `resample_type` argument specifies whether to generate random-*x*,
@@ -159,7 +166,13 @@ plot(p1) +
 
 # Getting help
 
-For additional information, read the help documentation
-`?ggcommonality()`, or [email Cameron Anderson](mailto:andersoc@mcmaster.ca)!
+For additional details about on plotting with ggcommonality, see the 'Advanced ggcommonality' vignette:
+```{r}
+vignette('advanced-ggcommonality', 'ggcommonality')
+```
+
+You can also read the help documentation
+`?ggcommonality()`, or [email Cameron
+Anderson](mailto:andersoc@mcmaster.ca).
 
 # References

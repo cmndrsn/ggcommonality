@@ -13,9 +13,8 @@
 #' or sign to randomly multiply half of the residuals by +1 and half by -1.
 #' This provides a solution to "fixed" in the presence of model heteroscedasticity
 #' @return Data frame containing commonality partitions for replications.
-#' @param ci_sign Character. Sign corresponding to which coefficients should be used for generating error bar for confidence interval. If sign = "+", samples only positive coefficients; if "-", only negative coefficients.
-#' @param ci_lower Lower bound of confidence interval.
-#' @param ci_upper Upper bound of confidence interval.
+#' @param sign Character. Sign corresponding to which coefficients should be used for generating error bar for confidence interval. If sign = "+", samples only positive coefficients; if "-", only negative coefficients.
+#' @param ci_bounds Array. Values for lower and upper bounds of confidence interval.
 #' @param n_replications The number of replications to perform in bootstrap simulation.
 #' @param stack_by If "partition", samples from unique and joint effects for commonality partition. If "common", creates confidence interval based on unique vs. common effects.
 #'
@@ -23,9 +22,8 @@
 .helper_make_ci <- function(
                       data,
                       formula,
-                      ci_sign = "+",
-                      ci_lower = 0.025,
-                      ci_upper = 0.975,
+                      sign = "+",
+                      ci_bounds = c(0.025, 0.975),
                       stack_by = "partition") {
   # get terms from rhs of formula
   formula_terms <- labels(
@@ -33,7 +31,7 @@
       formula
       )
     )
-  message("Bootstrap confidence intervals:")
+
   if(stack_by == "partition") {
     lapply(1:length(formula_terms),
            function(x) {
@@ -46,22 +44,22 @@
              ]
              # sample positive effects from bootstrap
              if(
-               ci_sign == "+"
+               sign == "+"
              ) {
                out[out<0] <- 0
              } else if (
                # sample negative effects from bootstrap
-               ci_sign == "-"
+               sign == "-"
              ) {
                out[out>0] <- 0
              } else {
              }
              out <- colSums(out)
              # produce confidence interval
-             lower <- quantile(out, ci_lower)
-             upper <- quantile(out, ci_upper)
+             lower <- quantile(out, ci_bounds[1])
+             upper <- quantile(out, ci_bounds[2])
              out <- data.frame(category, lower, upper)
-             print(out)
+
              return(out)
            }
     ) -> list_CI
@@ -78,24 +76,24 @@
              ]
              # sample positive effects from bootstrap
              if(
-               ci_sign == "+"
+               sign == "+"
              ) {
                out[out<0] <- 0
              } else if (
                # sample negative effects from bootstrap
-               ci_sign == "-"
+               sign == "-"
              ) {
                out[out>0] <- 0
              } else {
              }
              if(!is.null(dim(out))) out <- colSums(out)
              # produce confidence interval
-             lower <- quantile(out, ci_lower)
-             upper <- quantile(out, ci_upper)
+             lower <- quantile(out, ci_bounds[1])
+             upper <- quantile(out, ci_bounds[2])
              out <- data.frame(type, lower, upper)
              out$type <- tolower(out$type)
 
-             print(out)
+
              return(out)
            }
     ) -> list_CI

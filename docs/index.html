@@ -61,7 +61,7 @@
 </h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
-<p>ggcommonality creates bar plots of unique and joint effects from a commonality analysis of a linear regression model. The S4 branch extends its functionality using an object-oriented syntax. The package calls on <code>yhat</code> to perform commonality analyses (Nimon, Oswald, and Roberts. 2023), building bar plots in the style of those appearing in the <a href="https://maplelab.net" class="external-link">MAPLE Lab’s</a> work applying commonality analysis to the compositions of Bach and Chopin (Anderson and Schutz 2022).</p>
+<p>ggcommonality creates bar plots of unique and joint effects from a commonality analysis of a linear regression model. The S4 branch extends its functionality using an object-oriented syntax. The package calls on <code>yhat</code> to perform commonality analyses (Nimon, Oswald, and Roberts. 2023), building bar plots in the style of those appearing in the <a href="https://maplelab.net" class="external-link">MAPLE Lab’s</a> work applying commonality analysis to the compositions of Bach and Chopin (Delle Grazie, Anderson, and Schutz 2025; Anderson and Schutz 2022).</p>
 <p>Partitions are plotted sequentially in alphabetical order, starting with unique effects and are built iteratively with joint effects at higher orders on top.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -99,6 +99,8 @@
 <span><span class="co">#&gt; wild_type        1    -none-                     character</span></span>
 <span><span class="co">#&gt; include_total    1    -none-                     logical  </span></span>
 <span><span class="co">#&gt; get_yhat         1    nonstandardGenericFunction function </span></span>
+<span><span class="co">#&gt; bs_ci            1    -none-                     name     </span></span>
+<span><span class="co">#&gt; ci_bounds        2    -none-                     numeric  </span></span>
 <span><span class="co">#&gt; seed             1    -none-                     name     </span></span>
 <span><span class="co">#&gt; ...              1    -none-                     name     </span></span>
 <span><span class="co">#&gt; class            1    -none-                     character</span></span></code></pre></div>
@@ -106,14 +108,7 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># visualize commonality effects and add confidence intervals</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">add_ci</span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Bootstrap confidence intervals:</span></span>
-<span><span class="co">#&gt;       Unique to wt         Unique to hp         Common to wt, and hp</span></span>
-<span><span class="co">#&gt; 2.5%              0.102445            0.0217475            0.4407075</span></span>
-<span><span class="co">#&gt; 97.5%             0.336340            0.1451100            0.6017200</span></span>
-<span><span class="co">#&gt;       Total               </span></span>
-<span><span class="co">#&gt; 2.5%             0.7077775</span></span>
-<span><span class="co">#&gt; 97.5%            0.9461025</span></span></code></pre></div>
+<span>  <span class="fu">add_ci</span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="100%"></p>
 <p>We can also check the results from <code>yhat</code></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -179,11 +174,11 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ci</span></span>
 <span><span class="co">#&gt;       Unique to wt         Unique to hp         Common to wt, and hp</span></span>
-<span><span class="co">#&gt; 2.5%              0.102445            0.0217475            0.4407075</span></span>
-<span><span class="co">#&gt; 97.5%             0.336340            0.1451100            0.6017200</span></span>
+<span><span class="co">#&gt; 2.5%             0.0980600            0.0274175            0.4413175</span></span>
+<span><span class="co">#&gt; 97.5%            0.3367575            0.1978650            0.5983050</span></span>
 <span><span class="co">#&gt;       Total               </span></span>
-<span><span class="co">#&gt; 2.5%             0.7077775</span></span>
-<span><span class="co">#&gt; 97.5%            0.9461025</span></span></code></pre></div>
+<span><span class="co">#&gt; 2.5%             0.7218475</span></span>
+<span><span class="co">#&gt; 97.5%            0.9329300</span></span></code></pre></div>
 <p>Commonality effects can be stacked in multiple ways:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -197,12 +192,7 @@
 <span></span>
 <span><span class="co"># stack</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">add_ci</span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Bootstrap confidence intervals:</span></span>
-<span><span class="co">#&gt;        type     lower   upper</span></span>
-<span><span class="co">#&gt; 2.5% unique 0.2430325 0.38724</span></span>
-<span><span class="co">#&gt;        type   lower    upper</span></span>
-<span><span class="co">#&gt; 2.5% common 0.39058 0.602515</span></span></code></pre></div>
+<span>  <span class="fu">add_ci</span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># define object </span></span>
@@ -215,13 +205,15 @@
 <span>  </span>
 <span><span class="co"># stack</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">add_ci</span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Bootstrap confidence intervals:</span></span>
-<span><span class="co">#&gt;      category    lower     upper</span></span>
-<span><span class="co">#&gt; 2.5%       wt 0.575685 0.8670875</span></span>
-<span><span class="co">#&gt;      category   lower    upper</span></span>
-<span><span class="co">#&gt; 2.5%       hp 0.44979 0.716075</span></span></code></pre></div>
+<span>  <span class="fu">add_ci</span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="100%"></p>
+<p>The <code>bs_ci()</code> method prints confidence intervals generated for stacked effects.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">bs_ci</span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Bootstrapped confidence intervals:</span></span>
+<span><span class="co">#&gt;       category     lower     upper</span></span>
+<span><span class="co">#&gt; 2.5%        wt 0.5966200 0.8829875</span></span>
+<span><span class="co">#&gt; 2.5%1       hp 0.4777675 0.7305300</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level1">
@@ -229,10 +221,13 @@
 </h1>
 <p>The <code>resample_type</code> argument specifies whether to generate random-<em>x</em>, confidence intervals, fixed-<em>x</em>, or wild-<em>x</em> confidence intervals. The <a href="https://www.john-fox.ca/Companion/" class="external-link">appendices</a> to Fox and Weisberg (2018) summarizes the advantages and disadvantages of fixed vs. random-<em>x</em> bootstrapping. Wild-<em>x</em> provides a solution to fixed-<em>x</em> for models featuring heteroscedasticity by multiplying re-sampled residuals with constants sampled from a Gaussian distribution (<code>wild_type = "gaussian"</code>), or by randomly multiplying half by 1 and half by -1 (<code>wild_type = "sign"</code>).</p>
 <p>If <code>stack_by = "partition"</code>, confidence intervals represent the sum of unique and joint effects for individual commonality partitions. Otherwise, if <code>stack_by = "common"</code>, separate confidence intervals are generated for the sum of unique effects and the sum of joint effects.</p>
+<div class="note">
+<p>For additional details about how confidence intervals can be flexibly defined for negative commonalities, see the ‘Advanced ggcommonality’ vignette.</p>
+</div>
 <div class="section level2">
 <h2 id="comparing-confidence-intervals">Comparing confidence intervals<a class="anchor" aria-label="anchor" href="#comparing-confidence-intervals"></a>
 </h2>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># set r's random number generator</span></span>
 <span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ggcommonality.html">ggcommonality</a></span><span class="op">(</span></span>
 <span>  formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
@@ -255,38 +250,14 @@
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">p2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">add_ci</span><span class="op">(</span><span class="va">p2</span><span class="op">)</span><span class="op">+</span></span>
 <span>    <span class="fu">ylim</span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.65</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Wild"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;       Unique to wt         Unique to hp         Common to wt, and hp</span></span>
-<span><span class="co">#&gt; 2.5%             0.1337675            0.0142875            0.4594825</span></span>
-<span><span class="co">#&gt; 97.5%            0.3733625            0.1504600            0.5930400</span></span>
-<span><span class="co">#&gt;       Total               </span></span>
-<span><span class="co">#&gt; 2.5%             0.7478275</span></span>
-<span><span class="co">#&gt; 97.5%            0.9133325</span></span>
-<span><span class="co">#&gt;       Unique to wt         Unique to hp         Common to wt, and hp</span></span>
-<span><span class="co">#&gt; 2.5%             0.1337675            0.0142875            0.4594825</span></span>
-<span><span class="co">#&gt; 97.5%            0.3733625            0.1504600            0.5930400</span></span>
-<span><span class="co">#&gt;       Total               </span></span>
-<span><span class="co">#&gt; 2.5%             0.7478275</span></span>
-<span><span class="co">#&gt; 97.5%            0.9133325</span></span>
-<span><span class="co">#&gt;       Unique to wt         Unique to hp         Common to wt, and hp</span></span>
-<span><span class="co">#&gt; 2.5%             0.1208525            0.0196800              0.43912</span></span>
-<span><span class="co">#&gt; 97.5%            0.3378900            0.1432725              0.61448</span></span>
-<span><span class="co">#&gt;       Total               </span></span>
-<span><span class="co">#&gt; 2.5%              0.699095</span></span>
-<span><span class="co">#&gt; 97.5%             0.943825</span></span>
-<span><span class="co">#&gt;       Unique to wt         Unique to hp         Common to wt, and hp</span></span>
-<span><span class="co">#&gt; 2.5%             0.1208525            0.0196800              0.43912</span></span>
-<span><span class="co">#&gt; 97.5%            0.3378900            0.1432725              0.61448</span></span>
-<span><span class="co">#&gt;       Total               </span></span>
-<span><span class="co">#&gt; 2.5%              0.699095</span></span>
-<span><span class="co">#&gt; 97.5%             0.943825</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
+<span>  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Wild"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
 </div>
 </div>
 <div class="section level1">
 <h1 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
 </h1>
-<p>For additional information, read the help documentation <code>?ggcommonality()</code>, or <a href="mailto:andersoc@mcmaster.ca">email Cameron Anderson</a>!</p>
+<p>For additional information, read the help documentation <code>?ggcommonality()</code>, or <a href="mailto:andersoc@mcmaster.ca">email Cameron Anderson</a>.</p>
 </div>
 <div class="section level1">
 <h1 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -294,6 +265,9 @@
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-anderson2022exploring" class="csl-entry">
 Anderson, Cameron J, and Michael Schutz. 2022. “Exploring Historic Changes in Musical Communication: Deconstructing Emotional Cues in Preludes by Bach and Chopin.” <em>Psychology of Music</em> 50 (5): 1424–42.
+</div>
+<div id="ref-delle2025breaking" class="csl-entry">
+Delle Grazie, Max, Cameron J Anderson, and Michael Schutz. 2025. “Breaking with Common Practice: Exploring Modernist Musical Emotion.” <em>Psychology of Music</em>, 03057356241296852.
 </div>
 <div id="ref-fox2018r" class="csl-entry">
 Fox, John, and Sanford Weisberg. 2018. <em>An r Companion to Applied Regression</em>. Sage publications.
