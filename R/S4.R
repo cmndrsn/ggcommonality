@@ -16,6 +16,7 @@
 #' @slot seed ANY. Number specifying which seed to set R's random number generator to.
 #' @slot get_yhat ANY.
 #' @slot bs_ci ANY.
+#' @slot ci_bounds ANY.
 #' @slot ... ANY.
 #' @return Data frame containing commonality partitions for replications.
 #' @returns
@@ -35,6 +36,7 @@ methods::setClass("GGCommonality",
                         include_total = "ANY",
                         get_yhat = "ANY",
                         bs_ci = "ANY",
+                        ci_bounds = "ANY",
                         seed = "ANY",
                         ... = "ANY"),
 )
@@ -81,27 +83,29 @@ methods::setMethod("get_yhat", signature("GGCommonality"), function(x) {
   ci = apply(
     x@data.boot,
     1,
-    function(x) quantile(x, c(0.025, 0.975))
+    function(x) quantile(x, x@ci_bounds)
     )
   )
 })
 
-methods::setMethod("bs_ci", signature("GGCommonality"), function(x) {
+methods::setMethod("bs_ci", signature("GGCommonality"), function(x, ...) {
+  message("Bootstrapped confidence intervals:")
   if(x@stack == FALSE) x@bs_ci <- .ci_plot_coordinates(
     data.boot = x@data.boot,
     include_total = x@include_total,
     data = x@data,
-    formula = x@formula
-  )
+    formula = x@formula,
+    ci_bounds = x@ci_bounds
+  )[,c('com', 'lci', 'uci')] |> distinct()
   else x@bs_ci <-
       .helper_make_ci(
         data = x@data.boot,
         formula = x@formula,
-        ci_sign = "+",
-        ci_lower = 0.025,
-        ci_upper = 0.975,
-        stack_by = x@stack_by
+        ci_bounds = x@ci_bounds,
+        stack_by = x@stack_by,
+        ...
       )
+  print(x@bs_ci)
 })
 
 
@@ -111,6 +115,7 @@ methods::setMethod("plot", signature("GGCommonality"), function(x) {
         data.boot = x@data.boot,
         include_total = x@include_total,
         data = x@data,
+        ci_bounds = x@ci_bounds,
         formula = x@formula)
         .plot_com_unstacked(plot_coords)
     } else {
@@ -119,27 +124,30 @@ methods::setMethod("plot", signature("GGCommonality"), function(x) {
                   stack_by = x@stack_by)
     }
 })
-methods::setMethod("add_ci", signature("GGCommonality"), function(x, ...) {
-  if(x@stack == FALSE) {
-    plot_coords <- .ci_plot_coordinates(
-      data.boot = x@data.boot,
-      include_total = x@include_total,
-      data = x@data,
-      formula = x@formula
-    )
+methods::setMethod("add_ci", signature("GGCommonality"),
+   function(x, ...) {
+    if(x@stack == FALSE) {
+      plot_coords <- .ci_plot_coordinates(
+        data.boot = x@data.boot,
+        include_total = x@include_total,
+        data = x@data,
+        formula = x@formula,
+        ci_bounds = x@ci_bounds
+      )
 
-      .com_unstacked_errorbar(plot_coords, ...)
+        .com_unstacked_errorbar(plot_coords, ...)
 
-  } else {
+    } else {
 
-    ci_ggcommonality(
-      data.boot = x@data.boot,
-      data = x@data,
-      formula = x@formula,
-      stack_by = x@stack_by,
-      ...
-    )
-  }
+      ci_ggcommonality(
+        data.boot = x@data.boot,
+        data = x@data,
+        formula = x@formula,
+        stack_by = x@stack_by,
+        ci_bounds = x@ci_bounds,
+        ...
+      )
+    }
 })
 
 #' Object for plotting commonality analyses
@@ -158,6 +166,8 @@ methods::setMethod("add_ci", signature("GGCommonality"), function(x, ...) {
 #' This provides a solution to "fixed" in the presence of model heteroscedasticity. See README for details
 #' @param include_total Logical. Include bar representing total variance explained across all unique and common effects?
 #' @param seed Numeric. Number to set R's randomization seed to (for reproducibility).
+#' @param sign Character. Applies to stacked commonality effects only. "+" for confidence intervals based on positive effects only, "-" for negative effects only, and "" for CIs based on all positive and negative values.
+#' @param ci_bounds Array. Values representing bounds of confidence intervals. c(0.025, 0.975) for 95% CIs.
 #'
 #' @returns
 #' @export
@@ -174,6 +184,7 @@ ggcommonality <- function(
     resample_type = "wild",
     wild_type = "gaussian",
     include_total = FALSE,
+    ci_bounds = c(0.025, 0.975),
     seed = NULL
     ) {
 
@@ -202,6 +213,7 @@ ggcommonality <- function(
       wild_type = wild_type,
       include_total = include_total,
       get_yhat = get_yhat,
+      ci_bounds = ci_bounds,
       seed = seed
       )
 

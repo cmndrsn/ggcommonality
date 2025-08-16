@@ -130,18 +130,17 @@ plot_ggcommonality <- function(formula,
 #' Calls yhat::regr() to generate commonality coefficients for
 #' data resampled with replacement. Then it sums unique and joint effects for each
 #' commonality partition and generates a 95% confidence interval.
-#' By setting ci_sign to "positive" or "negative", you can generate an errorbar
+#' By setting sign to "positive" or "negative", you can generate an errorbar
 #' for positive and negative commonalities, respectively.
 #'
 #' @param formula Formula for linear regression model
 #' @param data  Data frame matching formula argument
 #' @param sample_column Character. Name of column for resampling observations. If blank, simple resampling is performed.
 #' @param n_replications Numeric. Number of replications to use in bootstrap.
-#' @param ci_sign If "+", genereates confidence intervals using only positive coefficients
+#' @param sign If "+", genereates confidence intervals using only positive coefficients
 #' If "-", generates confidence intervals using only negative coefficients.
 #' Otherwise, generates confidence interval using both positive and negative.
-#' @param ci_lower Numeric. Value for lower bound of confidence interval.
-#' @param ci_upper Numeric. Value for upper bound of confidence interval
+#' @param ci_bounds Array. Values for lower and upper bounds of confidence interval.
 #' @param stack_by In progress. Currently allows stacking unique and common effects by partition
 #' if "partition" is the input. If stack_by == "common" it stacks unique vs joint effects.
 #' @param resample_type Method for boostrap resampling. Either "random", "fixed", or "wild".
@@ -157,9 +156,8 @@ ci_ggcommonality <- function(
                           data.boot,
                           formula,
                           data,
-                          ci_sign = "+",
-                          ci_lower = 0.025,
-                          ci_upper = 0.975,
+                          sign = "+",
+                          ci_bounds = c(0.025, 0.975),
                           stack_by = "partition",
                           ...) {
 
@@ -185,9 +183,8 @@ ci_ggcommonality <- function(
     .helper_make_ci(
     data = data.boot,
     formula = formula,
-    ci_sign = ci_sign,
-    ci_lower = ci_lower,
-    ci_upper = ci_upper,
+    sign = sign,
+    ci_bounds = ci_bounds,
     stack_by = stack_by
     )
 

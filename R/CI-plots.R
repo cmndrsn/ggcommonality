@@ -4,7 +4,7 @@
 #' @param formula
 #' @param data
 #' @param include_total
-#' @param quantiles
+#' @param ci_bounds
 #'
 #' @returns
 #'
@@ -14,7 +14,7 @@
     formula,
     data,
     include_total = TRUE,
-    quantiles = c(.025, .975)
+    ci_bounds = c(.025, .975)
 ) {
   coef <- yhat::regr(
     lm(
@@ -32,7 +32,7 @@
     1,
     FUN = function(x) {
       quantile(x,
-               quantiles
+               ci_bounds
       )
 
     }
@@ -40,8 +40,7 @@
 
   )
 
-  message("Bootstrap confidence intervals:")
-  print(bs_ci)
+
 
   bs_ci <- t(bs_ci) |>
     as.data.frame() |>
