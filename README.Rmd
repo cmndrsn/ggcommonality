@@ -38,12 +38,11 @@ orders on top.
 
 ## Installation
 
-You can install the S4 version of ggcommonality (under development) from
+You can install ggcommonality (under development) from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
-devtools::install_github("cmndrsn/ggcommonality", ref = "S4")
+devtools::install_github("cmndrsn/ggcommonality", build_vignettes = TRUE, force = TRUE)
 ```
 
 ## Example
@@ -136,14 +135,6 @@ unique and joint effects for individual commonality partitions.
 Otherwise, if `stack_by = "common"`, separate confidence intervals are
 generated for the sum of unique effects and the sum of joint effects.
 
-:::note
-
-For additional details about how confidence intervals can be flexibly
-defined for negative commonalities, see the 'Advanced ggcommonality'
-vignette.
-
-:::
-
 ## Comparing confidence intervals
 
 ```{r warning=FALSE, message=FALSE}
@@ -175,7 +166,12 @@ plot(p1) +
 
 # Getting help
 
-For additional information, read the help documentation
+For additional details about on plotting with ggcommonality, see the 'Advanced ggcommonality' vignette:
+```{r}
+vignette('advanced-ggcommonality', 'ggcommonality')
+```
+
+You can also read the help documentation
 `?ggcommonality()`, or [email Cameron
 Anderson](mailto:andersoc@mcmaster.ca).
 

@@ -216,7 +216,8 @@ generated for the sum of unique effects and the sum of joint effects.
 <div class="note">
 
 For additional details about how confidence intervals can be flexibly
-defined for negative commonalities, see the ‘Advanced ggcommonality’
+defined for negative commonalities, see the [Advanced ggcommonality vignette](doc/advanced-ggcommonality.html)
+
 vignette.
 
 </div>

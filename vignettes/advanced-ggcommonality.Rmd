@@ -10,7 +10,9 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 6,
+  fig.height = 4
 )
 ```
 
@@ -45,6 +47,7 @@ However, we can override this behaviour by specifying the sign argument. Leaving
 ```{r}
 plot(p) + add_ci(p, sign = "")
 ```
+
 As you can see, this pulls the confidence interval for common effects down in the visualization above. We can also add separate confidence intervals for both positive and negative effects:
 
 ```{r}
@@ -52,6 +55,7 @@ plot(p) + add_ci(p, sign = "+") + add_ci(p, sign = "-")
 ```
 
 The `bs_ci` prints the lower and upper bounds of the confidence intervals:
+
 ```{r}
 bs_ci(p, sign = "+")
 ```
@@ -65,6 +69,7 @@ bs_ci(p, sign = "-")
 ### CI types
 
 By default, ggcommonality uses percentile-based 95% confidence intervals. However, we can redefine these in several ways. First, we can choose to use fixed, random, or wild-type confidence intervals. For this, we'll have to redefine our ggcommonality object
+
 ```{r}
 p1 <- ggcommonality(mpg ~ wt + hp + cyl + gear, data = mtcars, stack = TRUE, resample_type = "fixed")
 p2 <- ggcommonality(mpg ~ wt + hp + cyl + gear, data = mtcars, stack = TRUE, resample_type = "random")
@@ -72,6 +77,7 @@ p3 <- ggcommonality(mpg ~ wt + hp + cyl + gear, data = mtcars, stack = TRUE, res
 ```
 
 We can see how this affects the width of confidence intervals:
+
 ```{r}
 library(patchwork)
 plot(p1) + add_ci(p1) + ggtitle("Fixed") + theme(legend.position = "none") |
@@ -82,6 +88,7 @@ plot(p1) + add_ci(p1) + ggtitle("Fixed") + theme(legend.position = "none") |
 ### CI width
 
 We may not always want to use 95% confidence intervals. What if we instead want to use a 99% interval? We can specify this behaviour using the ci_bounds argument when defining the ggcommonality object:
+
 ```{r}
 # define a 99% confidence interval
 q <- ggcommonality(mpg ~ wt + hp + cyl + gear, data = mtcars, stack = TRUE, ci_bounds = c(0.01, 0.99))
@@ -89,6 +96,7 @@ q <- ggcommonality(mpg ~ wt + hp + cyl + gear, data = mtcars, stack = TRUE, ci_b
 ```
 
 Now let's compare:
+
 ```{r}
 plot(p) + add_ci(p) + ggtitle("95%") + theme(legend.position = "none") |
 plot(q) + add_ci(q) + ggtitle("99%") + theme(legend.position = "none") 
@@ -99,6 +107,18 @@ As expected, our 99% confidence interval is wider.
 ### Customizing error bars
 
 ggcommonality uses the ggplot2. As such, you can customize your error bars to your heart's content:
+
 ```{r}
 plot(p) + add_ci(p, width = 0.25, colour = 'grey45', linetype = 4)
+```
+
+### Customizing barplots
+
+Similarly, we can customize the barplot using ggplot:
+
+```{r}
+plot(p) +
+  theme_classic()+
+  scale_fill_brewer(type = "div", palette = 3)
+
 ```

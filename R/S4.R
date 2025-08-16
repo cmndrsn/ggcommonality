@@ -214,6 +214,7 @@ ggcommonality <- function(
       include_total = include_total,
       get_yhat = get_yhat,
       ci_bounds = ci_bounds,
+      bs_ci = bs_ci,
       seed = seed
       )
 
