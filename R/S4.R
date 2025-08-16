@@ -83,7 +83,7 @@ methods::setMethod("get_yhat", signature("GGCommonality"), function(x) {
   ci = apply(
     x@data.boot,
     1,
-    function(x) quantile(x, x@ci_bounds)
+    function(y) quantile(y, x@ci_bounds)
     )
   )
 })
