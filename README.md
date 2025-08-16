@@ -22,12 +22,11 @@ orders on top.
 
 ## Installation
 
-You can install the S4 version of ggcommonality (under development) from
+You can install ggcommonality (under development) from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
-devtools::install_github("cmndrsn/ggcommonality", ref = "S4")
+devtools::install_github("cmndrsn/ggcommonality")
 ```
 
 ## Example
