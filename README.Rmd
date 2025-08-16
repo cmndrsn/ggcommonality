@@ -29,7 +29,8 @@ its functionality using an object-oriented syntax. The package calls on
 `yhat` to perform commonality analyses [@nimon2023r], building bar plots
 in the style of those appearing in the [MAPLE
 Lab's](https://maplelab.net) work applying commonality analysis to the
-compositions of Bach and Chopin [@delle2025breaking; @anderson2022exploring].
+compositions of Bach and Chopin [@delle2025breaking;
+@anderson2022exploring].
 
 Partitions are plotted sequentially in alphabetical order, starting with
 unique effects and are built iteratively with joint effects at higher
@@ -112,6 +113,13 @@ plot(p) +
 
 ```
 
+The `bs_ci()` method prints confidence intervals generated for stacked
+effects.
+
+```{r}
+bs_ci(p)
+```
+
 # Confidence intervals
 
 The `resample_type` argument specifies whether to generate random-*x*,
@@ -127,6 +135,14 @@ If `stack_by = "partition"`, confidence intervals represent the sum of
 unique and joint effects for individual commonality partitions.
 Otherwise, if `stack_by = "common"`, separate confidence intervals are
 generated for the sum of unique effects and the sum of joint effects.
+
+:::note
+
+For additional details about how confidence intervals can be flexibly
+defined for negative commonalities, see the 'Advanced ggcommonality'
+vignette.
+
+:::
 
 ## Comparing confidence intervals
 
@@ -160,6 +176,7 @@ plot(p1) +
 # Getting help
 
 For additional information, read the help documentation
-`?ggcommonality()`, or [email Cameron Anderson](mailto:andersoc@mcmaster.ca)!
+`?ggcommonality()`, or [email Cameron
+Anderson](mailto:andersoc@mcmaster.ca).
 
 # References

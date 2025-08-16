@@ -60,6 +60,8 @@ p |> attributes() |> summary()
 #> wild_type        1    -none-                     character
 #> include_total    1    -none-                     logical  
 #> get_yhat         1    nonstandardGenericFunction function 
+#> bs_ci            1    -none-                     name     
+#> ci_bounds        2    -none-                     numeric  
 #> seed             1    -none-                     name     
 #> ...              1    -none-                     name     
 #> class            1    -none-                     character
@@ -72,20 +74,6 @@ built-in methods.
 # visualize commonality effects and add confidence intervals
 plot(p) +
   add_ci(p)
-#> Bootstrap confidence intervals:
-#>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1309825             0.020545            0.4061000
-#> 97.5%            0.3454650             0.148425            0.6040325
-#>       Total               
-#> 2.5%             0.6928625
-#> 97.5%            0.9439675
-#> Bootstrap confidence intervals:
-#>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1309825             0.020545            0.4061000
-#> 97.5%            0.3454650             0.148425            0.6040325
-#>       Total               
-#> 2.5%             0.6928625
-#> 97.5%            0.9439675
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
@@ -155,11 +143,11 @@ get_yhat(p)
 #> 
 #> $ci
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1309825             0.020545            0.4061000
-#> 97.5%            0.3454650             0.148425            0.6040325
+#> 2.5%             0.0980600            0.0274175            0.4413175
+#> 97.5%            0.3367575            0.1978650            0.5983050
 #>       Total               
-#> 2.5%             0.6928625
-#> 97.5%            0.9439675
+#> 2.5%             0.7218475
+#> 97.5%            0.9329300
 ```
 
 Commonality effects can be stacked in multiple ways:
@@ -177,11 +165,6 @@ p <- ggcommonality(
 # stack
 plot(p) +
   add_ci(p)
-#> Bootstrap confidence intervals:
-#>        type     lower    upper
-#> 2.5% unique 0.2506725 0.379575
-#>        type     lower    upper
-#> 2.5% common 0.4427775 0.602435
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
@@ -198,14 +181,20 @@ p <- ggcommonality(
 # stack
 plot(p) +
   add_ci(p)
-#> Bootstrap confidence intervals:
-#>      category    lower   upper
-#> 2.5%       wt 0.629705 0.87233
-#>      category     lower    upper
-#> 2.5%       hp 0.4417625 0.720255
 ```
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+
+The `bs_ci()` method prints confidence intervals generated for stacked
+effects.
+
+``` r
+bs_ci(p)
+#> Bootstrapped confidence intervals:
+#>       category     lower     upper
+#> 2.5%        wt 0.5966200 0.8829875
+#> 2.5%1       hp 0.4777675 0.7305300
+```
 
 # Confidence intervals
 
@@ -223,6 +212,14 @@ If `stack_by = "partition"`, confidence intervals represent the sum of
 unique and joint effects for individual commonality partitions.
 Otherwise, if `stack_by = "common"`, separate confidence intervals are
 generated for the sum of unique effects and the sum of joint effects.
+
+<div class="note">
+
+For additional details about how confidence intervals can be flexibly
+defined for negative commonalities, see the ‘Advanced ggcommonality’
+vignette.
+
+</div>
 
 ## Comparing confidence intervals
 
@@ -250,39 +247,15 @@ plot(p1) +
   add_ci(p2)+
     ylim(0,0.65)+
   ggtitle("Wild")
-#>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1225775            0.0159325              0.45048
-#> 97.5%            0.3579475            0.1570925              0.59279
-#>       Total               
-#> 2.5%             0.7532200
-#> 97.5%            0.9122625
-#>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1225775            0.0159325              0.45048
-#> 97.5%            0.3579475            0.1570925              0.59279
-#>       Total               
-#> 2.5%             0.7532200
-#> 97.5%            0.9122625
-#>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1040175            0.0196225              0.39819
-#> 97.5%            0.3716800            0.1802075              0.61039
-#>       Total               
-#> 2.5%             0.6406675
-#> 97.5%            0.9403900
-#>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1040175            0.0196225              0.39819
-#> 97.5%            0.3716800            0.1802075              0.61039
-#>       Total               
-#> 2.5%             0.6406675
-#> 97.5%            0.9403900
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
 # Getting help
 
 For additional information, read the help documentation
 `?ggcommonality()`, or [email Cameron
-Anderson](mailto:andersoc@mcmaster.ca)!
+Anderson](mailto:andersoc@mcmaster.ca).
 
 # References
 
