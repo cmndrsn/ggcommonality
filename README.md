@@ -22,12 +22,11 @@ orders on top.
 
 ## Installation
 
-You can install the S4 version of ggcommonality (under development) from
+You can install ggcommonality (under development) from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
-devtools::install_github("cmndrsn/ggcommonality", ref = "S4")
+devtools::install_github("cmndrsn/ggcommonality", build_vignettes = TRUE, force = TRUE)
 ```
 
 ## Example
@@ -60,7 +59,7 @@ p |> attributes() |> summary()
 #> wild_type        1    -none-                     character
 #> include_total    1    -none-                     logical  
 #> get_yhat         1    nonstandardGenericFunction function 
-#> bs_ci            1    -none-                     name     
+#> bs_ci            1    nonstandardGenericFunction function 
 #> ci_bounds        2    -none-                     numeric  
 #> seed             1    -none-                     name     
 #> ...              1    -none-                     name     
@@ -143,11 +142,11 @@ get_yhat(p)
 #> 
 #> $ci
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.0980600            0.0274175            0.4413175
-#> 97.5%            0.3367575            0.1978650            0.5983050
+#> 2.5%              0.133045            0.0263950            0.4040925
+#> 97.5%             0.326220            0.1612175            0.6128200
 #>       Total               
-#> 2.5%             0.7218475
-#> 97.5%            0.9329300
+#> 2.5%             0.6657925
+#> 97.5%            0.9553275
 ```
 
 Commonality effects can be stacked in multiple ways:
@@ -191,9 +190,9 @@ effects.
 ``` r
 bs_ci(p)
 #> Bootstrapped confidence intervals:
-#>       category     lower     upper
-#> 2.5%        wt 0.5966200 0.8829875
-#> 2.5%1       hp 0.4777675 0.7305300
+#>       category    lower     upper
+#> 2.5%        wt 0.564400 0.8840525
+#> 2.5%1       hp 0.440255 0.7494500
 ```
 
 # Confidence intervals
@@ -212,15 +211,6 @@ If `stack_by = "partition"`, confidence intervals represent the sum of
 unique and joint effects for individual commonality partitions.
 Otherwise, if `stack_by = "common"`, separate confidence intervals are
 generated for the sum of unique effects and the sum of joint effects.
-
-<div class="note">
-
-For additional details about how confidence intervals can be flexibly
-defined for negative commonalities, see the [Advanced ggcommonality vignette](doc/advanced-ggcommonality.html)
-
-vignette.
-
-</div>
 
 ## Comparing confidence intervals
 
@@ -254,9 +244,16 @@ plot(p1) +
 
 # Getting help
 
-For additional information, read the help documentation
-`?ggcommonality()`, or [email Cameron
-Anderson](mailto:andersoc@mcmaster.ca).
+For additional details about on plotting with ggcommonality, see the
+‘Advanced ggcommonality’ vignette:
+
+``` r
+vignette('advanced-ggcommonality', 'ggcommonality')
+#> Warning: vignette 'advanced-ggcommonality' not found
+```
+
+You can also read the help documentation `?ggcommonality()`, or [email
+Cameron Anderson](mailto:andersoc@mcmaster.ca).
 
 # References
 
