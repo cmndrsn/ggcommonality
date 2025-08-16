@@ -12,12 +12,12 @@
 #' multiply resampled residuals by random constants from the normal distribution,
 #' or sign to randomly multiply half of the residuals by +1 and half by -1.
 #' This provides a solution to "fixed" in the presence of model heteroscedasticity
-#' @return Data frame containing commonality partitions for replications.
 #' @slot include_total ANY. TRUE or FALSE, specifying whether to include bar representing total explained variance.
 #' @slot seed ANY. Number specifying which seed to set R's random number generator to.
 #' @slot get_yhat ANY.
+#' @slot bs_ci ANY.
 #' @slot ... ANY.
-#'
+#' @return Data frame containing commonality partitions for replications.
 #' @returns
 #' @export
 #'
@@ -34,6 +34,7 @@ methods::setClass("GGCommonality",
                         wild_type = "character",
                         include_total = "ANY",
                         get_yhat = "ANY",
+                        bs_ci = "ANY",
                         seed = "ANY",
                         ... = "ANY"),
 )
@@ -51,7 +52,9 @@ methods::setGeneric("boot_commonality", function(x) {
 methods::setGeneric("add_ci", function(x, ...) {
   standardGeneric("add_ci")
 })
-
+methods::setGeneric("bs_ci", function(x, ...) {
+  standardGeneric("bs_ci")
+})
 
 # Add function as method to GGCommonality
 
@@ -82,6 +85,26 @@ methods::setMethod("get_yhat", signature("GGCommonality"), function(x) {
     )
   )
 })
+
+methods::setMethod("bs_ci", signature("GGCommonality"), function(x) {
+  if(x@stack == FALSE) x@bs_ci <- .ci_plot_coordinates(
+    data.boot = x@data.boot,
+    include_total = x@include_total,
+    data = x@data,
+    formula = x@formula
+  )
+  else x@bs_ci <-
+      .helper_make_ci(
+        data = x@data.boot,
+        formula = x@formula,
+        ci_sign = "+",
+        ci_lower = 0.025,
+        ci_upper = 0.975,
+        stack_by = x@stack_by
+      )
+})
+
+
 methods::setMethod("plot", signature("GGCommonality"), function(x) {
     if(x@stack == FALSE) {
       plot_coords <- .ci_plot_coordinates(
@@ -108,6 +131,7 @@ methods::setMethod("add_ci", signature("GGCommonality"), function(x, ...) {
       .com_unstacked_errorbar(plot_coords, ...)
 
   } else {
+
     ci_ggcommonality(
       data.boot = x@data.boot,
       data = x@data,
