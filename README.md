@@ -75,9 +75,9 @@ plot(p) +
 #> # Groups:   com [3]
 #>   com      lci   uci
 #>   <fct>  <dbl> <dbl>
-#> 1 hp    0.0190 0.181
-#> 2 wt    0.107  0.351
-#> 3 wt,hp 0.400  0.611
+#> 1 hp    0.0282 0.135
+#> 2 wt    0.138  0.326
+#> 3 wt,hp 0.435  0.611
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
@@ -147,11 +147,11 @@ ggcom_yhat(p)
 #> 
 #> $ci
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1067050            0.0189500              0.39964
-#> 97.5%            0.3510375            0.1808275              0.61110
+#> 2.5%             0.1381700             0.028245            0.4353950
+#> 97.5%            0.3255175             0.135125            0.6111725
 #>       Total               
-#> 2.5%             0.6659825
-#> 97.5%            0.9479450
+#> 2.5%               0.67290
+#> 97.5%              0.94381
 ```
 
 Commonality effects can be stacked in multiple ways:
@@ -165,9 +165,9 @@ slot(p, 'stack') <- "common"
 plot(p) +
   ggcom_ci(p)
 #> Bootstrapped confidence intervals:
-#>         type     lower   upper
-#> 2.5%  unique 0.2331025 0.38051
-#> 2.5%1 common 0.3996400 0.61110
+#>         type     lower     upper
+#> 2.5%  unique 0.2392025 0.3600525
+#> 2.5%1 common 0.4353950 0.6111725
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
@@ -180,9 +180,9 @@ slot(p, 'stack') <- "partition"
 plot(p) +
   ggcom_ci(p)
 #> Bootstrapped confidence intervals:
-#>       category     lower     upper
-#> 2.5%        wt 0.5594425 0.8718750
-#> 2.5%1       hp 0.4301350 0.7437325
+#>       category     lower    upper
+#> 2.5%        wt 0.6048425 0.863605
+#> 2.5%1       hp 0.4873300 0.733065
 ```
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
@@ -193,11 +193,11 @@ stacked effects.
 ``` r
 ggcom_ci(p)
 #> Bootstrapped confidence intervals:
-#>       category     lower     upper
-#> 2.5%        wt 0.5594425 0.8718750
-#> 2.5%1       hp 0.4301350 0.7437325
+#>       category     lower    upper
+#> 2.5%        wt 0.6048425 0.863605
+#> 2.5%1       hp 0.4873300 0.733065
 #> mapping: x = ~x_mid, ymin = ~lower, ymax = ~upper 
-#> geom_errorbar: na.rm = FALSE, orientation = NA
+#> geom_errorbar: na.rm = FALSE, orientation = NA, width = 0.3
 #> stat_identity: na.rm = FALSE
 #> position_identity
 ```
@@ -249,16 +249,16 @@ plot(p1) +
 #> # Groups:   com [3]
 #>   com      lci   uci
 #>   <fct>  <dbl> <dbl>
-#> 1 hp    0.0144 0.162
-#> 2 wt    0.123  0.362
-#> 3 wt,hp 0.456  0.590
+#> 1 hp    0.0215 0.137
+#> 2 wt    0.142  0.354
+#> 3 wt,hp 0.461  0.593
 #> # A tibble: 3 × 3
 #> # Groups:   com [3]
 #>   com      lci   uci
 #>   <fct>  <dbl> <dbl>
-#> 1 hp    0.0239 0.186
-#> 2 wt    0.0923 0.343
-#> 3 wt,hp 0.395  0.597
+#> 1 hp    0.0191 0.172
+#> 2 wt    0.111  0.357
+#> 3 wt,hp 0.442  0.613
 ```
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />

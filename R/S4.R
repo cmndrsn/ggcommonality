@@ -132,7 +132,7 @@ methods::setMethod("ggcom_ci", signature("GGCommonality"),
         ci_bounds = x@ci_bounds
       )
 
-        .com_unstacked_errorbar(plot_coords, ...)
+        .com_unstacked_errorbar(plot_coords, width = width, ...)
 
     } else {
 
@@ -142,6 +142,7 @@ methods::setMethod("ggcom_ci", signature("GGCommonality"),
         formula = x@formula,
         stack = x@stack,
         ci_bounds = x@ci_bounds,
+        width = width,
         ...
       )
     }
