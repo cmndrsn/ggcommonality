@@ -5,8 +5,7 @@
 #'
 #' @param formula Formula passed to regression model
 #' @param data data argument matching formula
-#' @param stack In progress. Currently allows stacking unique and common effects by partition
-#' if "partition" is the input. Otherwise it stacks unique vs joint effects.
+#' @param stack Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
 #' @return ggplot object. Unique and common effects presented as a bar plot.
 #' Variance attributable to two variables appears in partition for both.
 #' @import ggplot2
@@ -141,8 +140,7 @@ plot_ggcommonality <- function(formula,
 #' If "-", generates confidence intervals using only negative coefficients.
 #' Otherwise, generates confidence interval using both positive and negative.
 #' @param ci_bounds Array. Values for lower and upper bounds of confidence interval.
-#' @param stack In progress. Currently allows stacking unique and common effects by partition
-#' if "partition" is the input. If stack == "common" it stacks unique vs joint effects.
+#' @param stack Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
 #' @param resample_type Method for boostrap resampling. Either "random", "fixed", or "wild".
 #' @param wild_type If resample_type == "wild", either "Gaussian" to
 #' multiply resampled residuals by random constants from the normal distribution,

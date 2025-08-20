@@ -40,30 +40,27 @@ library(ggcommonality)
 
 my_formula <- mpg ~ wt + hp
 
-p <- ggcommonality(formula = my_formula,
+p <- ggcom(formula = my_formula,
                    data = mtcars)
 #> Registered S3 method overwritten by 'mosaic':
 #>   method                           from   
 #>   fortify.SpatialPolygonsDataFrame ggplot2
   
 p |> attributes() |> summary()
-#>                Length Class                      Mode     
-#> data            11    data.frame                 list     
-#> data.boot      400    -none-                     numeric  
-#> formula          3    formula                    call     
-#> stack            1    -none-                     logical  
-#> stack_by         1    -none-                     character
-#> n_replications   1    -none-                     numeric  
-#> sample_column    1    -none-                     name     
-#> resample_type    1    -none-                     character
-#> wild_type        1    -none-                     character
-#> include_total    1    -none-                     logical  
-#> get_yhat         1    nonstandardGenericFunction function 
-#> bs_ci            1    nonstandardGenericFunction function 
-#> ci_bounds        2    -none-                     numeric  
-#> seed             1    -none-                     name     
-#> ...              1    -none-                     name     
-#> class            1    -none-                     character
+#>                Length Class      Mode     
+#> data            11    data.frame list     
+#> data.boot      400    -none-     numeric  
+#> formula          3    formula    call     
+#> stack            1    -none-     name     
+#> n_replications   1    -none-     numeric  
+#> sample_column    1    -none-     name     
+#> resample_type    1    -none-     character
+#> wild_type        1    -none-     character
+#> include_total    1    -none-     logical  
+#> ci_bounds        2    -none-     numeric  
+#> seed             1    -none-     name     
+#> ...              1    -none-     name     
+#> class            1    -none-     character
 ```
 
 ggcommonality objects can be defined, plotted, and summarized using
@@ -72,16 +69,24 @@ built-in methods.
 ``` r
 # visualize commonality effects and add confidence intervals
 plot(p) +
-  add_ci(p)
+  ggcom_ci(p)
+#> Bootstrapped confidence intervals:
+#> # A tibble: 3 × 3
+#> # Groups:   com [3]
+#>   com      lci   uci
+#>   <fct>  <dbl> <dbl>
+#> 1 hp    0.0190 0.181
+#> 2 wt    0.107  0.351
+#> 3 wt,hp 0.400  0.611
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
-We can also check the results from `yhat`
+We can also check the output from the `yhat` package
 
 ``` r
 
-get_yhat(p)
+ggcom_yhat(p)
 #> $yhat
 #> $yhat$LM_Output
 #> 
@@ -142,57 +147,59 @@ get_yhat(p)
 #> 
 #> $ci
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%              0.133045            0.0263950            0.4040925
-#> 97.5%             0.326220            0.1612175            0.6128200
+#> 2.5%             0.1067050            0.0189500              0.39964
+#> 97.5%            0.3510375            0.1808275              0.61110
 #>       Total               
-#> 2.5%             0.6657925
-#> 97.5%            0.9553275
+#> 2.5%             0.6659825
+#> 97.5%            0.9479450
 ```
 
 Commonality effects can be stacked in multiple ways:
 
 ``` r
 
-# define object 
-p <- ggcommonality(
-  formula = my_formula,
-  data = mtcars,
-  stack = TRUE
-)
-  
+# update object 
+slot(p, 'stack') <- "common"
 
 # stack
 plot(p) +
-  add_ci(p)
+  ggcom_ci(p)
+#> Bootstrapped confidence intervals:
+#>         type     lower   upper
+#> 2.5%  unique 0.2331025 0.38051
+#> 2.5%1 common 0.3996400 0.61110
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 ``` r
-# define object 
-p <- ggcommonality(
-  formula = my_formula,
-  data = mtcars,
-  stack = TRUE, 
-  stack_by = "partition"
-)
+# update object 
+slot(p, 'stack') <- "partition"
   
 # stack
 plot(p) +
-  add_ci(p)
+  ggcom_ci(p)
+#> Bootstrapped confidence intervals:
+#>       category     lower     upper
+#> 2.5%        wt 0.5594425 0.8718750
+#> 2.5%1       hp 0.4301350 0.7437325
 ```
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
 
-The `bs_ci()` method prints confidence intervals generated for stacked
-effects.
+The `ggcom_ci()` method prints confidence intervals generated for
+stacked effects.
 
 ``` r
-bs_ci(p)
+ggcom_ci(p)
 #> Bootstrapped confidence intervals:
-#>       category    lower     upper
-#> 2.5%        wt 0.564400 0.8840525
-#> 2.5%1       hp 0.440255 0.7494500
+#>       category     lower     upper
+#> 2.5%        wt 0.5594425 0.8718750
+#> 2.5%1       hp 0.4301350 0.7437325
+#> mapping: x = ~x_mid, ymin = ~lower, ymax = ~upper 
+#> geom_errorbar: na.rm = FALSE, orientation = NA
+#> stat_identity: na.rm = FALSE
+#> position_identity
 ```
 
 # Confidence intervals
@@ -216,12 +223,12 @@ generated for the sum of unique effects and the sum of joint effects.
 
 ``` r
 # set r's random number generator
-p1 <- ggcommonality(
+p1 <- ggcom(
   formula = my_formula,
   data = mtcars,
   resample_type = "fixed"
 )
-p2 <- ggcommonality(
+p2 <- ggcom(
   formula = my_formula,
   data = mtcars,
   resample_type = "wild"
@@ -231,13 +238,27 @@ library(patchwork)
 
 # stack
 plot(p1) +
-  add_ci(p1)+
+  ggcom_ci(p1)+
   ylim(0,0.65)+
   ggtitle("Fixed")|
   plot(p2) +
-  add_ci(p2)+
+  ggcom_ci(p2)+
     ylim(0,0.65)+
   ggtitle("Wild")
+#> # A tibble: 3 × 3
+#> # Groups:   com [3]
+#>   com      lci   uci
+#>   <fct>  <dbl> <dbl>
+#> 1 hp    0.0144 0.162
+#> 2 wt    0.123  0.362
+#> 3 wt,hp 0.456  0.590
+#> # A tibble: 3 × 3
+#> # Groups:   com [3]
+#>   com      lci   uci
+#>   <fct>  <dbl> <dbl>
+#> 1 hp    0.0239 0.186
+#> 2 wt    0.0923 0.343
+#> 3 wt,hp 0.395  0.597
 ```
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />

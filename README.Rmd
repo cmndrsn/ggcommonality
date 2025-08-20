@@ -56,7 +56,7 @@ library(ggcommonality)
 
 my_formula <- mpg ~ wt + hp
 
-p <- ggcommonality(formula = my_formula,
+p <- ggcom(formula = my_formula,
                    data = mtcars)
   
 p |> attributes() |> summary()
@@ -68,55 +68,45 @@ built-in methods.
 ```{r}
 # visualize commonality effects and add confidence intervals
 plot(p) +
-  add_ci(p)
+  ggcom_ci(p)
 ```
 
-We can also check the results from `yhat`
+We can also check the output from the `yhat` package
 
 ```{r commonality, warning=FALSE}
 
-get_yhat(p)
+ggcom_yhat(p)
 ```
 
 Commonality effects can be stacked in multiple ways:
 
 ```{r warning=FALSE}
 
-# define object 
-p <- ggcommonality(
-  formula = my_formula,
-  data = mtcars,
-  stack = TRUE
-)
-  
+# update object 
+slot(p, 'stack') <- "common"
 
 # stack
 plot(p) +
-  add_ci(p)
+  ggcom_ci(p)
 
 
 ```
 
 ```{r}
-# define object 
-p <- ggcommonality(
-  formula = my_formula,
-  data = mtcars,
-  stack = TRUE, 
-  stack_by = "partition"
-)
+# update object 
+slot(p, 'stack') <- "partition"
   
 # stack
 plot(p) +
-  add_ci(p)
+  ggcom_ci(p)
 
 ```
 
-The `bs_ci()` method prints confidence intervals generated for stacked
+The `ggcom_ci()` method prints confidence intervals generated for stacked
 effects.
 
 ```{r}
-bs_ci(p)
+ggcom_ci(p)
 ```
 
 # Confidence intervals
@@ -139,12 +129,12 @@ generated for the sum of unique effects and the sum of joint effects.
 
 ```{r warning=FALSE, message=FALSE}
 # set r's random number generator
-p1 <- ggcommonality(
+p1 <- ggcom(
   formula = my_formula,
   data = mtcars,
   resample_type = "fixed"
 )
-p2 <- ggcommonality(
+p2 <- ggcom(
   formula = my_formula,
   data = mtcars,
   resample_type = "wild"
@@ -154,11 +144,11 @@ library(patchwork)
 
 # stack
 plot(p1) +
-  add_ci(p1)+
+  ggcom_ci(p1)+
   ylim(0,0.65)+
   ggtitle("Fixed")|
   plot(p2) +
-  add_ci(p2)+
+  ggcom_ci(p2)+
     ylim(0,0.65)+
   ggtitle("Wild")
 

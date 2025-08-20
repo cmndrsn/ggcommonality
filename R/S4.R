@@ -3,7 +3,7 @@
 #' @slot data Data.frame object containing data to be visualized.
 #' @slot data.boot Matrix of bootstrapped data used to generate confidence interval.
 #' @slot formula formula. Formula representing equation for linear regression model.
-#' @slot stack ANY. Character specifying how to stack commonality coefficients. Either "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
+#' @slot stack ANY. Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
 #' @slot n_replications numeric. Number of bootstrap replications.
 #' @slot sample_column ANY. Column to resample from in bootstrap.
 #' @slot resample_type character. Character vector specifying whether resampling should be fixed or random. See details.
@@ -121,7 +121,7 @@ methods::setMethod("plot", signature("GGCommonality"), function(x) {
     }
 })
 methods::setMethod("ggcom_ci", signature("GGCommonality"),
-   function(x, ...) {
+   function(x, width = 0.3, ...) {
      ggcom_ci_stacked(x, ...)
     if(is.null(x@stack)) {
       plot_coords <- .ci_plot_coordinates(
@@ -154,7 +154,7 @@ methods::setMethod("ggcom_ci", signature("GGCommonality"),
 #' @param data Data.frame object containing data to be visualized
 #' @param formula Formula in form of y ~ x1 + x2
 #' @param ggcom_ci Logical. Add bootstrap-estimated confidence interval?
-#' @param stack Logical. Stack commonality effects?
+#' @param stack Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
 #' @param n_replications Numeric. Number of replications for bootstrap simulation.
 #' @param sample_column Character. Name of column to perform stratified sampling with, or leave as NULL
 #' @param resample_type Character. Method for boostrap resampling. Either "random", "fixed", or "wild". See README for details.

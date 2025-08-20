@@ -165,8 +165,7 @@
 #' @param pivoted_cue_df Data.frame output from .helper_duplicate_inner_values
 #' @param unpivoted_cue_df Data.frame output of .helper_split_partition_effects
 #' @param x_offset Numeric. How much to offset adjacent partitions?
-#' @param stack In progress. Currently allows stacking unique and common effects by partition
-#' if "partition" is the input. Otherwise it stacks unique vs joint effects.
+#' @param stack Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
 #'
 #' @return Data.frame object containing x coordinates for commonality.
 #'
@@ -222,8 +221,7 @@
 #' Incrementally add common effects on top of unique effects.
 #' @noRd
 #' @param pivoted_cue_df Data.frame output from .helper_define_x_coordinates
-#' @param stack In progress. Currently allows stacking unique and common effects by partition
-#' if "partition" is the input. Otherwise it stacks unique vs joint effects.
+#' @param stack Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
 #' @return Data.frame containing x a y coordinates for drawing commonalities.
 #'
 .helper_define_y_coordinates <- function(pivoted_cue_df, stack = "partition") {
@@ -296,9 +294,7 @@
 #' @noRd
 #' @param pivoted_cue_df_xy  Data.frame. Output of.helper_define_y_coordinates
 #' @param type Positive or negative.
-#' @param stack In progress. Currently allows stacking unique and common effects by partition
-#' if "partition" is the input. Otherwise it stacks unique vs joint effects.
-#' Required for plotting positive and negative barplot effects.
+#' @param stack Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
 #'
 #' @return Data.frame object containing outline for commonality bar plot.
 #'

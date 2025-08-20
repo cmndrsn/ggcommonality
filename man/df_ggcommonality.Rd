@@ -4,20 +4,16 @@
 \alias{df_ggcommonality}
 \title{Define XY coordinates for drawing commonality bar plots}
 \usage{
-df_ggcommonality(formula, data, stack_by = "partition")
+df_ggcommonality(formula, data, stack = "partition")
 }
 \arguments{
 \item{formula}{Formula passed to regression model}
 
 \item{data}{data argument matching formula}
 
-\item{stack_by}{In progress. Currently allows stacking unique and common effects by partition
-if "partition" is the input. Otherwise it stacks unique vs joint effects.}
-}
-\value{
-List of lists.
+\item{stack}{Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
 Lists for positive and negative commonalities.
-Contained are data.frames for drawing barplot [1] effects and [2] outlines.
+Contained are data.frames for drawing barplot [1] effects and [2] outlines.}
 }
 \description{
 Define XY coordinates for drawing commonality bar plots

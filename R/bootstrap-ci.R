@@ -16,7 +16,7 @@
 #' @param sign Character. Sign corresponding to which coefficients should be used for generating error bar for confidence interval. If sign = "+", samples only positive coefficients; if "-", only negative coefficients.
 #' @param ci_bounds Array. Values for lower and upper bounds of confidence interval.
 #' @param n_replications The number of replications to perform in bootstrap simulation.
-#' @param stack If "partition", samples from unique and joint effects for commonality partition. If "common", creates confidence interval based on unique vs. common effects.
+#' @param stack Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
 #'
 #' @return Data.frame object containing confidence intervals for each variable.
 .helper_make_ci <- function(
