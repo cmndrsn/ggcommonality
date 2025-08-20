@@ -16,7 +16,7 @@
 #' @param sign Character. Sign corresponding to which coefficients should be used for generating error bar for confidence interval. If sign = "+", samples only positive coefficients; if "-", only negative coefficients.
 #' @param ci_bounds Array. Values for lower and upper bounds of confidence interval.
 #' @param n_replications The number of replications to perform in bootstrap simulation.
-#' @param stack_by If "partition", samples from unique and joint effects for commonality partition. If "common", creates confidence interval based on unique vs. common effects.
+#' @param stack If "partition", samples from unique and joint effects for commonality partition. If "common", creates confidence interval based on unique vs. common effects.
 #'
 #' @return Data.frame object containing confidence intervals for each variable.
 .helper_make_ci <- function(
@@ -24,7 +24,7 @@
                       formula,
                       sign = "+",
                       ci_bounds = c(0.025, 0.975),
-                      stack_by = "partition") {
+                      stack = "partition") {
   # get terms from rhs of formula
   formula_terms <- labels(
     terms(
@@ -32,7 +32,7 @@
       )
     )
 
-  if(stack_by == "partition") {
+  if(stack == "partition") {
     lapply(1:length(formula_terms),
            function(x) {
              category <- formula_terms[x]
@@ -63,7 +63,7 @@
              return(out)
            }
     ) -> list_CI
-  } else if(stack_by == "common") {
+  } else if(stack == "common") {
     effect_type <- c("Unique", "Common")
     lapply(1:length(effect_type), # sample across unique vs. common effects
            function(x) {
