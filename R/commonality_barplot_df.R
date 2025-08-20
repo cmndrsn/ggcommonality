@@ -2,9 +2,7 @@
 #'
 #' @param formula Formula passed to regression model
 #' @param data data argument matching formula
-#' @param stack_by In progress. Currently allows stacking unique and common effects by partition
-#' if "partition" is the input. Otherwise it stacks unique vs joint effects.
-#' @return List of lists.
+#' @param stack Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
 #' Lists for positive and negative commonalities.
 #' Contained are data.frames for drawing barplot [1] effects and [2] outlines.
 #' @import yhat
@@ -16,7 +14,7 @@
 
 df_ggcommonality <- function(formula,
                              data,
-                             stack_by = "partition") {
+                             stack = "partition") {
 
   lm_out <- lm(formula = formula,
                data = data)
@@ -40,24 +38,24 @@ df_ggcommonality <- function(formula,
  df_positive_xy <- .helper_define_x_coordinates(
    unpivoted_cue_df = df_positive_split,
    pivoted_cue_df = df_positive_pivot,
-   stack_by = stack_by,
+   stack = stack,
    x_offset = 1.5)
  df_negative_xy <- .helper_define_x_coordinates(
    unpivoted_cue_df = df_negative_split,
    pivoted_cue_df = df_negative_pivot,
-   stack_by = stack_by,
+   stack = stack,
    x_offset = 1.5)
 
  df_positive_xy <- .helper_define_y_coordinates(df_positive_xy,
-                                                stack_by = stack_by)
+                                                stack = stack)
  df_negative_xy <- .helper_define_y_coordinates(df_negative_xy,
-                                                stack_by = stack_by)
+                                                stack = stack)
 
  df_positive_outline <- .helper_draw_barplot_outline(df_positive_xy,
-                                                     stack_by = stack_by)
+                                                     stack = stack)
  df_negative_outline <- .helper_draw_barplot_outline(df_negative_xy,
                                                      type = "negative",
-                                                     stack_by = stack_by)
+                                                     stack = stack)
  barplot_dfs <- list(df_positive_xy,
                      df_positive_outline,
                      df_negative_xy,

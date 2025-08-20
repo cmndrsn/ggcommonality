@@ -5,8 +5,7 @@
 #'
 #' @param formula Formula passed to regression model
 #' @param data data argument matching formula
-#' @param stack_by In progress. Currently allows stacking unique and common effects by partition
-#' if "partition" is the input. Otherwise it stacks unique vs joint effects.
+#' @param stack Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
 #' @return ggplot object. Unique and common effects presented as a bar plot.
 #' Variance attributable to two variables appears in partition for both.
 #' @import ggplot2
@@ -19,10 +18,10 @@
 #'
 plot_ggcommonality <- function(formula,
                           data,
-                          stack_by = "partition") {
+                          stack = "partition") {
   commonality_df <- df_ggcommonality(formula,
                                      data,
-                                     stack_by = stack_by)
+                                     stack = stack)
   lm_out <- lm(formula = formula, data = data)
   yhat_model <- yhat::regr(lm_out)
 
@@ -104,7 +103,7 @@ plot_ggcommonality <- function(formula,
      ggplot2::labs(x = "Commonality Partition",
           y = "Explained Variance\n(Unique + Common)",
           fill = "Variable")
-   if(stack_by == "partition") {
+   if(stack == "partition") {
      p <- p +
        ggplot2::scale_x_continuous(
          breaks = positive_outline$x_mid,
@@ -141,8 +140,7 @@ plot_ggcommonality <- function(formula,
 #' If "-", generates confidence intervals using only negative coefficients.
 #' Otherwise, generates confidence interval using both positive and negative.
 #' @param ci_bounds Array. Values for lower and upper bounds of confidence interval.
-#' @param stack_by In progress. Currently allows stacking unique and common effects by partition
-#' if "partition" is the input. If stack_by == "common" it stacks unique vs joint effects.
+#' @param stack Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
 #' @param resample_type Method for boostrap resampling. Either "random", "fixed", or "wild".
 #' @param wild_type If resample_type == "wild", either "Gaussian" to
 #' multiply resampled residuals by random constants from the normal distribution,
@@ -158,7 +156,7 @@ ci_ggcommonality <- function(
                           data,
                           sign = "+",
                           ci_bounds = c(0.025, 0.975),
-                          stack_by = "partition",
+                          stack = "partition",
                           ...) {
 
 
@@ -167,7 +165,7 @@ ci_ggcommonality <- function(
 
   commonality_df <- df_ggcommonality(formula,
                                      data,
-                                     stack_by = stack_by)
+                                     stack = stack)
   lm_out <- lm(formula = formula, data = data)
   yhat_model <- yhat::regr(lm_out)
 
@@ -185,7 +183,7 @@ ci_ggcommonality <- function(
     formula = formula,
     sign = sign,
     ci_bounds = ci_bounds,
-    stack_by = stack_by
+    stack = stack
     )
 
     positive_outline <- merge(positive_outline, df_ci)

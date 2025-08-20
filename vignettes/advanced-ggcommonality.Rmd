@@ -26,10 +26,16 @@ ggcommonality provides a flexible interface for stacking unique and common effec
 
 When we have both positive and negative effects, defining a confidence interval for our barplot can be somewhat confusing. Let's see how we can work around this.
 
-First, we'll define our ggcommonality object, and plot the output
+First, we'll define our GGCommonality object, and plot the output
 
 ```{r}
-p <- ggcommonality(mpg ~ wt + hp + cyl + gear, data = mtcars, stack = TRUE)
+my_formula <- mpg ~ wt + hp + cyl + gear
+
+p <- ggcom(
+  my_formula, 
+  data = mtcars, 
+  stack = 'common'
+)
 
 plot(p)
 ```
@@ -39,29 +45,19 @@ plot(p)
 When defining confidence intervals, ggcommonality by default ignores negative commonalities:
 
 ```{r}
-plot(p) + add_ci(p)
+plot(p) + ggcom_ci(p)
 ```
 
 However, we can override this behaviour by specifying the sign argument. Leaving this empty will plot confidence intervals based on both positive and negative effects from our bootstrap simulation:
 
 ```{r}
-plot(p) + add_ci(p, sign = "")
+plot(p) + ggcom_ci(p, sign = "")
 ```
 
 As you can see, this pulls the confidence interval for common effects down in the visualization above. We can also add separate confidence intervals for both positive and negative effects:
 
 ```{r}
-plot(p) + add_ci(p, sign = "+") + add_ci(p, sign = "-")
-```
-
-The `bs_ci` prints the lower and upper bounds of the confidence intervals:
-
-```{r}
-bs_ci(p, sign = "+")
-```
-
-```{r}
-bs_ci(p, sign = "-")
+plot(p) + ggcom_ci(p, sign = "+") + ggcom_ci(p, sign = "-")
 ```
 
 ## Defining confidence intervals
@@ -71,18 +67,34 @@ bs_ci(p, sign = "-")
 By default, ggcommonality uses percentile-based 95% confidence intervals. However, we can redefine these in several ways. First, we can choose to use fixed, random, or wild-type confidence intervals. For this, we'll have to redefine our ggcommonality object
 
 ```{r}
-p1 <- ggcommonality(mpg ~ wt + hp + cyl + gear, data = mtcars, stack = TRUE, resample_type = "fixed")
-p2 <- ggcommonality(mpg ~ wt + hp + cyl + gear, data = mtcars, stack = TRUE, resample_type = "random")
-p3 <- ggcommonality(mpg ~ wt + hp + cyl + gear, data = mtcars, stack = TRUE, resample_type = "wild")
+
+p1 <- ggcom(
+  my_formula, 
+  data = mtcars, 
+  stack = 'common', 
+  resample_type = "fixed"
+)
+p2 <- ggcom(
+  my_formula, 
+  data = mtcars, 
+  stack = 'common', 
+  resample_type = "random"
+)
+p3 <- ggcom(
+  my_formula,
+  data = mtcars, 
+  stack = 'common', 
+  resample_type = "wild"
+)
 ```
 
 We can see how this affects the width of confidence intervals:
 
 ```{r}
 library(patchwork)
-plot(p1) + add_ci(p1) + ggtitle("Fixed") + theme(legend.position = "none") |
-  plot(p2) + add_ci(p2) + ggtitle("Random") + theme(legend.position = "none")  |
-  plot(p3) + add_ci(p3) + ggtitle("Wild") + theme(legend.position = "none") 
+plot(p1) + ggcom_ci(p1) + ggtitle("Fixed") + theme(legend.position = "none") |
+  plot(p2) + ggcom_ci(p2) + ggtitle("Random") + theme(legend.position = "none")  |
+  plot(p3) + ggcom_ci(p3) + ggtitle("Wild") + theme(legend.position = "none") 
 ```
 
 ### CI width
@@ -91,15 +103,17 @@ We may not always want to use 95% confidence intervals. What if we instead want 
 
 ```{r}
 # define a 99% confidence interval
-q <- ggcommonality(mpg ~ wt + hp + cyl + gear, data = mtcars, stack = TRUE, ci_bounds = c(0.01, 0.99))
+q <- p
+
+slot(q, "ci_bounds") <- c(0.01, 0.99)
 
 ```
 
 Now let's compare:
 
 ```{r}
-plot(p) + add_ci(p) + ggtitle("95%") + theme(legend.position = "none") |
-plot(q) + add_ci(q) + ggtitle("99%") + theme(legend.position = "none") 
+plot(p) + ggcom_ci(p) + ggtitle("95%") + theme(legend.position = "none") |
+plot(q) + ggcom_ci(q) + ggtitle("99%") + theme(legend.position = "none") 
 ```
 
 As expected, our 99% confidence interval is wider.
@@ -109,7 +123,7 @@ As expected, our 99% confidence interval is wider.
 ggcommonality uses the ggplot2. As such, you can customize your error bars to your heart's content:
 
 ```{r}
-plot(p) + add_ci(p, width = 0.25, colour = 'grey45', linetype = 4)
+plot(p) + ggcom_ci(p, width = 0.5, colour = 'grey45', linetype = 4)
 ```
 
 ### Customizing barplots

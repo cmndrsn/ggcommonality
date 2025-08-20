@@ -8,10 +8,9 @@ ci_ggcommonality(
   data.boot,
   formula,
   data,
-  ci_sign = "+",
-  ci_lower = 0.025,
-  ci_upper = 0.975,
-  stack_by = "partition",
+  sign = "+",
+  ci_bounds = c(0.025, 0.975),
+  stack = "partition",
   ...
 )
 }
@@ -20,16 +19,13 @@ ci_ggcommonality(
 
 \item{data}{Data frame matching formula argument}
 
-\item{ci_sign}{If "+", genereates confidence intervals using only positive coefficients
+\item{sign}{If "+", genereates confidence intervals using only positive coefficients
 If "-", generates confidence intervals using only negative coefficients.
 Otherwise, generates confidence interval using both positive and negative.}
 
-\item{ci_lower}{Numeric. Value for lower bound of confidence interval.}
+\item{ci_bounds}{Array. Values for lower and upper bounds of confidence interval.}
 
-\item{ci_upper}{Numeric. Value for upper bound of confidence interval}
-
-\item{stack_by}{In progress. Currently allows stacking unique and common effects by partition
-if "partition" is the input. If stack_by == "common" it stacks unique vs joint effects.}
+\item{stack}{Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.}
 
 \item{...}{Additional parameters passed to ggplot2::geom_errorbar}
 
@@ -56,6 +52,6 @@ Uses structured bootstrapping to create a 95% confidence interval.
 Calls yhat::regr() to generate commonality coefficients for
 data resampled with replacement. Then it sums unique and joint effects for each
 commonality partition and generates a 95% confidence interval.
-By setting ci_sign to "positive" or "negative", you can generate an errorbar
+By setting sign to "positive" or "negative", you can generate an errorbar
 for positive and negative commonalities, respectively.
 }

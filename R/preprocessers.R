@@ -165,14 +165,13 @@
 #' @param pivoted_cue_df Data.frame output from .helper_duplicate_inner_values
 #' @param unpivoted_cue_df Data.frame output of .helper_split_partition_effects
 #' @param x_offset Numeric. How much to offset adjacent partitions?
-#' @param stack_by In progress. Currently allows stacking unique and common effects by partition
-#' if "partition" is the input. Otherwise it stacks unique vs joint effects.
+#' @param stack Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
 #'
 #' @return Data.frame object containing x coordinates for commonality.
 #'
 .helper_define_x_coordinates <- function(pivoted_cue_df,
                                          unpivoted_cue_df,
-                                         stack_by = "partition",
+                                         stack = "partition",
                                          x_offset = 1.5) {
 
 
@@ -196,7 +195,7 @@
   cbind(pivoted_cue_df,
         coordinates) -> pivoted_cue_df
 
-  if(stack_by == "partition") {
+  if(stack == "partition") {
   pivoted_cue_df$category_numeric <- as.numeric(
     as.factor(
       pivoted_cue_df$category)
@@ -222,12 +221,11 @@
 #' Incrementally add common effects on top of unique effects.
 #' @noRd
 #' @param pivoted_cue_df Data.frame output from .helper_define_x_coordinates
-#' @param stack_by In progress. Currently allows stacking unique and common effects by partition
-#' if "partition" is the input. Otherwise it stacks unique vs joint effects.
+#' @param stack Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
 #' @return Data.frame containing x a y coordinates for drawing commonalities.
 #'
-.helper_define_y_coordinates <- function(pivoted_cue_df, stack_by = "partition") {
-  if(stack_by != "partition") {
+.helper_define_y_coordinates <- function(pivoted_cue_df, stack = "partition") {
+  if(stack != "partition") {
     pivoted_cue_df$plot_order <- as.numeric(
       as.factor(
         pivoted_cue_df$type)
@@ -249,7 +247,7 @@
                   type,
                   vals) |>
     dplyr::distinct() -> commonality_effects_df
-  if(stack_by != "partition") {
+  if(stack != "partition") {
     # grab distinct commonalities for no repeated values
     commonality_effects_df <- commonality_effects_df[!duplicated(
       commonality_effects_df["names"]),]
@@ -296,16 +294,14 @@
 #' @noRd
 #' @param pivoted_cue_df_xy  Data.frame. Output of.helper_define_y_coordinates
 #' @param type Positive or negative.
-#' @param stack_by In progress. Currently allows stacking unique and common effects by partition
-#' if "partition" is the input. Otherwise it stacks unique vs joint effects.
-#' Required for plotting positive and negative barplot effects.
+#' @param stack Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
 #'
 #' @return Data.frame object containing outline for commonality bar plot.
 #'
 .helper_draw_barplot_outline <- function(pivoted_cue_df_xy,
                                          type = "positive",
-                                         stack_by = "partition") {
-  if(stack_by == "partition") {
+                                         stack = "partition") {
+  if(stack == "partition") {
     pivoted_cue_df_xy <- pivoted_cue_df_xy |>
       dplyr::group_by(category)
   } else {
