@@ -10,6 +10,7 @@
 #' @param wild_type If resample_type == "wild", either "Gaussian" to
 #' multiply resampled residuals by random constants from the normal distribution,
 #' or sign to randomly multiply half of the residuals by +1 and half by -1.
+#' @param seed Numeric. Value to set R's random number generator to for reproducibility
 #' This provides a solution to "fixed" in the presence of model heteroscedasticity
 #' @return Data frame containing commonality partitions for replications.
 #' @export
@@ -68,14 +69,13 @@ run_commonality_bootstrap <- function(
 #' Commonality Coefficients From Resampled Data
 #'
 #' Calculate commonality coefficients in bootstrap procedure
-#' @noRd
 #'
 #' Performs bootstrapping for coefficients. If resample_type is "fixed" or "wild",
 #' model errors are randomly resampled in bootstrap rather than data observations.
 #' For the wild bootstrap, these errors are then randomly multiplied by positive or negative 1 ("sign"),
 #' or by values sampled from the standard normal distribution to relax assumptions of errors being
 #' symmetrically distributed about 0.
-#'
+#' @noRd
 #' @param formula Formula to be used in helper_commonality_bootstrap
 #' @param data Data to be used in helper_commonality_bootstrap
 #' @param groups Groups to be used in helper_commonality_bootstrap
