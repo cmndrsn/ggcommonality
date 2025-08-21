@@ -57,7 +57,8 @@ methods::setGeneric("ggcom_yhat", function(x) {
 #'
 #' @param x GGCommonality object
 #' @param ... Other ggplot2 parameters
-#'
+#' @rdname ggcom-ci
+#' @aliases ggcom_ci
 #' @returns
 #' @export
 #'
@@ -102,8 +103,6 @@ methods::setMethod("ggcom_yhat", signature("GGCommonality"), function(x) {
 #'
 #' @noRd
 #' @param x A GGCommonality class object
-#' @rdname plot.ggcommonality
-#' @aliases plot.ggcommonality
 #' @export
 methods::setMethod(".ggcom_ci_stacked", signature("GGCommonality"), function(x, ...) {
   message("Bootstrapped confidence intervals:")
@@ -130,7 +129,7 @@ methods::setMethod(".ggcom_ci_stacked", signature("GGCommonality"), function(x, 
 #'
 #' @param x A GGCommonality class object
 #' @rdname plot-ggcommonality
-#' @aliases plot,ggcommonality
+#' @aliases plot.ggcommonality
 #' @export
 methods::setMethod("plot", signature("GGCommonality"), function(x) {
     if(is.null(x@stack)) {
@@ -156,7 +155,7 @@ methods::setMethod("plot", signature("GGCommonality"), function(x) {
 #' @param width Width argument passed to ggplot2 to define confidence interval appearance
 #' @param ... Other arguments passed to ggprotos from ggplot2
 #' @rdname plot-ggcommonality
-#' @aliases plot,ggcommonality,missing-method
+#' @aliases ggcom_ci
 #' @export
 methods::setMethod("ggcom_ci", signature("GGCommonality"),
    function(x, width = 0.3, ...) {

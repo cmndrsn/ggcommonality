@@ -2,9 +2,9 @@
 % Please edit documentation in R/S4.R
 \name{plot,GGCommonality-method}
 \alias{plot,GGCommonality-method}
-\alias{plot,ggcommonality}
+\alias{plot.ggcommonality}
 \alias{ggcom_ci,GGCommonality-method}
-\alias{plot,ggcommonality,missing-method}
+\alias{ggcom_ci}
 \title{Plot commonality analyses}
 \usage{
 \S4method{plot}{GGCommonality}(x)
