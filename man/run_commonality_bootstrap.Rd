@@ -25,10 +25,12 @@ run_commonality_bootstrap(
 
 \item{wild_type}{If resample_type == "wild", either "Gaussian" to
 multiply resampled residuals by random constants from the normal distribution,
-or sign to randomly multiply half of the residuals by +1 and half by -1.
-This provides a solution to "fixed" in the presence of model heteroscedasticity}
+or sign to randomly multiply half of the residuals by +1 and half by -1.}
 
 \item{n_replications}{Number of replications in bootstrap}
+
+\item{seed}{Numeric. Value to set R's random number generator to for reproducibility
+This provides a solution to "fixed" in the presence of model heteroscedasticity}
 }
 \value{
 Data frame containing commonality partitions for replications.

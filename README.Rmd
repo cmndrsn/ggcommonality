@@ -162,7 +162,7 @@ vignette('advanced-ggcommonality', 'ggcommonality')
 ```
 
 You can also read the help documentation
-`?ggcommonality()`, or [email Cameron
+`?ggcom()`, or [email Cameron
 Anderson](mailto:andersoc@mcmaster.ca).
 
 # References

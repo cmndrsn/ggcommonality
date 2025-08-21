@@ -2,7 +2,6 @@
 #'
 #' This function takes a commonality model output from yhat and generates
 #' a bar plot based on the unique and common variance shared between variables.
-#'
 #' @param formula Formula passed to regression model
 #' @param data data argument matching formula
 #' @param stack Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
@@ -10,16 +9,11 @@
 #' Variance attributable to two variables appears in partition for both.
 #' @import ggplot2
 #' @import yhat
-#' @examples
-#' data(mtcars)
-#' plot_ggcommonality(formula = mpg ~ hp + wt, data = mtcars) |>
-#'   suppressWarnings()
-#' @export
-#'
-plot_ggcommonality <- function(formula,
+#' @noRd
+.plot_ggcommonality <- function(formula,
                           data,
                           stack = "partition") {
-  commonality_df <- df_ggcommonality(formula,
+  commonality_df <- .df_ggcommonality(formula,
                                      data,
                                      stack = stack)
   lm_out <- lm(formula = formula, data = data)
@@ -131,7 +125,6 @@ plot_ggcommonality <- function(formula,
 #' commonality partition and generates a 95% confidence interval.
 #' By setting sign to "positive" or "negative", you can generate an errorbar
 #' for positive and negative commonalities, respectively.
-#'
 #' @param formula Formula for linear regression model
 #' @param data  Data frame matching formula argument
 #' @param sample_column Character. Name of column for resampling observations. If blank, simple resampling is performed.
@@ -149,8 +142,8 @@ plot_ggcommonality <- function(formula,
 #' @return Data frame containing commonality partitions for replications.
 #' @param ... Additional parameters passed to ggplot2::geom_errorbar
 #' @import pbapply
-#' @return ggproto instance
-ci_ggcommonality <- function(
+#' @noRd
+.ci_ggcommonality <- function(
                           data.boot,
                           formula,
                           data,
@@ -163,7 +156,7 @@ ci_ggcommonality <- function(
   # if groups argument is not explicitly stated, set value to NULL
   # when passed to mosaic::resample
 
-  commonality_df <- df_ggcommonality(formula,
+  commonality_df <- .df_ggcommonality(formula,
                                      data,
                                      stack = stack)
   lm_out <- lm(formula = formula, data = data)

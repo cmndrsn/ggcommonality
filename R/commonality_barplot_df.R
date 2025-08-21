@@ -1,18 +1,12 @@
 #' Define XY coordinates for drawing commonality bar plots
-#'
 #' @param formula Formula passed to regression model
 #' @param data data argument matching formula
 #' @param stack Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
 #' Lists for positive and negative commonalities.
 #' Contained are data.frames for drawing barplot [1] effects and [2] outlines.
 #' @import yhat
-#' @export
-#' @examples
-#' data(mtcars)
-#' df_ggcommonality(formula = mpg ~ cyl + disp + vs, data = mtcars) |>
-#'   suppressWarnings()
-
-df_ggcommonality <- function(formula,
+#' @noRd
+.df_ggcommonality <- function(formula,
                              data,
                              stack = "partition") {
 

@@ -1,7 +1,7 @@
 Package: ggcommonality
 Type: Package
 Title: Bar Plot of Commonality Analysis Coefficients in ggplot2
-Version: 1.1.0
+Version: 1.1.2
 Authors@R: c(
   person(given = "Cameron J.", family = "Anderson", email = "andersoc@mcmaster.ca", role =  c("aut", "cre"), 
           comment = c(ORCID = "0000-0002-8737-2055")),
@@ -23,8 +23,8 @@ Imports:
     tibble,
     tidyr,
     pbapply,
-    scatterpie
-License: MIT + file LICENSE
+    patchwork
+License: MIT + file LICENSE.md
 Suggests: 
     knitr,
     rmarkdown

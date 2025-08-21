@@ -23,6 +23,8 @@ ggcom(
 
 \item{data}{Data.frame object containing data to be visualized}
 
+\item{add_ci}{Boolean. Add confidence interval generated from bootstrapping?}
+
 \item{stack}{Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.}
 
 \item{n_replications}{Numeric. Number of replications for bootstrap simulation.}
@@ -38,14 +40,10 @@ This provides a solution to "fixed" in the presence of model heteroscedasticity.
 
 \item{include_total}{Logical. Include bar representing total variance explained across all unique and common effects?}
 
-\item{ci_bounds}{Array. Values representing bounds of confidence intervals. c(0.025, 0.975) for 95% CIs.}
+\item{ci_bounds}{Array. Values representing lower and upper bounds of confidence intervals.}
 
-\item{seed}{Numeric. Number to set R's randomization seed to (for reproducibility).}
-
-\item{ggcom_ci}{Logical. Add bootstrap-estimated confidence interval?}
-
-\item{sign}{Character. Applies to stacked commonality effects only. "+" for confidence intervals based on positive effects only, "-" for negative effects only, and "" for CIs based on all positive and negative values.}
+\item{seed}{Numeric. Number to set R's randomization seed to for reproducibility.}
 }
 \description{
-Object for plotting commonality analyses
+Function for defining ggcommonality object
 }
