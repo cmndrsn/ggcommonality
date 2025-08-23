@@ -214,9 +214,9 @@ residuals with constants sampled from a Gaussian distribution
 (`wild_type = "gaussian"`), or by randomly multiplying half by 1 and
 half by -1 (`wild_type = "sign"`).
 
-If `stack_by = "partition"`, confidence intervals represent the sum of
+If `stack = "partition"`, confidence intervals represent the sum of
 unique and joint effects for individual commonality partitions.
-Otherwise, if `stack_by = "common"`, separate confidence intervals are
+Otherwise, if `stack = "common"`, separate confidence intervals are
 generated for the sum of unique effects and the sum of joint effects.
 
 ## Comparing confidence intervals
