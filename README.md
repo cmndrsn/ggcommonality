@@ -8,17 +8,12 @@
 <!-- badges: end -->
 
 ggcommonality creates bar plots of unique and joint effects from a
-commonality analysis of a linear regression model. The S4 branch extends
-its functionality using an object-oriented syntax. The package calls on
+commonality analysis of a linear regression model. The package calls on
 `yhat` to perform commonality analyses (Nimon, Oswald, and Roberts.
 2023), building bar plots in the style of those appearing in the [MAPLE
 Lab’s](https://maplelab.net) work applying commonality analysis to the
 compositions of Bach and Chopin (Delle Grazie, Anderson, and Schutz
 2025; Anderson and Schutz 2022).
-
-Partitions are plotted sequentially in alphabetical order, starting with
-unique effects and are built iteratively with joint effects at higher
-orders on top.
 
 ## Installation
 
@@ -82,7 +77,7 @@ plot(p) +
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
-We can also check the output from the `yhat` package
+We can also check the output from the `yhat` commonality analysis, and print confidence intervals around each effect.
 
 ``` r
 
@@ -169,6 +164,9 @@ plot(p) +
 #> 2.5%  unique 0.249195 0.366260
 #> 2.5%1 common 0.424265 0.606335
 ```
+
+When `slot(p, 'stack') <- "partition"`, partitions are plotted sequentially in alphabetical order, starting with
+unique effects and are built iteratively with joint effects at higher orders on top.
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
@@ -266,7 +264,7 @@ plot(p1) +
 # Getting help
 
 For additional details about on plotting with ggcommonality, see the
-‘Advanced ggcommonality’ vignette:
+‘Advanced ggcommonality’ vignette.
 
 ``` r
 vignette('advanced-ggcommonality', 'ggcommonality')
@@ -274,7 +272,7 @@ vignette('advanced-ggcommonality', 'ggcommonality')
 ```
 
 You can also read the help documentation `?ggcom()`, or [email Cameron
-Anderson](mailto:andersoc@mcmaster.ca).
+Anderson](mailto:andersoc@mcmaster.ca), and see/report issues [here](https://github.com/cmndrsn/ggcommonality/issues).
 
 # References
 
