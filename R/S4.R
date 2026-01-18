@@ -115,7 +115,8 @@ methods::setMethod(".ggcom_ci_stacked", signature("GGCommonality"), function(x, 
   )[,c('com', 'lci', 'uci')] |> distinct()
   else .ggcom_ci_stacked <-
       .helper_make_ci(
-        data = x@data.boot,
+        data.boot = x@data.boot,
+        data = x@data,
         formula = x@formula,
         ci_bounds = x@ci_bounds,
         stack = x@stack
