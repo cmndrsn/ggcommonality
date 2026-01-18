@@ -4,7 +4,7 @@
 #'
 #' @param formula Formula to be used in helper_commonality_bootstrap
 #' @param data Data to be used in helper_commonality_bootstrap
-#' @param groups Groups to be used in helper_commonality_bootstrap
+#' @param groups Column to resample within in bootstrap (see mosaic::resample()).
 #' @param n_replications Number of replications in bootstrap
 #' @param resample_type Method for boostrap resampling. Either "random", "fixed", or "wild".
 #' @param wild_type If resample_type == "wild", either "Gaussian" to
@@ -54,7 +54,7 @@ run_commonality_bootstrap <- function(
 #' @noRd
 #' @param formula Formula to be used in helper_commonality_bootstrap
 #' @param data Data to be used in helper_commonality_bootstrap
-#' @param groups Groups to be used in helper_commonality_bootstrap
+#' @param groups Column to resample within in bootstrap (see mosaic::resample()).
 #' @return Data.frame. Drops columns that don't include terms in formula
 .helper_simplify_df <- function(formula,
                         data,
@@ -78,7 +78,7 @@ run_commonality_bootstrap <- function(
 #' @noRd
 #' @param formula Formula to be used in helper_commonality_bootstrap
 #' @param data Data to be used in helper_commonality_bootstrap
-#' @param groups Groups to be used in helper_commonality_bootstrap
+#' @param groups Column to resample within in bootstrap (see mosaic::resample()).
 #' @param resample_type Character vector specifying whether resampling should be fixed, random, or wild. See details.
 #' @param wild_type One of "gaussian" or "sign"
 #' @return Vector of commonality coefficients on resampled data.
