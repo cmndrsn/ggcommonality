@@ -15,6 +15,8 @@ Lab’s](https://maplelab.net) work applying commonality analysis to the
 compositions of Bach and Chopin (Delle Grazie, Anderson, and Schutz
 2025; Anderson and Schutz 2022).
 
+Note: This package is a hobby project and is currently under development, so there are likely many bugs I have yet to find and fix.
+
 ## Installation
 
 You can install ggcommonality (under development) from
