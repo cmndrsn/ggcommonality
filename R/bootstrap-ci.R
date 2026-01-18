@@ -46,11 +46,13 @@
              if(
                sign == "+"
              ) {
+               warning("The process for generating confidence intervals of stacked barplots is experimental and currently under development.\nFor more details see https://github.com/cmndrsn/ggcommonality/issues/15")
                out[out<0] <- 0
              } else if (
                # sample negative effects from bootstrap
                sign == "-"
              ) {
+               warning("The process for generating confidence intervals of stacked barplots is experimental and currently under development.\nFor more details see https://github.com/cmndrsn/ggcommonality/issues/15")
                out[out>0] <- 0
              } else {
              }
