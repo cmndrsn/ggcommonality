@@ -115,7 +115,8 @@ methods::setMethod(".ggcom_ci_stacked", signature("GGCommonality"), function(x, 
   )[,c('com', 'lci', 'uci')] |> distinct()
   else .ggcom_ci_stacked <-
       .helper_make_ci(
-        data = x@data.boot,
+        data.boot = x@data.boot,
+        data = x@data,
         formula = x@formula,
         ci_bounds = x@ci_bounds,
         stack = x@stack
@@ -216,7 +217,7 @@ ggcom <- function(
     stack = NULL,
     n_replications = 100,
     sample_column = NULL,
-    resample_type = "wild",
+    resample_type = "random",
     wild_type = "gaussian",
     include_total = FALSE,
     ci_bounds = c(0.025, 0.975),

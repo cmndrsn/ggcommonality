@@ -172,11 +172,12 @@
 
   df_ci <-
     .helper_make_ci(
-    data = data.boot,
-    formula = formula,
-    sign = sign,
-    ci_bounds = ci_bounds,
-    stack = stack
+      data.boot = data.boot,
+      data = data,
+      formula = formula,
+      sign = sign,
+      ci_bounds = ci_bounds,
+      stack = stack
     )
 
     positive_outline <- merge(positive_outline, df_ci)

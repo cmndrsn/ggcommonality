@@ -20,6 +20,7 @@
 #'
 #' @return Data.frame object containing confidence intervals for each variable.
 .helper_make_ci <- function(
+                      data.boot,
                       data,
                       formula,
                       sign = "+",
@@ -31,29 +32,43 @@
       formula
       )
     )
+  # get results from original commonality analysis
+  lm_out <- lm(formula = formula, data = data)
+  yhat_model <- yhat::regr(lm_out)
+  yhat_model_effects <- yhat_model$Commonality_Data$CC
+
+
+  #tmpList <<- list()
 
   if(stack == "partition") {
-    lapply(1:length(formula_terms),
+    warning("The process for generating confidence intervals of stacked barplots is experimental and currently under development.\nFor more details see https://github.com/cmndrsn/ggcommonality/issues/15")
+    list_CI <- lapply(1:length(formula_terms),
            function(x) {
              category <- formula_terms[x]
              # collect unique and joint effects for term
-             out <- data[stringr::str_detect(
-               rownames(data),
+             out <- data.boot[stringr::str_detect(
+               rownames(data.boot),
                formula_terms[x]
              ),
              ]
-             # sample positive effects from bootstrap
+             out <- as.data.frame(out)
+             # index resamples matching original commonalities
+             # with positive effects
              if(
                sign == "+"
              ) {
-               warning("The process for generating confidence intervals of stacked barplots is experimental and currently under development.\nFor more details see https://github.com/cmndrsn/ggcommonality/issues/15")
-               out[out<0] <- 0
+
+               ind_pos <- which(yhat_model_effects[,'Coefficient'] >= 0)
+               out <- out[rownames(out) %in% names(ind_pos),]
+               #tmpList[[x]] <<- out
              } else if (
-               # sample negative effects from bootstrap
+               # index resamples matching original commonalities
+               # with negative effects
                sign == "-"
              ) {
-               warning("The process for generating confidence intervals of stacked barplots is experimental and currently under development.\nFor more details see https://github.com/cmndrsn/ggcommonality/issues/15")
-               out[out>0] <- 0
+               ind_neg <- which(yhat_model_effects[,'Coefficient'] <= 0)
+               out <- out[rownames(out) %in% names(ind_neg),]
+               #tmpList[[x]] <<- out
              } else {
              }
              out <- colSums(out)
@@ -61,31 +76,35 @@
              lower <- quantile(out, ci_bounds[1])
              upper <- quantile(out, ci_bounds[2])
              out <- data.frame(category, lower, upper)
-
              return(out)
            }
-    ) -> list_CI
-  } else if(stack == "common") {
+         )
+    } else if(stack == "common") {
+    warning("The process for generating confidence intervals of stacked barplots is experimental and currently under development.\nFor more details see https://github.com/cmndrsn/ggcommonality/issues/15")
     effect_type <- c("Unique", "Common")
-    lapply(1:length(effect_type), # sample across unique vs. common effects
+    list_CI <- lapply(1:length(effect_type), # sample across unique vs. common effects
            function(x) {
              type <- effect_type[x]
              # collect unique and joint effects for term
-             out <- data[stringr::str_detect(
-               rownames(data),
+             out <- data.boot[stringr::str_detect(
+               rownames(data.boot),
                effect_type[x]
              ),
              ]
-             # sample positive effects from bootstrap
+             # sample positive commonality resamples
              if(
                sign == "+"
              ) {
-               out[out<0] <- 0
+               ind_pos <- which(yhat_model_effects[,'Coefficient'] >= 0)
+               out <- out[rownames(out) %in% names(ind_pos),]
+               #tmpList[[x]] <<- out
              } else if (
-               # sample negative effects from bootstrap
+               # sample negative commonality resamples
                sign == "-"
              ) {
-               out[out>0] <- 0
+               ind_neg <- which(yhat_model_effects[,'Coefficient'] <= 0)
+               out <- out[rownames(out) %in% names(ind_neg),]
+               #tmpList[[x]] <<- out
              } else {
              }
              if(!is.null(dim(out))) out <- colSums(out)
@@ -98,7 +117,7 @@
 
              return(out)
            }
-    ) -> list_CI
+    )
   }
   # for each term on rhs of formula:
   # bind confidence intervals for all commonality partitions
