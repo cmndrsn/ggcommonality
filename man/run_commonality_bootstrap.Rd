@@ -19,7 +19,7 @@ run_commonality_bootstrap(
 
 \item{data}{Data to be used in helper_commonality_bootstrap}
 
-\item{groups}{Groups to be used in helper_commonality_bootstrap}
+\item{groups}{Column to resample within in bootstrap (see mosaic::resample()).}
 
 \item{resample_type}{Method for boostrap resampling. Either "random", "fixed", or "wild".}
 

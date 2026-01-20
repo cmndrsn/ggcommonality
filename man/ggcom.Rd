@@ -45,5 +45,11 @@ This provides a solution to "fixed" in the presence of model heteroscedasticity.
 \item{seed}{Numeric. Number to set R's randomization seed to for reproducibility.}
 }
 \description{
-Function for defining ggcommonality object
+Function for defining ggcommonality object. See details.
+}
+\details{
+ggcom uses S4, and includes methods for plotting and generating confidence intervals.
+Currenly, unique and common effects are inferred from the output to yhat's regr function,
+distinguishing commonality coefficients using a regular expression which looks for commas between effect names.
+This might produce unexpected results in some cases depending on variable names and is still in active development.
 }

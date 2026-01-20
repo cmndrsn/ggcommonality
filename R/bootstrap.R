@@ -28,7 +28,7 @@ run_commonality_bootstrap <- function(
     n_replications = 100,
     seed = NULL
     ) {
-  set.seed(seed)
+  if(!is.null(seed)) set.seed(seed)
   data_simplified <- .helper_simplify_df(
     formula = formula,
     data = data,

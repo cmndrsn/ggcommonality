@@ -25,7 +25,7 @@ S4 class for defining ggcommonality analysis objects.
 
 \item{\code{n_replications}}{numeric. Number of bootstrap replications.}
 
-\item{\code{sample_column}}{ANY. Column to resample from in bootstrap.}
+\item{\code{sample_column}}{ANY. Column to resample within in bootstrap (see mosaic::resample()).}
 
 \item{\code{resample_type}}{character. Character vector specifying whether resampling should be fixed or random. See details.}
 

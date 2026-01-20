@@ -200,7 +200,7 @@ methods::setMethod("ggcom_ci", signature("GGCommonality"),
 
 #' Object for plotting commonality analyses
 #'
-#' Function for defining ggcommonality object
+#' Function for defining ggcommonality object. See details.
 #'
 #' @param data Data.frame object containing data to be visualized
 #' @param formula Formula in form of y ~ x1 + x2
@@ -216,6 +216,13 @@ methods::setMethod("ggcom_ci", signature("GGCommonality"),
 #' @param seed Numeric. Number to set R's randomization seed to for reproducibility.
 #' @param ci_bounds Array. Values representing lower and upper bounds of confidence intervals.
 #' @param add_ci Boolean. Add confidence interval generated from bootstrapping?
+#'
+#' @details
+#' ggcom uses S4, and includes methods for plotting and generating confidence intervals.
+#' Currenly, unique and common effects are inferred from the output to yhat's regr function,
+#' distinguishing commonality coefficients using a regular expression which looks for commas between effect names.
+#' This might produce unexpected results in some cases depending on variable names and is still in active development.
+#'
 #'
 #' @returns
 #' @export
