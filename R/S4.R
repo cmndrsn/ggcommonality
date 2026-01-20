@@ -74,6 +74,10 @@ methods::setGeneric("ggcom_ci", function(x, ...) {
 #'
 #' @noRd
 #' @param x GGCommonality object
+#' @param sign Character string. When stack == "partition" or "common", "+" (default), generates confidence intervals using only positive coefficients from original commonality analysis.
+#' If "-", generates confidence intervals using only negative coefficients.
+#' Otherwise, "" generates confidence interval using both positive and negative.
+#' @param ... Other ggplot2 parameters
 #' @param ... Other ggplot2 parameters
 #'
 #' @returns
@@ -157,6 +161,10 @@ methods::setMethod("plot", signature("GGCommonality"), function(x) {
 #'
 #' @param x A GGCommonality class object
 #' @param width Width argument passed to ggplot2 to define confidence interval appearance
+#' @param sign Character string. Argument to ggcom_ci. When stack == "partition" or "common", "+" (default), generates confidence intervals using only positive coefficients from original commonality analysis.
+#' If "-", generates confidence intervals using only negative coefficients.
+#' Otherwise, "" generates confidence interval using both positive and negative.
+#' @param ... Other ggplot2 parameters
 #' @param ... Other arguments passed to ggprotos from ggplot2
 #' @rdname plot-ggcommonality
 #' @aliases ggcom_ci
