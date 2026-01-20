@@ -56,6 +56,9 @@ methods::setGeneric("ggcom_yhat", function(x) {
 #' Flexibly plots confidence interval for GGCommonality objects based on percentile-based bootstrapping using ggplot2
 #'
 #' @param x GGCommonality object
+#' @param sign Character string. When stack == "partition" or "common", "+" (default), generates confidence intervals using only positive coefficients from original commonality analysis.
+#' If "-", generates confidence intervals using only negative coefficients.
+#' Otherwise, "" generates confidence interval using both positive and negative.
 #' @param ... Other ggplot2 parameters
 #' @rdname ggcom-ci
 #' @aliases ggcom_ci

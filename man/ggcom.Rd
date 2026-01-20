@@ -11,7 +11,7 @@ ggcom(
   stack = NULL,
   n_replications = 100,
   sample_column = NULL,
-  resample_type = "wild",
+  resample_type = "random",
   wild_type = "gaussian",
   include_total = FALSE,
   ci_bounds = c(0.025, 0.975),
