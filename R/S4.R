@@ -197,7 +197,7 @@ methods::setMethod("ggcom_ci", signature("GGCommonality"),
 #' @param data Data.frame object containing data to be visualized
 #' @param formula Formula in form of y ~ x1 + x2
 #' @param stack Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
-#' @param n_replications Numeric. Number of replications for bootstrap simulation.
+#' @param n_replications Numeric. Number of replications for bootstrap simulation. Default is 100 for quick performance, though 1000 or 10000 are typically recommended.
 #' @param sample_column Character. Name of column to perform stratified sampling with, or leave as NULL
 #' @param resample_type Character. Method for boostrap resampling. Either "random", "fixed", or "wild". See README for details.
 #' @param wild_type Character. If resample_type == "wild", either "Gaussian" to

@@ -27,7 +27,7 @@ ggcom(
 
 \item{stack}{Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.}
 
-\item{n_replications}{Numeric. Number of replications for bootstrap simulation.}
+\item{n_replications}{Numeric. Number of replications for bootstrap simulation. Default is 100 for quick performance, though 1000 or 10000 are typically recommended.}
 
 \item{sample_column}{Character. Name of column to perform stratified sampling with, or leave as NULL}
 
