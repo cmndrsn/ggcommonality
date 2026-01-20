@@ -56,6 +56,9 @@ methods::setGeneric("ggcom_yhat", function(x) {
 #' Flexibly plots confidence interval for GGCommonality objects based on percentile-based bootstrapping using ggplot2
 #'
 #' @param x GGCommonality object
+#' @param sign Character string. When stack == "partition" or "common", "+" (default), generates confidence intervals using only positive coefficients from original commonality analysis.
+#' If "-", generates confidence intervals using only negative coefficients.
+#' Otherwise, "" generates confidence interval using both positive and negative.
 #' @param ... Other ggplot2 parameters
 #' @rdname ggcom-ci
 #' @aliases ggcom_ci
@@ -71,6 +74,10 @@ methods::setGeneric("ggcom_ci", function(x, ...) {
 #'
 #' @noRd
 #' @param x GGCommonality object
+#' @param sign Character string. When stack == "partition" or "common", "+" (default), generates confidence intervals using only positive coefficients from original commonality analysis.
+#' If "-", generates confidence intervals using only negative coefficients.
+#' Otherwise, "" generates confidence interval using both positive and negative.
+#' @param ... Other ggplot2 parameters
 #' @param ... Other ggplot2 parameters
 #'
 #' @returns
@@ -154,6 +161,10 @@ methods::setMethod("plot", signature("GGCommonality"), function(x) {
 #'
 #' @param x A GGCommonality class object
 #' @param width Width argument passed to ggplot2 to define confidence interval appearance
+#' @param sign Character string. Argument to ggcom_ci. When stack == "partition" or "common", "+" (default), generates confidence intervals using only positive coefficients from original commonality analysis.
+#' If "-", generates confidence intervals using only negative coefficients.
+#' Otherwise, "" generates confidence interval using both positive and negative.
+#' @param ... Other ggplot2 parameters
 #' @param ... Other arguments passed to ggprotos from ggplot2
 #' @rdname plot-ggcommonality
 #' @aliases ggcom_ci
@@ -194,7 +205,7 @@ methods::setMethod("ggcom_ci", signature("GGCommonality"),
 #' @param data Data.frame object containing data to be visualized
 #' @param formula Formula in form of y ~ x1 + x2
 #' @param stack Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
-#' @param n_replications Numeric. Number of replications for bootstrap simulation.
+#' @param n_replications Numeric. Number of replications for bootstrap simulation. Default is 100 for quick performance, though 1000 or 10000 are typically recommended.
 #' @param sample_column Character. Name of column to perform stratified sampling with, or leave as NULL
 #' @param resample_type Character. Method for boostrap resampling. Either "random", "fixed", or "wild". See README for details.
 #' @param wild_type Character. If resample_type == "wild", either "Gaussian" to

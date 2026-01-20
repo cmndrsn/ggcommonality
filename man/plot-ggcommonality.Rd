@@ -17,6 +17,10 @@
 \item{width}{Width argument passed to ggplot2 to define confidence interval appearance}
 
 \item{...}{Other arguments passed to ggprotos from ggplot2}
+
+\item{sign}{Character string. Argument to ggcom_ci. When stack == "partition" or "common", "+" (default), generates confidence intervals using only positive coefficients from original commonality analysis.
+If "-", generates confidence intervals using only negative coefficients.
+Otherwise, "" generates confidence interval using both positive and negative.}
 }
 \description{
 Plots commonality analysis confidence intervals from bootstrap simulations

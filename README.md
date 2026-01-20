@@ -8,14 +8,20 @@
 <!-- badges: end -->
 
 ggcommonality creates bar plots of unique and joint effects from a
-commonality analysis of a linear regression model. The package calls on
+commonality analysis of a linear regression model. The S4 branch extends
+its functionality using an object-oriented syntax. The package calls on
 `yhat` to perform commonality analyses (Nimon, Oswald, and Roberts.
 2023), building bar plots in the style of those appearing in the [MAPLE
 Lab’s](https://maplelab.net) work applying commonality analysis to the
 compositions of Bach and Chopin (Delle Grazie, Anderson, and Schutz
 2025; Anderson and Schutz 2022).
 
-Note: This package is a hobby project and is currently under development, so there are likely many bugs I have yet to find and fix.
+Partitions are plotted sequentially in alphabetical order, starting with
+unique effects and are built iteratively with joint effects at higher
+orders on top.
+
+Note: This is my first R package and is currently under
+development, so there are likely several bugs to find and fix.
 
 ## Installation
 
@@ -67,19 +73,26 @@ built-in methods.
 # visualize commonality effects and add confidence intervals
 plot(p) +
   ggcom_ci(p)
+#> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+#> ℹ Please use `linewidth` instead.
+#> ℹ The deprecated feature was likely used in the ggcommonality package.
+#>   Please report the issue to the authors.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 #> Bootstrapped confidence intervals:
 #> # A tibble: 3 × 3
 #> # Groups:   com [3]
 #>   com      lci   uci
 #>   <fct>  <dbl> <dbl>
-#> 1 hp    0.0275 0.143
-#> 2 wt    0.132  0.333
-#> 3 wt,hp 0.424  0.606
+#> 1 hp    0.0291 0.169
+#> 2 wt    0.0830 0.346
+#> 3 wt,hp 0.427  0.691
 ```
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-2-1.png" alt="" width="100%" />
 
-We can also check the output from the `yhat` commonality analysis, and print confidence intervals around each effect.
+We can also check the output from the `yhat` package
 
 ``` r
 
@@ -144,11 +157,11 @@ ggcom_yhat(p)
 #> 
 #> $ci
 #>       Unique to wt         Unique to hp         Common to wt, and hp
-#> 2.5%             0.1321950            0.0275075             0.424265
-#> 97.5%            0.3332925            0.1425850             0.606335
+#> 2.5%             0.0830375             0.029070            0.4274225
+#> 97.5%            0.3456300             0.169165            0.6907550
 #>       Total               
-#> 2.5%             0.6894225
-#> 97.5%            0.9430950
+#> 2.5%             0.7420675
+#> 97.5%            0.9258700
 ```
 
 Commonality effects can be stacked in multiple ways:
@@ -156,21 +169,19 @@ Commonality effects can be stacked in multiple ways:
 ``` r
 
 # update object 
-slot(p, 'stack') <- "common"
+p@stack <- 'common'
 
 # stack
 plot(p) +
-  ggcom_ci(p)
+  ggcom_ci(p)+
+  ylim(0, 0.7)
 #> Bootstrapped confidence intervals:
-#>         type    lower    upper
-#> 2.5%  unique 0.249195 0.366260
-#> 2.5%1 common 0.424265 0.606335
+#>         type     lower     upper
+#> 2.5%  unique 0.1578475 0.4153675
+#> 2.5%1 common 0.4274225 0.6907550
 ```
 
-When `slot(p, 'stack') <- "partition"`, partitions are plotted sequentially in alphabetical order, starting with
-unique effects and are built iteratively with joint effects at higher orders on top.
-
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-1.png" alt="" width="100%" />
 
 ``` r
 # update object 
@@ -180,12 +191,12 @@ slot(p, 'stack') <- "partition"
 plot(p) +
   ggcom_ci(p)
 #> Bootstrapped confidence intervals:
-#>       category     lower   upper
-#> 2.5%        wt 0.6170000 0.86340
-#> 2.5%1       hp 0.4643325 0.72522
+#>       category     lower     upper
+#> 2.5%        wt 0.6116075 0.8537450
+#> 2.5%1       hp 0.5013850 0.7596975
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-4-1.png" alt="" width="100%" />
 
 The `ggcom_ci()` method prints confidence intervals generated for
 stacked effects.
@@ -193,11 +204,11 @@ stacked effects.
 ``` r
 ggcom_ci(p)
 #> Bootstrapped confidence intervals:
-#>       category     lower   upper
-#> 2.5%        wt 0.6170000 0.86340
-#> 2.5%1       hp 0.4643325 0.72522
+#>       category     lower     upper
+#> 2.5%        wt 0.6116075 0.8537450
+#> 2.5%1       hp 0.5013850 0.7596975
 #> mapping: x = ~x_mid, ymin = ~lower, ymax = ~upper 
-#> geom_errorbar: na.rm = FALSE, orientation = NA, width = 0.3
+#> geom_errorbar: na.rm = FALSE, orientation = NA, lineend = butt, width = 0.3
 #> stat_identity: na.rm = FALSE
 #> position_identity
 ```
@@ -208,16 +219,18 @@ The `resample_type` argument specifies whether to generate random-*x*,
 confidence intervals, fixed-*x*, or wild-*x* confidence intervals. The
 [appendices](https://www.john-fox.ca/Companion/) to Fox and Weisberg
 (2018) summarizes the advantages and disadvantages of fixed
-vs. random-*x* bootstrapping. Wild-*x* provides a solution to fixed-*x*
-for models featuring heteroscedasticity by multiplying re-sampled
-residuals with constants sampled from a Gaussian distribution
-(`wild_type = "gaussian"`), or by randomly multiplying half by 1 and
-half by -1 (`wild_type = "sign"`).
+vs. random-*x* bootstrapping. There is also a wild-*x* option
+implemented as
+described[here](https://stats.stackexchange.com/a/408688).
 
-If `stack = "partition"`, confidence intervals represent the sum of
+If `stack_by = "partition"`, confidence intervals represent the sum of
 unique and joint effects for individual commonality partitions.
-Otherwise, if `stack = "common"`, separate confidence intervals are
+Otherwise, if `stack_by = "common"`, separate confidence intervals are
 generated for the sum of unique effects and the sum of joint effects.
+Confidence intervals by default for these options are based on positive
+coefficients, but can be specified with an argument to `ggcom_ci()`
+(sign = “+” for positive coefficients, sign = “-” for negative ones, or
+sign = “” for both).
 
 ## Comparing confidence intervals
 
@@ -249,32 +262,32 @@ plot(p1) +
 #> # Groups:   com [3]
 #>   com      lci   uci
 #>   <fct>  <dbl> <dbl>
-#> 1 hp    0.0192 0.154
-#> 2 wt    0.126  0.376
-#> 3 wt,hp 0.466  0.584
+#> 1 hp    0.0134 0.165
+#> 2 wt    0.126  0.382
+#> 3 wt,hp 0.445  0.596
 #> # A tibble: 3 × 3
 #> # Groups:   com [3]
 #>   com      lci   uci
 #>   <fct>  <dbl> <dbl>
-#> 1 hp    0.0212 0.181
-#> 2 wt    0.103  0.339
-#> 3 wt,hp 0.392  0.614
+#> 1 hp    0.0259 0.184
+#> 2 wt    0.105  0.343
+#> 3 wt,hp 0.429  0.606
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-1.png" alt="" width="100%" />
 
 # Getting help
 
 For additional details about on plotting with ggcommonality, see the
-‘Advanced ggcommonality’ vignette.
+‘Advanced ggcommonality’ vignette:
 
 ``` r
 vignette('advanced-ggcommonality', 'ggcommonality')
 #> Warning: vignette 'advanced-ggcommonality' not found
 ```
 
-You can also read the help documentation `?ggcom()`, or [email Cameron
-Anderson](mailto:andersoc@mcmaster.ca), and see/report issues [here](https://github.com/cmndrsn/ggcommonality/issues).
+You can also read the help documentation `?ggcom()`, or [email
+me](mailto:andersoc@mcmaster.ca).
 
 # References
 

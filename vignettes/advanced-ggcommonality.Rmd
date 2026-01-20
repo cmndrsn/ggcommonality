@@ -64,7 +64,7 @@ plot(p) + ggcom_ci(p, sign = "+") + ggcom_ci(p, sign = "-")
 
 ### CI types
 
-By default, ggcommonality uses percentile-based 95% confidence intervals. However, we can redefine these in several ways. First, we can choose to use fixed, random, or wild-type confidence intervals. For this, we'll have to redefine our ggcommonality object
+ggcommonality uses percentile-based 95% confidence intervals. However, we can specify these in several ways. First, we can choose to use fixed, random, or wild-type confidence intervals. For this, we'll have to redefine our ggcommonality object
 
 ```{r}
 
@@ -123,7 +123,7 @@ As expected, our 99% confidence interval is wider.
 ggcommonality uses the ggplot2. As such, you can customize your error bars to your heart's content:
 
 ```{r}
-plot(p) + ggcom_ci(p, width = 0.5, colour = 'grey45', linetype = 4)
+plot(p) + ggcom_ci(p, width = 0.5, colour = 'grey45')
 ```
 
 ### Customizing barplots

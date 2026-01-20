@@ -11,7 +11,7 @@ ggcom(
   stack = NULL,
   n_replications = 100,
   sample_column = NULL,
-  resample_type = "wild",
+  resample_type = "random",
   wild_type = "gaussian",
   include_total = FALSE,
   ci_bounds = c(0.025, 0.975),
@@ -27,7 +27,7 @@ ggcom(
 
 \item{stack}{Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.}
 
-\item{n_replications}{Numeric. Number of replications for bootstrap simulation.}
+\item{n_replications}{Numeric. Number of replications for bootstrap simulation. Default is 100 for quick performance, though 1000 or 10000 are typically recommended.}
 
 \item{sample_column}{Character. Name of column to perform stratified sampling with, or leave as NULL}
 

@@ -36,6 +36,8 @@ Partitions are plotted sequentially in alphabetical order, starting with
 unique effects and are built iteratively with joint effects at higher
 orders on top.
 
+Note: This package is a hobby project and is currently under development, so there are likely many bugs I have yet to find and fix.
+
 ## Installation
 
 You can install ggcommonality (under development) from
@@ -83,11 +85,12 @@ Commonality effects can be stacked in multiple ways:
 ```{r warning=FALSE}
 
 # update object 
-slot(p, 'stack') <- "common"
+p@stack <- 'common'
 
 # stack
 plot(p) +
-  ggcom_ci(p)
+  ggcom_ci(p)+
+  ylim(0, 0.7)
 
 
 ```
@@ -115,15 +118,14 @@ The `resample_type` argument specifies whether to generate random-*x*,
 confidence intervals, fixed-*x*, or wild-*x* confidence intervals. The
 [appendices](https://www.john-fox.ca/Companion/) to @fox2018r summarizes
 the advantages and disadvantages of fixed vs. random-*x* bootstrapping.
-Wild-*x* provides a solution to fixed-*x* for models featuring
-heteroscedasticity by multiplying re-sampled residuals with constants
-sampled from a Gaussian distribution (`wild_type = "gaussian"`), or by
-randomly multiplying half by 1 and half by -1 (`wild_type = "sign"`).
+There is also a wild-*x* option implemented as described[here](https://stats.stackexchange.com/a/408688).
 
 If `stack_by = "partition"`, confidence intervals represent the sum of
 unique and joint effects for individual commonality partitions.
 Otherwise, if `stack_by = "common"`, separate confidence intervals are
 generated for the sum of unique effects and the sum of joint effects.
+Confidence intervals by default for these options are based on positive coefficients, but
+can be specified with an argument to `ggcom_ci()` (sign = "+" for positive coefficients, sign = "-" for negative ones, or sign = "" for both).
 
 ## Comparing confidence intervals
 
@@ -162,7 +164,6 @@ vignette('advanced-ggcommonality', 'ggcommonality')
 ```
 
 You can also read the help documentation
-`?ggcom()`, or [email Cameron
-Anderson](mailto:andersoc@mcmaster.ca).
+`?ggcom()`, or [email me](mailto:andersoc@mcmaster.ca).
 
 # References

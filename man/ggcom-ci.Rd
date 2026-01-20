@@ -10,6 +10,10 @@ ggcom_ci(x, ...)
 \item{x}{GGCommonality object}
 
 \item{...}{Other ggplot2 parameters}
+
+\item{sign}{Character string. When stack == "partition" or "common", "+" (default), generates confidence intervals using only positive coefficients from original commonality analysis.
+If "-", generates confidence intervals using only negative coefficients.
+Otherwise, "" generates confidence interval using both positive and negative.}
 }
 \description{
 Flexibly plots confidence interval for GGCommonality objects based on percentile-based bootstrapping using ggplot2

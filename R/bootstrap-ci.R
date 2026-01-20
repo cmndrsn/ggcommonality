@@ -49,9 +49,8 @@
              out <- data.boot[stringr::str_detect(
                rownames(data.boot),
                formula_terms[x]
-             ),
-             ]
-             out <- as.data.frame(out)
+             ),,drop=FALSE
+             ] |> as.data.frame(drop=FALSE)
              # index resamples matching original commonalities
              # with positive effects
              if(
@@ -89,8 +88,8 @@
              out <- data.boot[stringr::str_detect(
                rownames(data.boot),
                effect_type[x]
-             ),
-             ]
+             ),,drop=FALSE
+             ] |> as.data.frame(drop=FALSE)
              # sample positive commonality resamples
              if(
                sign == "+"
