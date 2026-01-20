@@ -20,8 +20,8 @@ Partitions are plotted sequentially in alphabetical order, starting with
 unique effects and are built iteratively with joint effects at higher
 orders on top.
 
-Note: This is my first R package and is currently under
-development, so there are likely several bugs to find and fix.
+**Note: This is my first R package and is currently under
+active development, so there are likely several bugs that remain to be found and fixed.**
 
 ## Installation
 
@@ -215,6 +215,7 @@ ggcom_ci(p)
 
 # Confidence intervals
 
+This package uses percentile-based confidence intervals.
 The `resample_type` argument specifies whether to generate random-*x*,
 confidence intervals, fixed-*x*, or wild-*x* confidence intervals. The
 [appendices](https://www.john-fox.ca/Companion/) to Fox and Weisberg
@@ -223,8 +224,8 @@ vs. random-*x* bootstrapping. There is also a wild-*x* option
 implemented as
 described[here](https://stats.stackexchange.com/a/408688).
 
-If `stack_by = "partition"`, confidence intervals represent the sum of
-unique and joint effects for individual commonality partitions.
+If `stack_by = "partition"`, confidence intervals sum the
+unique and joint effects for individual commonality partitions achieved through bootstrapping.
 Otherwise, if `stack_by = "common"`, separate confidence intervals are
 generated for the sum of unique effects and the sum of joint effects.
 Confidence intervals by default for these options are based on positive
