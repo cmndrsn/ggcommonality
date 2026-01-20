@@ -41,6 +41,7 @@
   #tmpList <<- list()
 
   if(stack == "partition") {
+    warning("The process for generating confidence intervals of stacked barplots is experimental and currently under development.\nFor more details see https://github.com/cmndrsn/ggcommonality/issues/15")
     list_CI <- lapply(1:length(formula_terms),
            function(x) {
              category <- formula_terms[x]
@@ -78,6 +79,7 @@
            }
          )
     } else if(stack == "common") {
+    warning("The process for generating confidence intervals of stacked barplots is experimental and currently under development.\nFor more details see https://github.com/cmndrsn/ggcommonality/issues/15")
     effect_type <- c("Unique", "Common")
     list_CI <- lapply(1:length(effect_type), # sample across unique vs. common effects
            function(x) {

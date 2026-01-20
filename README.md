@@ -20,8 +20,8 @@ Partitions are plotted sequentially in alphabetical order, starting with
 unique effects and are built iteratively with joint effects at higher
 orders on top.
 
-Note: This package is a hobby project and is currently under
-development, so there are likely many bugs I have yet to find and fix.
+Note: This is my first R package and is currently under
+development, so there are likely several bugs to find and fix.
 
 ## Installation
 

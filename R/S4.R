@@ -7,7 +7,7 @@
 #' @slot formula formula. Formula representing equation for linear regression model.
 #' @slot stack Character specifying how to stack commonality coefficients. Either NULL for no stacking, "common" to stack unique vs. common effects or "partition" to stack by commonality partition.
 #' @slot n_replications numeric. Number of bootstrap replications.
-#' @slot sample_column ANY. Column to resample from in bootstrap.
+#' @slot sample_column ANY. Column to resample within in bootstrap (see mosaic::resample()).
 #' @slot resample_type character. Character vector specifying whether resampling should be fixed or random. See details.
 #' @slot wild_type character.If resample_type == "wild", either "Gaussian" to
 #' multiply resampled residuals by random constants from the normal distribution,
